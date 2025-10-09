@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreQuizRequest extends FormRequest
+{
+    /**
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'title' => 'required|string|min:3',
+            'is_work' => [
+                'required',
+                'boolean'
+            ],
+            'timer_count' => 'required|integer',
+            'uploaded_image' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+        ];
+    }
+}
