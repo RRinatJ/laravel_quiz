@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('quizzes', function (Blueprint $table): void {
             $table->id();
             $table->string('title');
-            $table->boolean('is_work'); 
+            $table->boolean('is_work');
             $table->unsignedTinyInteger('timer_count');
             $table->string('image')->nullable();
             $table->timestamps();

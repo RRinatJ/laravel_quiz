@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Quiz extends Model
+final class Quiz extends Model
 {
     /** @use HasFactory<\Database\Factories\QuizFactory> */
     use HasFactory;
@@ -15,7 +15,7 @@ class Quiz extends Model
     protected $fillable = [
         'title',
         'is_work',
-        'timer_count',        
+        'timer_count',
         'image',
     ];
 
@@ -25,8 +25,7 @@ class Quiz extends Model
     protected function casts(): array
     {
         return [
-            'fifty_fifty_hint' => 'boolean',
-            'can_skip' => 'boolean',
+            'is_work' => 'boolean',
         ];
     }
 }

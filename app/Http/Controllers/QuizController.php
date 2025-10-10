@@ -4,23 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\QuizStoreAction;
+use App\Actions\QuizUpdateAction;
 use App\Http\Requests\StoreQuizRequest;
-use Illuminate\Http\Request;
 use App\Models\Quiz;
+use Exception;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
 
-class QuizController extends Controller
+final class QuizController extends Controller
 {
-    
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('Quiz/QuizList', [
             'quizzes' => Quiz::query()
                 ->select('id', 'title', 'is_work', 'image', 'timer_count')
-                ->paginate()
+                ->paginate(10)
                 ->withQueryString(),
             'message' => session('message'),
             'error' => session('error'),
@@ -30,7 +34,7 @@ class QuizController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Quiz/QuizForm');
     }
@@ -38,24 +42,14 @@ class QuizController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreQuizRequest $request)
+    public function store(StoreQuizRequest $request, QuizStoreAction $action): RedirectResponse
     {
         /** @var Request $request */
         $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
-
         $quizValidated = $request->validated();
-        unset($quizValidated['uploaded_image']);
-        
-        $createQuiz = Quiz::create($quizValidated);
 
-        if ($createQuiz) {
-           
-            if(is_null($uploaded_image) === false){ 
-                $createQuiz->image = $uploaded_image->store('images', 'public');                
-                $createQuiz->save();
-            }  
-
-            return to_route('quiz.index')->with(['message'=> 'Quiz Created Successfully']);
+        if ($action->handle($quizValidated, $uploaded_image)) {
+            return to_route('quiz.index')->with(['message' => 'Quiz Created Successfully']);
         }
 
         return abort(500);
@@ -64,10 +58,10 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Quiz $quiz)
+    public function edit(Quiz $quiz): Response
     {
         return Inertia::render('Quiz/QuizForm', [
-            'quiz' => $quiz, 
+            'quiz' => $quiz,
             'message' => session('message'),
         ]);
     }
@@ -75,22 +69,14 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreQuizRequest $request, Quiz $quiz)
+    public function update(StoreQuizRequest $request, Quiz $quiz, QuizUpdateAction $action): RedirectResponse
     {
         /** @var Request $request */
         $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
-
         $quizValidated = $request->validated();
-        unset($quizValidated['uploaded_image']);
-        
-        $updateQuiz = $quiz->update($quizValidated);
-        if ($updateQuiz) {            
-            if(is_null($uploaded_image) === false){ 
-                $quiz->image = $uploaded_image->store('images', 'public');                
-                $quiz->save();
-            }           
 
-            return redirect()->route('quiz.edit', $quiz->id)->with(['message'=> 'Quiz Updated Successfully']);
+        if ($action->handle($quiz, $quizValidated, $uploaded_image)) {
+            return redirect()->route('quiz.edit', $quiz->id)->with(['message' => 'Quiz Updated Successfully']);
         }
 
         return abort(500);
@@ -99,12 +85,13 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(Quiz $quiz): RedirectResponse
     {
         try {
             $quiz->delete();
+
             return redirect()->route('quiz.index')->with('message', 'Quiz Deleted Successfully');
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return redirect()->route('quiz.index')->with('error', 'Failed to delete the quiz');
         }
     }
