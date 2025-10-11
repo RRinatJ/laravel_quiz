@@ -19,7 +19,11 @@ final class QuizFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->sentence(),
+            'is_work' => fake()->boolean(),
+            'timer_count' => fake()->numberBetween(1, 60),            
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
