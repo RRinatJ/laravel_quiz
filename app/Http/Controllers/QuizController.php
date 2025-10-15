@@ -16,32 +16,23 @@ use Inertia\Response;
 
 final class QuizController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): Response
     {
         return Inertia::render('Quiz/QuizList', [
             'quizzes' => Quiz::query()
                 ->select('id', 'title', 'is_work', 'image', 'timer_count')
-                ->paginate(10)
+                ->paginate(5)
                 ->withQueryString(),
             'message' => session('message'),
             'error' => session('error'),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): Response
     {
         return Inertia::render('Quiz/QuizForm');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreQuizRequest $request, QuizStoreAction $action): RedirectResponse
     {
         /** @var Request $request */
@@ -55,9 +46,6 @@ final class QuizController extends Controller
         return abort(500);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Quiz $quiz): Response
     {
         return Inertia::render('Quiz/QuizForm', [
@@ -66,9 +54,6 @@ final class QuizController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StoreQuizRequest $request, Quiz $quiz, QuizUpdateAction $action): RedirectResponse
     {
         /** @var Request $request */
@@ -82,9 +67,6 @@ final class QuizController extends Controller
         return abort(500);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Quiz $quiz): RedirectResponse
     {
         try {

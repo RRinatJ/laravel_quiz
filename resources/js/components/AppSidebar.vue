@@ -12,10 +12,11 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import {index} from '@/routes/quiz'
+import { index } from '@/routes/quiz'
+import { index as questionIndex } from '@/routes/question'
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { MessageCircleQuestion, LayoutGrid } from 'lucide-vue-next';
+import { MessageCircleQuestion, FileQuestion, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -28,6 +29,11 @@ const mainNavItems: NavItem[] = [
         title: 'Quiz',
         href: index(),
         icon: MessageCircleQuestion,
+    },
+    {
+        title: 'Question',
+        href: questionIndex(),
+        icon: FileQuestion,
     },
 ];
 

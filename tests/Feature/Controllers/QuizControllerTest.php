@@ -19,7 +19,7 @@ final class QuizControllerTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
         Quiz::factory()->count(3)->create();
-        $response = $this->actingAs($user)->get(route('quiz.index'));        
+        $response = $this->actingAs($user)->get(route('quiz.index'));
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page): Assert => $page
             ->component('Quiz/QuizList')

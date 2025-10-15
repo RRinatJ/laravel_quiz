@@ -46,5 +46,13 @@ jobs:
       - name: Build Assets
         run: npm run build
 
+      - name: Rector Cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/rector
+          key: ${{ runner.os }}-rector-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-rector-
+      - run: mkdir -p /tmp/rector
+
       - name: Tests
-        run: ./vendor/bin/pest
+        run: composer test

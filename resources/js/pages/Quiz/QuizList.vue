@@ -83,7 +83,7 @@ const getResults = async (page = 1) => {
                             <th class="py-2 px-4 text-left border-b">ID</th>
                             <th class="py-2 px-4 text-left border-b">Title</th>
                             <th class="py-2 px-4 text-left border-b">Is work</th>
-                            <th class="py-2 px-4 text-left border-b w-72">Image</th>
+                            <th class="py-2 px-4 text-left border-b w-32">Image</th>
                             <th class="py-2 px-4 text-left border-b">Time count</th>
                             <th class="py-2 px-4 text-left border-b">Edit/Delete</th>
                         </tr>
@@ -117,7 +117,7 @@ const getResults = async (page = 1) => {
                         </tr>
                     </tbody>
                 </table>                
-                <div class="mt-4">
+                <div class="mt-4" v-if="quizzes !== undefined">                    
                     <TailwindPagination :data="quizzes" @pagination-change-page="getResults" />
                 </div>
             </div>

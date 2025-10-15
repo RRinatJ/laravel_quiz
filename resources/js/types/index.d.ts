@@ -39,7 +39,7 @@ export interface User {
 export interface Quiz {
     id: number;
     title: string;
-    is_work: number;
+    is_work: boolean;
     timer_count?: number;    
     image: string | null;
 }
@@ -62,6 +62,23 @@ export interface PaginatedResponse<T = unknown> {
     prev_page_url: string | null;
     to: number;
     total: number;
+}
+
+export interface Answer {
+    id: number | string;
+    text: string;    
+    image: string;
+    is_correct: boolean;
+    question_id?: number;
+}
+
+export interface Question {
+    id: number;
+    question: string | null;
+    image: string | null;    
+    quizzes?: number[];
+    quizzes_full?: Quiz[];
+    answers?: Answer[];
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

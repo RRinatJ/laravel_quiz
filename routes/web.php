@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +16,11 @@ Route::middleware('auth')->group(function (): void {
         'update', 'show',
     ]);
     Route::post('/quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
+
+    Route::resource('question', QuestionController::class)->except([
+        'update', 'show',
+    ]);
+    Route::post('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
 });
 
 require __DIR__.'/settings.php';
