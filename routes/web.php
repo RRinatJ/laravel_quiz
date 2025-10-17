@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Models\Quiz;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Inertia\Response;
 
-Route::get('/', fn () => Inertia::render('Welcome'))->name('home');
+Route::get('/', fn (Quiz $quiz_model): Response => Inertia::render('SelectQuiz', [
+    'quizzes' => $quiz_model->getWorking([], true),
+]))->name('home');
 
 Route::get('dashboard', fn () => Inertia::render('Dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/game/{quiz_id}', [GameController::class, 'store'])->name('game.create');
+Route::get('/game/questions/{game_id}', [GameController::class, 'show'])->name('game.show');
+Route::post('/game/{game_id}', [GameController::class, 'edit'])->name('game.edit');
 
 Route::middleware('auth')->group(function (): void {
     Route::resource('quiz', QuizController::class)->except([

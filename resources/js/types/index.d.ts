@@ -81,4 +81,17 @@ export interface Question {
     answers?: Answer[];
 }
 
+export interface AnswerInGame {
+    id: number;
+    text: string;
+    image: string;
+}
+export interface Game {
+    id: number;
+    current_question_id: number;
+    correct_count: number;
+    quiz: Quiz;
+    question?: Question;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

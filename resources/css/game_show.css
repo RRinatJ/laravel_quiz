@@ -1,0 +1,184 @@
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('./fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('./fonts/PlusJakartaSans-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('./fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('./fonts/PlusJakartaSans-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* Общие стили */
+body #showGame {
+    margin: 0;
+    padding: 0;    
+    display: flex;
+    flex-direction: column;
+}
+
+/* Шапка */
+#showGame header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#showGame .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#showGame .progress {
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+#showGame .timer {
+    position: absolute;
+    left: 50%;    
+    transform: translateX(-50%); /* Центрируем по горизонтали */
+}
+
+/* Основной контент */
+#showGame main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+}
+
+#showGame .question {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#showGame .question p {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+}
+
+#showGame .question img {
+    max-width: 100%;
+    border-radius: 5px;
+    display: block;
+    margin: auto;
+    margin-bottom: 1.5rem;
+}
+
+#showGame .question audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#showGame .error-red {
+    color: #e10f0f !important;
+    font-weight: bold;
+}
+
+#showGame .message {
+    color: #4a90e2 !important;
+    font-weight: bold;
+}
+
+/* Варианты ответа */
+#showGame .answers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    width: 100%;
+}
+
+#showGame .option {
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#showGame .option:hover {
+    border-color: #4a90e2;
+    transform: scale(1.02);
+}
+
+#showGame .option:active {
+    background: #4a90e2;
+    color: #fff;
+}
+
+#showGame .option.info {
+    background: #0ea5e9;
+    color: #fff;
+}
+
+#showGame .option:disabled {    
+    background-color: dimgrey;
+    color: linen;
+}
+
+#showGame .option.correct {
+    background: #10b981 !important;
+    color: #fff;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    /* #showGame .answers {
+        grid-template-columns: 1fr;
+    } */
+
+    #showGame header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #showGame .progress {
+        margin-top: 10px;
+    }
+
+    #showGame .question {
+        padding: 15px;
+    }
+
+    #showGame .option {
+        padding: 12px;
+    }
+
+    #showGame .timer {
+        position: static; /* На мобильных таймер становится частью потока */
+        transform: none;
+        margin: 10px 0;
+    }
+}

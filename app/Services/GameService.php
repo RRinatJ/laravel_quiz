@@ -1,0 +1,161 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use App\Models\Game;
+use App\Models\GameStep;
+use App\Models\Question;
+use App\Models\Quiz;
+
+final class GameService
+{
+    public function createGame(int $quiz_id): Game
+    {
+        $quiz = Quiz::with('questions:id')->where('is_work', 1)->find($quiz_id);
+        $question_row = $quiz->questions->shuffle()->pluck('id')->toArray();
+
+        return Game::query()->create([
+            'current_question_id' => $question_row[0],
+            'quiz_id' => $quiz->id,
+            'correct_count' => 0,
+            'question_row' => $question_row,
+        ]);
+    }
+
+    public function show(Game $game, array $sort_array = []): array
+    {
+        $firstQuestion = $game->latestStep === null;
+
+        $error = $firstQuestion ? '' : $this->getError($game);
+        $message = $firstQuestion ? '' : $this->getMessage($game, $error);
+
+        $correct_answer_id = $game->question->answers->where('is_correct', true)->first()?->id;
+        $answers = $this->getAnswers($game, $error, $sort_array);
+        if ($error === '') {
+            $correct_answer_id = null;
+        }
+
+        return [
+            'answers' => $answers,
+            'error' => $error,
+            'message' => $message,
+            'correct_answer_id' => $correct_answer_id,
+            'firstQuestion' => $game->latestStep === null,
+        ];
+    }
+
+    public function getError(Game $game): string
+    {
+        return match (true) {
+            $game->latestStep->times_out => 'Times is out!',
+            $game->latestStep->is_correct === false => 'Error answer!',
+            default => ''
+        };
+    }
+
+    public function getMessage(Game $game, string $error): string
+    {
+        if ($error === '' &&
+            $game->current_question_id === $game->latestStep->question_id
+        ) {
+            return 'Congratulations! You answered all questions!';
+        }
+
+        return '';
+    }
+
+    public function getAnswers(Game $game, string $error, array $sort_array = []): array
+    {
+        $answers = $game->question->answers->shuffle()->select('id', 'text', 'image');
+
+        if ($error === '') {
+            return $answers->toArray();
+        }
+
+        return $this->sortAnswersByArrayIds($answers, $sort_array);
+    }
+
+    public function sortAnswersByArrayIds($answers, $sort_array): array
+    {
+        if ($sort_array === []) {
+            return $answers->toArray();
+        }
+        $result = [];
+        foreach ($sort_array as $sort_item) {
+            $result[] = $answers->firstWhere('id', $sort_item);
+        }
+
+        return $result;
+    }
+
+    public function processAnswer(int $given_answer, Game $game): void
+    {
+        $chosen_answer_id = $this->getAnswerId($given_answer);
+        $is_correct = $this->checkIsCorrectAnswer($game, $chosen_answer_id);
+        $times_out = $this->checkTimesOut($game);
+        $game_step = GameStep::query()->create([
+            'game_id' => $game->id,
+            'question_id' => $game->question->id,
+            'answer_id' => $chosen_answer_id,
+            'times_out' => $times_out,
+            'is_correct' => $is_correct,
+        ]);
+        if ($game_step->is_correct) {
+            $this->processCorrectQuestion($game, $game_step);
+        }
+    }
+
+    public function checkTimesOut(Game $game): bool
+    {
+        $questionDurationTime = $game->updated_at->diffInSeconds(now());
+
+        return $questionDurationTime > $game->quiz->timer_count;
+    }
+
+    public function checkIsCorrectAnswer(Game $game, ?int $chosen_answer_id): bool
+    {
+        $is_correct = $game->question->answers->where('is_correct', true)->where('id', $chosen_answer_id)->first();
+
+        return $is_correct !== null;
+    }
+
+    public function getAnswerId(int $given_answer): ?int
+    {
+        if (is_null($given_answer)) {
+            return null;
+        }
+        if ($given_answer === 0) {
+            return null;
+        }
+
+        return $given_answer;
+    }
+
+    public function processCorrectQuestion(Game $game, GameStep $game_step): void
+    {
+        $current_question_id = $this->goToNextQuestion($game, $game_step->question_id);
+        if ($current_question_id !== null) {
+            $game->current_question_id = $current_question_id;
+        }
+        $game->correct_count++;
+        $game->save();
+    }
+
+    public function goToNextQuestion(Game $game, int $current_question_id): ?int
+    {
+        $key = array_search($current_question_id, $game->question_row);
+        $question_id = $game->question_row[$key + 1] ?? null;
+
+        // If question was deleted
+        if ($question_id !== null && Question::query()->where('id', $question_id)->doesntExist()) {
+            $game->correct_count++;
+            $game->save();
+
+            return $this->goToNextQuestion($game, $question_id);
+        }
+
+        return $question_id;
+    }
+}
