@@ -6,8 +6,10 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Models\Question;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 final class QuestionService
 {
@@ -53,6 +55,31 @@ final class QuestionService
         }
 
         return $question;
+    }
+
+    public function getLatestQuestions(?int $quiz_id = null, ?int $count = null): Collection
+    {
+        if (is_null($count)) {
+            $count = 5;
+        }
+
+        return Question::query()
+            ->when($quiz_id, function ($query, $quiz_id): void {
+                $query->whereHas('quizzes', function (Builder $sub_query) use ($quiz_id): void {
+                    $sub_query->where('quiz_id', $quiz_id);
+                });
+            })
+            ->select('id', 'question', 'image', 'created_at')
+            ->with('quizzes:id,title')
+            ->latest()
+            ->take($count)
+            ->get()
+            ->map(function ($item) {
+                $arr = $item->toArray();
+                $arr['created_at'] = $item->created_at->diffForHumans();
+
+                return $arr;
+            });
     }
 
     private function processAnswers(Question $question, array $answers, array $answerImages, array $answer_ids = []): void

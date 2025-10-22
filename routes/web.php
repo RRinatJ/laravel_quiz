@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
@@ -14,7 +15,7 @@ Route::get('/', fn (Quiz $quiz_model): Response => Inertia::render('SelectQuiz',
     'quizzes' => $quiz_model->getWorking([], true),
 ]))->name('home');
 
-Route::get('dashboard', fn () => Inertia::render('Dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/game/{quiz_id}', [GameController::class, 'store'])->name('game.create');
 Route::get('/game/questions/{game_id}', [GameController::class, 'show'])->name('game.show');

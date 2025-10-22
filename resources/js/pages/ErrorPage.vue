@@ -35,14 +35,14 @@ const description = computed(() => {
         <div class="layout-container flex h-full grow flex-col">            
             <div class="px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
-                    <h2 class="text-[#0d171b] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">{{ title }}</h2>
-                    <p class="text-[#0d171b] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
+                    <h2 class="tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">{{ title }}</h2>
+                    <p class="text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
                         {{ description }}
                     </p>
                     <div class="flex px-4 py-3 justify-center">
                         <Link
                             :href="home()"
-                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7eff3] text-[#0d171b] text-sm font-bold leading-normal tracking-[0.015em]"
+                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em]"
                         >
                             <span class="truncate">Go to Home</span>
                         </Link>

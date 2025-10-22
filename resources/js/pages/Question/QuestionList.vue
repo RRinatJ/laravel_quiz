@@ -137,7 +137,7 @@ const deleteQuestion = (id:number) => {
                             </td>
                             <td class="py-2 px-4 border-b">                            
                                 <ul>
-                                    <li v-for="question_quiz in question.quizzes_full" :key="question_quiz.id">
+                                    <li v-for="question_quiz in question.quizzes" :key="question_quiz.id">
                                         {{ question_quiz.title }} 
                                         <OnOffIcon v-if="question_quiz.is_work !== undefined" :check-value="question_quiz.is_work" :size="'sm'" />
                                     </li>

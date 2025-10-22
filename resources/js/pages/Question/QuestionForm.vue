@@ -38,7 +38,7 @@ const form = useForm<questionForm>({
     question: question?.question || "",
     uploaded_image: null,
     image: question?.image || "",
-    quizzes: question?.quizzes || [],
+    quizzes: question?.quizzes_ids || [],
     answer_images: [],
     answers: question?.answers || [],
 });

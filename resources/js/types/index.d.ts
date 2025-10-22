@@ -42,6 +42,7 @@ export interface Quiz {
     is_work: boolean;
     timer_count?: number;    
     image: string | null;
+    created_at?: string;
 }
 
 export interface PaginatedResponse<T = unknown> {
@@ -76,9 +77,10 @@ export interface Question {
     id: number;
     question: string | null;
     image: string | null;    
-    quizzes?: number[];
-    quizzes_full?: Quiz[];
+    quizzes_ids?: number[];
+    quizzes?: Quiz[];
     answers?: Answer[];
+    created_at?: string;
 }
 
 export interface AnswerInGame {

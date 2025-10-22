@@ -46,6 +46,7 @@ final class GameControllerTest extends TestCase
         $response = $this->get(route('game.show', [
             'game_id' => 999,
         ]));
+        $response->assertStatus(500);
         $response->assertInertia(fn (Assert $page): Assert => $page
             ->component('ErrorPage')
             ->where('status', 500)
