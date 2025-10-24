@@ -8,6 +8,7 @@ use App\Models\Answer;
 use App\Models\Game;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -29,15 +30,18 @@ final class GameControllerTest extends TestCase
 
     public function test_create_game(): void
     {
+        /** @var User $user */
+        $user = User::factory()->create();
+
         $quiz = Quiz::factory()->has(Question::factory()->count(1))->create();
         $quiz->is_work = true;
         $quiz->save();
 
-        $response = $this->get(route('game.create', [
+        $response = $this->actingAs($user)->get(route('game.create', [
             'quiz_id' => $quiz->id,
         ]));
         $response->assertStatus(302);
-        $this->assertDatabaseHas('games', ['quiz_id' => $quiz->id, 'correct_count' => 0]);
+        $this->assertDatabaseHas('games', ['quiz_id' => $quiz->id, 'correct_count' => 0, 'user_id' => $user->id]);
     }
 
     public function test_show_game_not_found(): void

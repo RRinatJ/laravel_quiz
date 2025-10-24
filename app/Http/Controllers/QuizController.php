@@ -6,9 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\QuizStoreAction;
 use App\Actions\QuizUpdateAction;
+use App\Enums\UserRole;
 use App\Http\Requests\StoreQuizRequest;
 use App\Models\Quiz;
+use App\Models\User;
 use Exception;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,8 +19,13 @@ use Inertia\Response;
 
 final class QuizController extends Controller
 {
+    public function __construct(#[CurrentUser]
+        private readonly User $user) {}
+
     public function index(): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
+
         return Inertia::render('Quiz/QuizList', [
             'quizzes' => Quiz::query()
                 ->select('id', 'title', 'is_work', 'image', 'timer_count')
@@ -30,11 +38,14 @@ final class QuizController extends Controller
 
     public function create(): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
+
         return Inertia::render('Quiz/QuizForm');
     }
 
     public function store(StoreQuizRequest $request, QuizStoreAction $action): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         /** @var Request $request */
         $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
         $quizValidated = $request->validated();
@@ -48,6 +59,8 @@ final class QuizController extends Controller
 
     public function edit(Quiz $quiz): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
+
         return Inertia::render('Quiz/QuizForm', [
             'quiz' => $quiz,
             'message' => session('message'),
@@ -56,6 +69,7 @@ final class QuizController extends Controller
 
     public function update(StoreQuizRequest $request, Quiz $quiz, QuizUpdateAction $action): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         /** @var Request $request */
         $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
         $quizValidated = $request->validated();
@@ -69,6 +83,7 @@ final class QuizController extends Controller
 
     public function destroy(Quiz $quiz): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
             $quiz->delete();
 

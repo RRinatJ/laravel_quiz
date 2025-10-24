@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
@@ -18,7 +19,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_index(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         Question::factory()->has(Answer::factory()->count(4))->count(3)->create();
         $response = $this->actingAs($user)->get(route('question.index'));
         $response->assertStatus(200);
@@ -37,7 +38,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_create(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->get(route('question.create'));
 
         $response->assertStatus(200);
@@ -48,7 +49,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_store_validation_error(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->post(route('question.store'), [
             'question' => '',
             'answers' => [],
@@ -60,7 +61,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_store_success(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->post(route('question.store'), [
             'question' => 'Sample Question',
             'answers' => [
@@ -80,7 +81,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_edit(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $question = Question::factory()->has(Answer::factory()->count(4))->create();
         $response = $this->actingAs($user)->get(route('question.edit', $question->id));
 
@@ -94,7 +95,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_update_validation_error(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $question = Question::factory()->has(Answer::factory()->count(4))->create();
         $response = $this->actingAs($user)->post(route('question.update', $question->id), [
             'question' => '',
@@ -108,7 +109,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_update_success(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $question = Question::factory()->has(Answer::factory()->count(4))->create();
 
         $response = $this->actingAs($user)->post(route('question.update', $question->id), [
@@ -126,7 +127,7 @@ final class QuestionControllerTest extends TestCase
     public function test_question_destroy(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $question = Question::factory()->has(Answer::factory()->count(4))->create();
         $response = $this->actingAs($user)->delete(route('question.destroy', $question->id));
 

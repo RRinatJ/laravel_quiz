@@ -14,28 +14,38 @@ import {
 import { dashboard } from '@/routes';
 import { index } from '@/routes/quiz'
 import { index as questionIndex } from '@/routes/question'
+import { computed } from 'vue';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { MessageCircleQuestion, FileQuestion, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+const page = usePage();
+const auth = computed(() => page.props.auth);
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
-        icon: LayoutGrid,
+        icon: LayoutGrid,        
+        can: true
     },
     {
         title: 'Quiz',
         href: index(),
         icon: MessageCircleQuestion,
+        can: auth.value.role === 'Admin'
     },
     {
         title: 'Question',
         href: questionIndex(),
         icon: FileQuestion,
+        can: auth.value.role === 'Admin'
     },
 ];
+
+const filteredMainNavItems = computed(() => {
+    return mainNavItems.filter(item => item.can);
+});
 
 const footerNavItems: NavItem[] = [    
 ];
@@ -56,7 +66,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="filteredMainNavItems" />
         </SidebarContent>
 
         <SidebarFooter>

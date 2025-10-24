@@ -154,9 +154,10 @@ const deleteQuestion = (id:number) => {
                                             class="w-16 h-auto rounded"
                                             :src="answer.image" 
                                             srcset=""
-                                        >    
+                                        >
                                         <Badge     
-                                            v-if="answer.text"                                   
+                                            v-if="answer.text"
+                                            :class="'whitespace-normal w-min'"
                                             :variant="answer.is_correct ? 'destructive' : 'default'"
                                             class="mr-1"
                                         >

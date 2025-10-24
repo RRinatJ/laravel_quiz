@@ -8,8 +8,10 @@ use App\Models\Game;
 use App\Models\GameStep;
 use App\Models\Question;
 use App\Models\Quiz;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
-final class GameService
+final readonly class GameService
 {
     public function createGame(int $quiz_id): Game
     {
@@ -21,6 +23,7 @@ final class GameService
             'quiz_id' => $quiz->id,
             'correct_count' => 0,
             'question_row' => $question_row,
+            'user_id' => Auth::id(),
         ]);
     }
 
@@ -157,5 +160,26 @@ final class GameService
         }
 
         return $question_id;
+    }
+
+    public function getLatestGames(?int $user_id = null, ?int $count = null): Collection
+    {
+        if (is_null($count)) {
+            $count = 5;
+        }
+
+        return Game::query()
+            ->where('user_id', $user_id)
+            ->select('id', 'quiz_id', 'correct_count', 'question_row', 'created_at')
+            ->with('quiz:id,title')
+            ->latest()
+            ->take($count)
+            ->get()
+            ->map(function ($item) {
+                $arr = $item->toArray();
+                $arr['created_at'] = $item->created_at->diffForHumans();
+
+                return $arr;
+            });
     }
 }

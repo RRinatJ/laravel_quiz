@@ -24,6 +24,7 @@ final class Game extends Model
         'quiz_id',
         'correct_count',
         'question_row',
+        'user_id',
     ];
 
     /**

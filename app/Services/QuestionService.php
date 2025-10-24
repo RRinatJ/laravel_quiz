@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 final class QuestionService
 {
@@ -77,6 +78,7 @@ final class QuestionService
             ->map(function ($item) {
                 $arr = $item->toArray();
                 $arr['created_at'] = $item->created_at->diffForHumans();
+                $arr['image'] = $item->image ? config('app.url').Storage::url($item->image) : null;
 
                 return $arr;
             });

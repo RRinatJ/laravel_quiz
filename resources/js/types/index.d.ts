@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-vue-next';
 
 export interface Auth {
     user: User;
+    role: string;
 }
 
 export interface BreadcrumbItem {
@@ -15,6 +16,7 @@ export interface NavItem {
     href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon;
     isActive?: boolean;
+    can?: boolean;
 }
 
 export type AppPageProps<
@@ -94,6 +96,8 @@ export interface Game {
     correct_count: number;
     quiz: Quiz;
     question?: Question;
+    question_row: number[];
+    created_at?: string;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

@@ -2,7 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { type Quiz, type Question } from '@/types';
+import { type Quiz, type Question, type Game } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import OnOffIcon from '@/components/OnOffIcon.vue';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
@@ -10,6 +10,7 @@ import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 interface Props {
     latestQuestions: Question[];
     latestQuizzes: Quiz[];
+    latestGames: Game[];
 }
 
 defineProps<Props>();
@@ -31,7 +32,34 @@ const breadcrumbs: BreadcrumbItem[] = [
         >
             <div class="grid auto-rows-min gap-4 md:grid-cols-2">
                 <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
+                    v-if="latestGames.length > 0"
+                    class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
+                >
+                    <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Games</h2>    
+                    <table class="min-w-full shadow rounded-lg">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 text-left border-b">Quiz</th>
+                                <th class="py-2 px-4 text-left border-b">Answered / Total</th>
+                                <th class="py-2 px-4 text-left border-b">Played</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="game in latestGames" :key="game.id" >                                
+                                <td class="py-2 px-4 border-b">{{ game.quiz.title }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    {{ game.correct_count }} / {{ game.question_row.length }}
+                                </td>                                
+                                <td class="py-2 px-4 border-b">
+                                    {{ game.created_at }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div
+                    v-if="latestQuestions.length > 0"
+                    class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Questions</h2>    
                     <table class="min-w-full shadow rounded-lg">
@@ -50,7 +78,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     <img 
                                         v-if="question.image" 
                                         class="w-16 h-auto rounded"
-                                        :src="'/storage/'+question.image" 
+                                        :src="question.image" 
                                         srcset=""
                                     >
                                 </td>
@@ -69,7 +97,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </table>
                 </div>
                 <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
+                    v-if="latestQuizzes.length > 0"
+                    class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Quizzes</h2>
                     <table class="min-w-full shadow rounded-lg">
@@ -88,7 +117,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     <img 
                                         v-if="quiz.image" 
                                         class="w-16 h-auto rounded"
-                                        :src="'/storage/'+quiz.image" 
+                                        :src="quiz.image" 
                                         srcset=""
                                     >
                                 </td>

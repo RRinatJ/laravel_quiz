@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Resources\QuestionListResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\User;
 use App\Services\QuestionService;
 use Exception;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,8 +22,12 @@ use Inertia\Response;
 
 final class QuestionController extends Controller
 {
+    public function __construct(#[CurrentUser]
+        private readonly User $user) {}
+
     public function index(Request $request, Quiz $quiz_model): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         $quiz_id = (int) ($request->input('quiz_id'));
 
         return Inertia::render('Question/QuestionList', [
@@ -45,6 +52,8 @@ final class QuestionController extends Controller
 
     public function create(Quiz $quiz_model): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
+
         return Inertia::render('Question/QuestionForm', [
             'quizzes' => $quiz_model->select('id', 'title')->get(),
         ]);
@@ -52,6 +61,7 @@ final class QuestionController extends Controller
 
     public function store(StoreQuestionRequest $request, QuestionService $questionService): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
             /** @var Request $request */
             $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
@@ -72,6 +82,8 @@ final class QuestionController extends Controller
 
     public function edit(Question $question, Quiz $quiz_model): Response
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
+
         return Inertia::render('Question/QuestionForm', [
             'question' => new QuestionResource($question),
             'quizzes' => $quiz_model->select('id', 'title')->get(),
@@ -81,6 +93,7 @@ final class QuestionController extends Controller
 
     public function update(Question $question, StoreQuestionRequest $request, QuestionService $questionService): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
             /** @var Request $request */
             $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
@@ -102,6 +115,7 @@ final class QuestionController extends Controller
 
     public function destroy(Question $question): RedirectResponse
     {
+        abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
             $question->delete();
 

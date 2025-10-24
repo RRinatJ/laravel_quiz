@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,7 +18,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_index(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         Quiz::factory()->count(3)->create();
         $response = $this->actingAs($user)->get(route('quiz.index'));
         $response->assertStatus(200);
@@ -31,7 +32,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_create(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->get(route('quiz.create'));
 
         $response->assertStatus(200);
@@ -42,7 +43,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_store_validation_error(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->post(route('quiz.store'), [
             'title' => '',
             'is_work' => 'not-a-boolean',
@@ -56,7 +57,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_store_success(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $response = $this->actingAs($user)->post(route('quiz.store'), [
             'title' => 'Sample Quiz',
             'is_work' => true,
@@ -72,7 +73,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_edit(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $quiz = Quiz::factory()->create();
         $response = $this->actingAs($user)->get(route('quiz.edit', $quiz->id));
 
@@ -86,7 +87,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_update_validation_error(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $quiz = Quiz::factory()->create();
         $response = $this->actingAs($user)->post(route('quiz.update', $quiz->id), [
             'title' => '',
@@ -101,7 +102,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_update_success(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $quiz = Quiz::factory()->create();
         $response = $this->actingAs($user)->post(route('quiz.update', $quiz->id), [
             'title' => 'Updated Quiz',
@@ -118,7 +119,7 @@ final class QuizControllerTest extends TestCase
     public function test_quiz_destroy(): void
     {
         /** @var User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $quiz = Quiz::factory()->create();
         $response = $this->actingAs($user)->delete(route('quiz.destroy', $quiz->id));
 
