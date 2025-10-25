@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class StoreQuizRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return $this->user()->checkRole(UserRole::ADMIN);
+    }
+
     /**
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */

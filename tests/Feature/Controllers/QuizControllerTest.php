@@ -140,4 +140,18 @@ final class QuizControllerTest extends TestCase
         $this->post(route('quiz.update', $quiz->id), [])->assertRedirect(route('login'));
         $this->delete(route('quiz.destroy', $quiz->id))->assertRedirect(route('login'));
     }
+
+    public function test_quiz_routes_require_admin_role(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create(['role' => UserRole::PLAYER]);
+        $quiz = Quiz::factory()->create();
+
+        $this->actingAs($user)->get(route('quiz.index'))->assertStatus(403);
+        $this->actingAs($user)->get(route('quiz.create'))->assertStatus(403);
+        $this->actingAs($user)->post(route('quiz.store'), [])->assertStatus(403);
+        $this->actingAs($user)->get(route('quiz.edit', $quiz->id))->assertStatus(403);
+        $this->actingAs($user)->post(route('quiz.update', $quiz->id), [])->assertStatus(403);
+        $this->actingAs($user)->delete(route('quiz.destroy', $quiz->id))->assertStatus(403);
+    }
 }
