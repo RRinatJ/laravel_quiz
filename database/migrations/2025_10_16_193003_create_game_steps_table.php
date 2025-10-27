@@ -16,10 +16,8 @@ return new class extends Migration
         Schema::create('game_steps', function (Blueprint $table): void {
             $table->id();
             $table->foreignUlid('game_id')->constrained();
-            $table->foreignId('question_id')->constrained();
-            $table->unsignedBiginteger('answer_id')->nullable();
-            $table->foreign('answer_id')->references('id')
-                ->on('answers');
+            $table->foreignId('question_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('answer_id')->nullable()->constrained()->nullOnDelete();
             $table->boolean('is_correct');
             $table->boolean('times_out');
             $table->timestamps();

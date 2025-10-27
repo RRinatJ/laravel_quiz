@@ -1,10 +1,10 @@
 # laravel_quiz
 
-laravel_quiz is a web application created using the Laravel framework that allows you to create and play quizzes.
+laravel_quiz is a web application created using the Laravel framework with Vue 3 that allows you to create and play quizzes.
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository or fork this repository:
    ```bash
    git clone https://github.com/RRinatJ/laravel_quiz.git
    ```
@@ -41,10 +41,15 @@ laravel_quiz is a web application created using the Laravel framework that allow
     ```bash
     php artisan serve
     ```
-10. Open the app in your web browser: http://localhost:8000
+10. Add admin user
+    ```bash
+    php artisan app:create-admin
+    ```
+11. Open the app in your web browser: http://localhost:8000
 
 ## Roadmap
-1. Add hints
-2. Add audio questions
-3. Added support for the Telegram app. Play quizzes in Telegram chat. 
-4. Generate questions or answers using AI
+- Hints
+- Audio questions
+- Reports
+- Support for the Telegram app. Play quizzes in Telegram chat. 
+- Generate questions or answers using AI

@@ -43,7 +43,7 @@ final class CreateAdmin extends Command
     /**
      * @return array{'name': string, 'email': string, 'password': string, 'role': UserRole}
      */
-    protected function getUserData(): array
+    private function getUserData(): array
     {
         return [
             'name' => text(

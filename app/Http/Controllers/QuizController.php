@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -85,7 +86,9 @@ final class QuizController extends Controller
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
-            $quiz->delete();
+            if ($quiz->delete() && $quiz->image) {
+                Storage::disk('public')->delete($quiz->image);
+            }
 
             return redirect()->route('quiz.index')->with('message', 'Quiz Deleted Successfully');
         } catch (Exception) {

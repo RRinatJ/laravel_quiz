@@ -34,6 +34,7 @@ return new class extends Migration
             $table->dropColumn('role');
         });
         Schema::table('games', function (Blueprint $table): void {
+            $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });
     }

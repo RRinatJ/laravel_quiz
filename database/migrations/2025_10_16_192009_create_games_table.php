@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->foreignId('current_question_id')->constrained('questions');
-            $table->foreignId('quiz_id')->constrained();
+            $table->foreignId('current_question_id')->nullable()->constrained('questions')->nullOnDelete();
+            $table->foreignId('quiz_id')->nullable()->constrained()->nullOnDelete();
             $table->integer('correct_count');
             $table->json('question_row');
             $table->timestamps();

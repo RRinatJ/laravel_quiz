@@ -66,7 +66,7 @@ const deleteQuestion = (id:number) => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="container mx-auto p-4">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold">Quiz list</h1>
+                <h1 class="text-2xl font-bold">Question list</h1>
             </div>
             <div v-if="error" class="mb-6">
                 <div

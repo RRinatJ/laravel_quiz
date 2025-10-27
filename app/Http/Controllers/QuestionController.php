@@ -17,6 +17,7 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -117,7 +118,17 @@ final class QuestionController extends Controller
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
-            $question->delete();
+            $question->load('answers');
+            if ($question->delete()) {
+                if ($question->image) {
+                    Storage::disk('public')->delete($question->image);
+                }
+                foreach ($question->answers as $answer) {
+                    if ($answer->image) {
+                        Storage::disk('public')->delete($answer->image);
+                    }
+                }
+            }
 
             return redirect()->route('question.index')->with('message', 'Quiz Deleted Successfully');
         } catch (Exception $e) {
