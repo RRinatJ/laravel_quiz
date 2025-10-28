@@ -3,18 +3,18 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Quiz, type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import { type Question, type PaginatedResponse } from '@/types';
+import { type Question, PaginatedResourceResponse } from '@/types';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
 import OnOffIcon from '@/components/OnOffIcon.vue';
 import { Badge } from '@/components/ui/badge';
 import { ref, watch } from 'vue';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TailwindPagination } from 'laravel-vue-pagination';
+import Pagination from '@/components/pagination/Pagination.vue';
 import { create, edit, destroy } from '@/routes/question';
 
 interface Props {
-    questions: PaginatedResponse<Question>;
+    questions: PaginatedResourceResponse<Question>;
     quizzes: Quiz[];
     message?: string;
     error?: string;
@@ -178,9 +178,9 @@ const deleteQuestion = (id:number) => {
                             </td>
                         </tr>
                     </tbody>
-                </table>                
+                </table>
                 <div class="mt-4" v-if="questions !== undefined">
-                    <TailwindPagination :data="questions" />
+                    <Pagination :data="questions"/>                  
                 </div>
             </div>
         </div>

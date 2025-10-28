@@ -3,11 +3,11 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import { type Quiz, type PaginatedResponse } from '@/types';
+import { type Quiz, PaginatedResponse } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import OnOffIcon from '@/components/OnOffIcon.vue';
-import { TailwindPagination } from 'laravel-vue-pagination';
+import Pagination from '@/components/pagination/Pagination.vue';
 import { create, edit, destroy } from '@/routes/quiz';
 
 interface Props {
@@ -36,10 +36,6 @@ const deleteQuiz = (id:number) => {
         });
     }
 };
-
-const getResults = async (page = 1) => {    
-    window.location.href = `?page=${page}`;
-}
 </script>
 
 <template>
@@ -117,8 +113,8 @@ const getResults = async (page = 1) => {
                         </tr>
                     </tbody>
                 </table>                
-                <div class="mt-4" v-if="quizzes !== undefined">                    
-                    <TailwindPagination :data="quizzes" @pagination-change-page="getResults" />
+                <div class="mt-4" v-if="quizzes !== undefined">
+                    <Pagination :data="quizzes"/>     
                 </div>
             </div>
         </div>

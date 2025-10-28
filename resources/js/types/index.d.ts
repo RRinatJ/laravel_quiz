@@ -47,9 +47,33 @@ export interface Quiz {
     created_at?: string;
 }
 
-export interface PaginatedResponse<T = unknown> {
-    current_page: number;
+export interface PaginatedResourceResponse<T = unknown> {
     data: T[];
+    links: {
+        first: string,
+        last: string,
+        prev: string | null,
+        next: string | null
+    };
+    meta: {
+        current_page: number;
+        from: number;
+        last_page: number;
+        path: string;
+        per_page: number;
+        to: number;
+        total: number;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+    }
+}
+
+export interface PaginatedResponse<T = unknown> {
+    data: T[];
+    current_page: number;
     first_page_url: string;
     from: number;
     last_page: number;
@@ -66,6 +90,8 @@ export interface PaginatedResponse<T = unknown> {
     to: number;
     total: number;
 }
+
+export type PaginateData = PaginatedResponse | PaginatedResourceResponse
 
 export interface Answer {
     id: number | string;
