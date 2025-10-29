@@ -102,4 +102,58 @@ final class GameControllerTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseHas('game_steps', ['game_id' => $game->id, 'is_correct' => $answer->is_correct]);
     }
+
+    public function test_game_fifty_fifty_hint(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $quiz = Quiz::factory()->has(Question::factory()->has(Answer::factory()->count(2))->count(2))->create(
+            [
+                'fifty_fifty_hint' => true,
+                'is_work' => true,
+            ]
+        );
+
+        $this->actingAs($user)->get(route('game.create', [
+            'quiz_id' => $quiz->id,
+        ]));
+
+        $game = Game::query()->where('quiz_id', $quiz->id)->first();
+        $response = $this->actingAs($user)->post(route('game.edit', [
+            'game_id' => $game->id,
+            'sort_array' => [],
+            'answer_id' => null,
+            'fifty_fifty_hint' => true,
+        ]));
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('game_steps', ['game_id' => $game->id]);
+        $this->assertDatabaseHas('games', ['quiz_id' => $quiz->id, 'correct_count' => 0, 'user_id' => $user->id, 'fifty_fifty_hint' => false]);
+    }
+
+    public function test_game_can_skip_hint(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $quiz = Quiz::factory()->has(Question::factory()->has(Answer::factory()->count(2))->count(2))->create(
+            [
+                'can_skip' => true,
+                'is_work' => true,
+            ]
+        );
+
+        $this->actingAs($user)->get(route('game.create', [
+            'quiz_id' => $quiz->id,
+        ]));
+
+        $game = Game::query()->where('quiz_id', $quiz->id)->first();
+        $response = $this->actingAs($user)->post(route('game.edit', [
+            'game_id' => $game->id,
+            'sort_array' => [],
+            'answer_id' => null,
+            'can_skip' => true,
+        ]));
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('game_steps', ['game_id' => $game->id, 'can_skip' => true]);
+        $this->assertDatabaseHas('games', ['quiz_id' => $quiz->id, 'correct_count' => 1, 'user_id' => $user->id, 'can_skip' => false]);
+    }
 }

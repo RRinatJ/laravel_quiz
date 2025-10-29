@@ -25,6 +25,8 @@ final class Game extends Model
         'correct_count',
         'question_row',
         'user_id',
+        'fifty_fifty_hint',
+        'can_skip',
     ];
 
     /**
@@ -66,6 +68,8 @@ final class Game extends Model
     {
         return [
             'question_row' => 'array',
+            'fifty_fifty_hint' => 'boolean',
+            'can_skip' => 'boolean',
         ];
     }
 }

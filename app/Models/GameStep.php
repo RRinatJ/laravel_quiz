@@ -22,6 +22,8 @@ final class GameStep extends Model
         'answer_id',
         'times_out',
         'is_correct',
+        'fifty_fifty_hint',
+        'can_skip',
     ];
 
     /**

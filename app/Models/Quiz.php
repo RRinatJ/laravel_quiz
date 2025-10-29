@@ -22,6 +22,8 @@ final class Quiz extends Model
         'is_work',
         'timer_count',
         'image',
+        'fifty_fifty_hint',
+        'can_skip',
     ];
 
     /**
@@ -56,6 +58,8 @@ final class Quiz extends Model
     {
         return [
             'is_work' => 'boolean',
+            'fifty_fifty_hint' => 'boolean',
+            'can_skip' => 'boolean',
         ];
     }
 }

@@ -24,6 +24,8 @@ const form = useForm({
     title: quiz?.title || "",
     is_work: quiz?.is_work || false,
     timer_count: quiz?.timer_count || 1,
+    fifty_fifty_hint: quiz?.fifty_fifty_hint || false,
+    can_skip: quiz?.can_skip || false,
     uploaded_image: null as File | null,
 });
 
@@ -85,7 +87,7 @@ const setUploadedImage = (e: Event) => {
 </script>
 
 <template>
-    <Head title="Create Quiz" />
+    <Head :title="isEditMode ? 'Edit Quiz' : 'Create Quiz'" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="container mx-auto p-4">
@@ -147,9 +149,19 @@ const setUploadedImage = (e: Event) => {
                     </div>
                     <div class="mb-4">
                         <Label for="is_work">Is Work</Label><br>
-                        <Switch v-model="form.is_work" />
+                        <Switch id="is_work" v-model="form.is_work" />
                         <InputError class="mt-2" :message="form.errors.is_work" />
-                    </div>                    
+                    </div>
+                    <div class="mb-4">
+                        <Label for="fifty_fifty_hint">Fifty-Fifty Hint</Label><br>
+                        <Switch id="fifty_fifty_hint" v-model="form.fifty_fifty_hint" />
+                        <InputError class="mt-2" :message="form.errors.fifty_fifty_hint" />
+                    </div>
+                    <div class="mb-4">
+                        <Label for="can_skip">Can Skip Hint</Label><br>
+                        <Switch id="can_skip" v-model="form.can_skip" />
+                        <InputError class="mt-2" :message="form.errors.can_skip" />
+                    </div>
                     
                     <Button @click="submit" :disabled="form.processing" size="lg" >
                         {{ submitText }}

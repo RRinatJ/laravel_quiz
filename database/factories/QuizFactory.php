@@ -22,6 +22,8 @@ final class QuizFactory extends Factory
             'title' => fake()->sentence(),
             'is_work' => fake()->boolean(),
             'timer_count' => fake()->numberBetween(1, 60),
+            'fifty_fifty_hint' => fake()->boolean(),
+            'can_skip' => fake()->boolean(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

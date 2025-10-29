@@ -29,7 +29,7 @@ final class QuizController extends Controller
 
         return Inertia::render('Quiz/QuizList', [
             'quizzes' => Quiz::query()
-                ->select('id', 'title', 'is_work', 'image', 'timer_count')
+                ->select('id', 'title', 'is_work', 'image', 'timer_count', 'fifty_fifty_hint', 'can_skip')
                 ->paginate(5)
                 ->withQueryString(),
             'message' => session('message'),

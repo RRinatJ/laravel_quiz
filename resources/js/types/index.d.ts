@@ -45,6 +45,8 @@ export interface Quiz {
     timer_count?: number;    
     image: string | null;
     created_at?: string;
+    fifty_fifty_hint?: boolean;
+    can_skip?: boolean;
 }
 
 export interface PaginatedResourceResponse<T = unknown> {
@@ -124,6 +126,8 @@ export interface Game {
     question?: Question;
     question_row: number[];
     created_at?: string;
+    fifty_fifty_hint: boolean;
+    can_skip: boolean;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

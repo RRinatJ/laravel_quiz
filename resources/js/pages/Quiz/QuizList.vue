@@ -81,6 +81,7 @@ const deleteQuiz = (id:number) => {
                             <th class="py-2 px-4 text-left border-b">Is work</th>
                             <th class="py-2 px-4 text-left border-b w-32">Image</th>
                             <th class="py-2 px-4 text-left border-b">Time count</th>
+                            <th class="py-2 px-4 text-left border-b">Hints</th>
                             <th class="py-2 px-4 text-left border-b">Edit/Delete</th>
                         </tr>
                     </thead>
@@ -100,6 +101,10 @@ const deleteQuiz = (id:number) => {
                                 >
                             </td>
                             <td class="py-2 px-4 border-b">{{ quiz.timer_count }}</td>
+                            <td class="py-2 px-4 border-b">
+                                Fifty-fity hint <OnOffIcon v-if="quiz.fifty_fifty_hint !== undefined" :check-value="quiz.fifty_fifty_hint" /><br>
+                                Can skip hint <OnOffIcon v-if="quiz.can_skip !== undefined" :check-value="quiz.can_skip" />
+                            </td>
                             <td class="py-2 px-4 border-b">                            
                                 <Button size="lg" class="mr-2 h-9 w-9">
                                     <Link :href="edit(quiz.id)" >

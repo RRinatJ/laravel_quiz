@@ -24,10 +24,12 @@ final readonly class GameService
             'correct_count' => 0,
             'question_row' => $question_row,
             'user_id' => Auth::id(),
+            'fifty_fifty_hint' => $quiz->fifty_fifty_hint,
+            'can_skip' => $quiz->can_skip,
         ]);
     }
 
-    public function show(Game $game, array $sort_array = []): array
+    public function show(Game $game, array $sort_array = [], bool $fifty_fifty_hint = false): array
     {
         $firstQuestion = $game->latestStep === null;
 
@@ -35,7 +37,7 @@ final readonly class GameService
         $message = $firstQuestion ? '' : $this->getMessage($game, $error);
 
         $correct_answer_id = $game->question->answers->where('is_correct', true)->first()?->id;
-        $answers = $this->getAnswers($game, $error, $sort_array);
+        $answers = $this->getAnswers($game, $error, $sort_array, $correct_answer_id, $fifty_fifty_hint);
         if ($error === '') {
             $correct_answer_id = null;
         }
@@ -49,11 +51,43 @@ final readonly class GameService
         ];
     }
 
+    public function processAnswer(int $given_answer, Game $game, bool $fifty_fifty_hint, bool $can_skip): void
+    {
+        if ($fifty_fifty_hint) {
+            $this->processFiftyFiftyHint($game);
+
+            return;
+        }
+        $chosen_answer_id = $this->getAnswerId($given_answer);
+        $is_correct = $this->checkIsCorrectAnswer($game, $chosen_answer_id);
+        $times_out = $this->checkTimesOut($game);
+
+        $game_step = GameStep::query()->create([
+            'game_id' => $game->id,
+            'question_id' => $game->question->id,
+            'answer_id' => $chosen_answer_id,
+            'times_out' => $times_out,
+            'is_correct' => $is_correct,
+            'fifty_fifty_hint' => $fifty_fifty_hint,
+            'can_skip' => $can_skip,
+        ]);
+        if ($game_step->is_correct || $game_step->can_skip) {
+            $this->processCorrectQuestion($game, $game_step);
+        }
+    }
+
+    public function processFiftyFiftyHint(Game $game): void
+    {
+        $game->fifty_fifty_hint = false;
+        $game->save();
+        $game->latestStep()->update(['fifty_fifty_hint' => true]);
+    }
+
     public function getError(Game $game): string
     {
         return match (true) {
             $game->latestStep->times_out => 'Times is out!',
-            $game->latestStep->is_correct === false => 'Error answer!',
+            $game->latestStep->is_correct === false && $game->latestStep->can_skip === false => 'Error answer!',
             default => ''
         };
     }
@@ -69,15 +103,34 @@ final readonly class GameService
         return '';
     }
 
-    public function getAnswers(Game $game, string $error, array $sort_array = []): array
+    public function getAnswers(Game $game, string $error, array $sort_array = [], ?int $correct_answer_id = null, bool $fifty_fifty_hint = false): array
     {
         $answers = $game->question->answers->shuffle()->select('id', 'text', 'image');
+        if ($game->latestStep?->fifty_fifty_hint === true || $fifty_fifty_hint) {
+            return $this->hiddenFiftyPrcntIncorrectAnswers($answers, $correct_answer_id);
+        }
 
         if ($error === '') {
             return $answers->toArray();
         }
 
         return $this->sortAnswersByArrayIds($answers, $sort_array);
+    }
+
+    public function hiddenFiftyPrcntIncorrectAnswers($answers, $correct_answer_id): array
+    {
+        $count = (int) (ceil(count($answers) / 2)) - 1;
+        $result = [];
+        $result[] = $answers->firstWhere('id', $correct_answer_id);
+
+        foreach ($answers as $answer) {
+            if ($answer['id'] !== $correct_answer_id && $count !== 0) {
+                $result[] = $answer;
+                $count--;
+            }
+        }
+
+        return $result;
     }
 
     public function sortAnswersByArrayIds($answers, $sort_array): array
@@ -91,23 +144,6 @@ final readonly class GameService
         }
 
         return $result;
-    }
-
-    public function processAnswer(int $given_answer, Game $game): void
-    {
-        $chosen_answer_id = $this->getAnswerId($given_answer);
-        $is_correct = $this->checkIsCorrectAnswer($game, $chosen_answer_id);
-        $times_out = $this->checkTimesOut($game);
-        $game_step = GameStep::query()->create([
-            'game_id' => $game->id,
-            'question_id' => $game->question->id,
-            'answer_id' => $chosen_answer_id,
-            'times_out' => $times_out,
-            'is_correct' => $is_correct,
-        ]);
-        if ($game_step->is_correct) {
-            $this->processCorrectQuestion($game, $game_step);
-        }
     }
 
     public function checkTimesOut(Game $game): bool
@@ -141,6 +177,9 @@ final readonly class GameService
         $current_question_id = $this->goToNextQuestion($game, $game_step->question_id);
         if ($current_question_id !== null) {
             $game->current_question_id = $current_question_id;
+        }
+        if ($game_step->can_skip) {
+            $game->can_skip = false;
         }
         $game->correct_count++;
         $game->save();

@@ -62,6 +62,8 @@ final class QuizControllerTest extends TestCase
             'title' => 'Sample Quiz',
             'is_work' => true,
             'timer_count' => 10,
+            'fifty_fifty_hint' => true,
+            'can_skip' => false,
         ]);
 
         $response->assertStatus(302);
@@ -108,6 +110,8 @@ final class QuizControllerTest extends TestCase
             'title' => 'Updated Quiz',
             'is_work' => false,
             'timer_count' => 15,
+            'fifty_fifty_hint' => true,
+            'can_skip' => false,
         ]);
 
         $response->assertStatus(302);

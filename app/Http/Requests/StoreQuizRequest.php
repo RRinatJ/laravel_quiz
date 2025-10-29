@@ -27,6 +27,14 @@ final class StoreQuizRequest extends FormRequest
             ],
             'timer_count' => 'required|integer|min:1',
             'uploaded_image' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'fifty_fifty_hint' => [
+                'required',
+                'boolean',
+            ],
+            'can_skip' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

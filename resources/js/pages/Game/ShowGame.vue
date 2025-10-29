@@ -33,11 +33,15 @@ onBeforeUnmount(() => {
 type typeForm = {
     answer_id: number | null;
     sort_array: (number | string)[];
+    fifty_fifty_hint: boolean;
+    can_skip: boolean;
 };
 
 const form = useForm<typeForm>({
     answer_id: null,
     sort_array: props.answers ? props.answers.map(a => a.id) : [],
+    fifty_fifty_hint: false,
+    can_skip: false,
 });
 
 const correctPrcnt = computed(() => {
@@ -55,6 +59,16 @@ const setAnswerId = (choserAnswerId: number) => {
 const NewGame = () => {
     router.get('/');
 }
+
+const fiftyFiftyHint = () => {
+    form.fifty_fifty_hint = true;
+    sendRequest();
+};
+
+const skipQuestion = () => {
+    form.can_skip = true;
+    sendRequest();
+};
 
 const sendRequest = () => {  
     form.submit(edit(props.game.id), {
@@ -134,6 +148,25 @@ if(isErrorMode.value || isMessageMode.value){
                                 @click="NewGame" 
                             >
                                 New Game
+                            </button>
+                        </div>
+                        <div 
+                            v-if="isErrorMode === false && isMessageMode === false"    
+                            class="flex gap-4 mt-6 justify-center"         
+                        >  
+                            <button            
+                                v-if="game.fifty_fifty_hint" 
+                                class="option info" 
+                                @click="fiftyFiftyHint()" 
+                            >
+                                50/50
+                            </button>    
+                            <button
+                                v-if="game.can_skip" 
+                                class="option info" 
+                                @click="skipQuestion()" 
+                            >
+                                Skip
                             </button>
                         </div>
                     </div>                    
