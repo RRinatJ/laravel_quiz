@@ -57,9 +57,15 @@ final class GameController extends Controller
         $sort_array = $request->array('sort_array');
         $fifty_fifty_hint = $request->boolean('fifty_fifty_hint');
         $can_skip = $request->boolean('can_skip');
+        $game = Game::with('quiz', 'question.answers')->find($game_id);
+        abort_if(
+            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false),
+            400
+        );
+
         $service->processAnswer(
             $request->integer('answer_id'),
-            Game::with('quiz', 'question.answers')->find($game_id),
+            $game,
             $fifty_fifty_hint,
             $can_skip
         );
