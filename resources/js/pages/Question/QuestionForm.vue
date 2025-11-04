@@ -27,7 +27,9 @@ type questionForm = {
     id: number | null;
     question: string;
     uploaded_image: File | null;
+    uploaded_audio: File | null;
     image: string;    
+    audio: string;
     quizzes: number[];  
     answer_images: File[];    
     answers: Answer[];
@@ -37,7 +39,9 @@ const form = useForm<questionForm>({
     id: question?.id || null,
     question: question?.question || "",
     uploaded_image: null,
+    uploaded_audio: null,
     image: question?.image || "",
+    audio: question?.audio || "",
     quizzes: question?.quizzes_ids || [],
     answer_images: [],
     answers: question?.answers || [],
@@ -111,6 +115,12 @@ const setUploadedImage = (e: Event) => {
         form.uploaded_image = file;
     }
 }
+const setUploadedAudio = (e: Event) => {
+    const file = getEventFile(e);
+    if(file){
+        form.uploaded_audio = file;
+    }
+}
 const setUploadedAnswerImage = (data:{file:File, index: number}) => { 
     form.answer_images.push(data.file);
     answers.value[data.index].image = data.file.name;
@@ -119,6 +129,11 @@ const deleteImage = () => {
     form.image = '';
     form.uploaded_image = null;
     question.image = '';    
+}
+const deleteAudio = () => {
+    form.audio = '';
+    form.uploaded_audio = null;
+    question.audio = '';
 }
 const deleteImageAnswer = (i:number) => {
     answers.value[i].image = '';
@@ -192,9 +207,32 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
                                 type="file" 
                                 @input="setUploadedImage" 
                             />                        
-                            <InputError class="mt-2" :message="form.errors.question" />                        
+                            <InputError class="mt-2" :message="form.errors.image" />                        
                         </div>
-                    </div>                    
+                    </div>
+                    <div class="mb-4">                        
+                        <Label for="audio">Audio</Label>
+                        <audio
+                            v-if="question && question.audio"
+                            id="audio"  
+                            class="mt-1"  
+                            ref="audio"                                            
+                            controls                                        
+                            :src="'/storage/'+question.audio"
+                        />    
+                        <div class="mt-2" v-if="question && question.audio"> 
+                            <Button variant="destructive" @click="deleteAudio">Delete Audio</Button>                  
+                        </div>
+                        <div class="mt-2"> 
+                            <Input 
+                                class="mt-1 block" 
+                                id="image" 
+                                type="file" 
+                                @input="setUploadedAudio" 
+                            />                        
+                            <InputError class="mt-2" :message="form.errors.audio" />
+                        </div>
+                    </div>
                     <div class="mb-4 space-y-2">        
                         <Label>Quizzes</Label>                                        
                         <div v-for="quiz in quizzes" :key="quiz.id" class="flex flex-row items-center space-x-3 space-y-0">                            

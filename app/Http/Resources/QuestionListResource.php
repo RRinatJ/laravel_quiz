@@ -21,6 +21,7 @@ final class QuestionListResource extends JsonResource
             'id' => $this->id,
             'question' => $this->question,
             'image' => $this->image ? config('app.url').Storage::url($this->image) : null,
+            'audio' => $this->audio ? config('app.url').Storage::url($this->audio) : null,
             'quizzes_ids' => $this->quizzes->pluck('id')->toArray(),
             'quizzes' => $this->quizzes->select('id', 'title', 'is_work'),
             'answers' => $this->answers->map(fn ($answer): array => [

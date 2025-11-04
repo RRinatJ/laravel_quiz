@@ -23,6 +23,12 @@ const timer = ref(0);
 const countDown = ref(props.countDown);
 const isErrorMode = computed(() => props.error.length !== 0);
 const isMessageMode = computed(() => props.message.length !== 0);
+const isAudioMode = computed(() => !!props.game.question?.audio);
+const isStarted = ref(true);
+
+if(props.firstQuestion === true && isAudioMode.value){    
+    isStarted.value = false;
+}
 
 onBeforeUnmount(() => {
     if (timer.value !== null) {
@@ -89,7 +95,7 @@ const countDownTimer = () => {
     }
 };
 
-if(isErrorMode.value || isMessageMode.value){
+if(isErrorMode.value || isMessageMode.value || isStarted.value === false){
     // 
 }else{    
     countDownTimer();    
@@ -115,6 +121,30 @@ if(isErrorMode.value || isMessageMode.value){
                             v-if="game.question?.image" 
                             :src="'/storage/' + game.question.image" 
                         >
+                        <div class="audio" v-if="isAudioMode">
+                            <audio                    
+                                v-if="isStarted"        
+                                controls 
+                                :autoplay="isErrorMode === false && isMessageMode === false"
+                            >    
+                                <source 
+                                    :src="'/storage/' + game.question?.audio" 
+                                    type="audio/mpeg"
+                                >
+                                Your browser does not support the audio element.
+                            </audio>  
+                            <Button v-if="isStarted === false" @click="isStarted = true; countDownTimer()" class="option info" >Play</Button>
+                            <div                 
+                                class="text-center mt-4"
+                            >
+                                <p 
+                                    v-if="isStarted === false"
+                                    class="text-gray-600 text-xs italic"
+                                >
+                                    Countdown start when Play button push
+                                </p>
+                            </div>
+                        </div>
                         <p v-if="game.question?.question">
                             {{ game.question.question }}
                         </p>

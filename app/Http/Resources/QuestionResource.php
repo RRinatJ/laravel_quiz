@@ -20,6 +20,7 @@ final class QuestionResource extends JsonResource
             'id' => $this->id,
             'question' => $this->question,
             'image' => $this->image,
+            'audio' => $this->audio,
             'quizzes_ids' => $this->quizzes->pluck('id')->toArray(),
             'answers' => $this->answers->map(fn ($answer): array => [
                 'id' => $answer->id,

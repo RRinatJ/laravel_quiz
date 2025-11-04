@@ -107,6 +107,7 @@ export interface Question {
     id: number;
     question: string | null;
     image: string | null;    
+    audio: string | null;
     quizzes_ids?: number[];
     quizzes?: Quiz[];
     answers?: Answer[];

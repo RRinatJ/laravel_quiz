@@ -48,8 +48,8 @@ laravel_quiz is a web application created using the Laravel framework with Vue 3
 11. Open the app in your web browser: http://localhost:8000
 
 ## Roadmap
-- Hints
-- Audio questions
+- ~~Hints~~
+- ~~Audio questions~~
 - Reports
 - Support for the Telegram app. Play quizzes in Telegram chat. 
 - Generate questions or answers using AI

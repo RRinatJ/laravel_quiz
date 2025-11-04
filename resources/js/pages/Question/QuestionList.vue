@@ -117,7 +117,8 @@ const deleteQuestion = (id:number) => {
                         <tr>
                             <th class="py-2 px-4 text-left border-b">ID</th>
                             <th class="py-2 px-4 text-left border-b">Question</th>
-                            <th class="py-2 px-4 text-left border-b w-32">Image</th>                            
+                            <th class="py-2 px-4 text-left border-b w-32">Image</th> 
+                            <th class="py-2 px-4 text-left border-b">Audio</th> 
                             <th class="py-2 px-4 text-left border-b">Quizzes</th>
                             <th class="py-2 px-4 text-left border-b">Answers</th>
                             <th class="py-2 px-4 text-left border-b">Edit/Delete</th>
@@ -134,6 +135,9 @@ const deleteQuestion = (id:number) => {
                                     :src="question.image" 
                                     srcset=""
                                 >
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <OnOffIcon :check-value="question.audio" :size="'sm'" />
                             </td>
                             <td class="py-2 px-4 border-b">                            
                                 <ul>

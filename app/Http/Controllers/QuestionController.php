@@ -39,7 +39,7 @@ final class QuestionController extends Controller
                             $sub_query->where('quiz_id', $quiz_id);
                         });
                     })
-                    ->select('id', 'question', 'image')
+                    ->select('id', 'question', 'image', 'audio')
                     ->with('quizzes', 'answers')
                     ->paginate(5)
                     ->withQueryString()
@@ -66,12 +66,14 @@ final class QuestionController extends Controller
         try {
             /** @var Request $request */
             $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
+            $uploaded_audio = $request->hasFile('uploaded_audio') ? $request->file('uploaded_audio') : null;
 
             $answer_images = $request->hasFile('answer_images') ? $request->file('answer_images') : [];
 
             $questionService->store(
                 $request->validated(),
                 $uploaded_image,
+                $uploaded_audio,
                 $answer_images
             );
 
@@ -98,6 +100,7 @@ final class QuestionController extends Controller
         try {
             /** @var Request $request */
             $uploaded_image = $request->hasFile('uploaded_image') ? $request->file('uploaded_image') : null;
+            $uploaded_audio = $request->hasFile('uploaded_audio') ? $request->file('uploaded_audio') : null;
 
             $answer_images = $request->hasFile('answer_images') ? $request->file('answer_images') : [];
 
@@ -105,6 +108,7 @@ final class QuestionController extends Controller
                 $question,
                 $request->validated(),
                 $uploaded_image,
+                $uploaded_audio,
                 $answer_images
             );
 

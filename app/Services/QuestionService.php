@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 final class QuestionService
 {
-    public function store(array $data, ?UploadedFile $uplodedImage, array $answerImages): Question
+    public function store(array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
@@ -27,13 +27,17 @@ final class QuestionService
             $createQuestion->image = $this->uploadFile($uplodedImage);
             $createQuestion->save();
         }
+        if (is_null($uplodedAudio) === false) {
+            $createQuestion->audio = $this->uploadFile($uplodedAudio, 'audio');
+            $createQuestion->save();
+        }
 
         $this->processAnswers($createQuestion, $answers, $answerImages);
 
         return $createQuestion;
     }
 
-    public function update(Question $question, array $data, ?UploadedFile $uplodedImage, array $answerImages): Question
+    public function update(Question $question, array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
@@ -43,8 +47,11 @@ final class QuestionService
 
         if ($updateQuestion) {
             if (is_null($uplodedImage) === false) {
-                $path = $this->uploadFile($uplodedImage, 'images');
-                $question->image = $path;
+                $question->image = $this->uploadFile($uplodedImage);
+                $question->save();
+            }
+            if (is_null($uplodedAudio) === false) {
+                $question->audio = $this->uploadFile($uplodedAudio, 'audio');
                 $question->save();
             }
 
