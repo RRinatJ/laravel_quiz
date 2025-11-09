@@ -5,17 +5,19 @@ import { Input } from '@/components/ui/input';
 import InputError from '@/components/InputError.vue';
 import { Quiz, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { type Question, type Answer } from '@/types';
+import { type Question, type Answer, type aiQuestionText } from '@/types';
 import { computed, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import FormAnswers from "@/pages/Question/QuestionFormComponents/FormAnswers.vue";
+import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
 import { store, update } from '@/routes/question';
 
 interface Props {
     question?: { data: object};
     message?: string;
     quizzes: Quiz[];
+    is_ai_available: boolean;
 }
 
 const props = defineProps<Props>();
@@ -154,6 +156,24 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
         form.quizzes = form.quizzes.filter((id) => id !== itemId);
     }
 }
+
+const childFormAnswers = ref(null);
+
+const useGenerateQuestion = (questionText: aiQuestionText ) => {
+    form.question = questionText.text; 
+    if(childFormAnswers.value){
+        answers.value = [];
+        questionText.answers.forEach((answer) => {
+            answers.value.push({
+                id: childFormAnswers.value.generateRandomString(10),
+                text: answer.answer,
+                is_correct: answer.is_correct,
+                image: '',
+            });        
+        });
+    }
+    
+}
 </script>
 
 <template>
@@ -177,6 +197,11 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
                             </span>
                         </div>
                     </div>
+                    <GenerateQuestion
+                        class="mb-4"
+                        v-if="props.is_ai_available"
+                        @use-generate-question="useGenerateQuestion"
+                    ></GenerateQuestion>                    
                     <div class="mb-4">
                         <Label for="question">Question</Label>
                         <Input 
@@ -214,7 +239,6 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
                         <Label for="audio">Audio</Label>
                         <audio
                             v-if="question && question.audio"
-                            id="audio"  
                             class="mt-1"  
                             ref="audio"                                            
                             controls                                        
@@ -226,7 +250,7 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
                         <div class="mt-2"> 
                             <Input 
                                 class="mt-1 block" 
-                                id="image" 
+                                id="audio" 
                                 type="file" 
                                 @input="setUploadedAudio" 
                             />                        
@@ -248,6 +272,7 @@ const handleChange = (newValue: boolean | 'indeterminate', itemId: number)=>{
                     </div>
                     <div class="mb-4">
                         <form-answers 
+                            ref="childFormAnswers"
                             :answers="answers"       
                             :errors="form.errors.answers"                      
                             @add-to-form-answers="addToFormAnswers"

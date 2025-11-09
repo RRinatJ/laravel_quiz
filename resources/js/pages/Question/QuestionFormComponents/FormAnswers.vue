@@ -69,6 +69,10 @@ const setUploadedAnswerImage = (e: Event, i:number) => {
         isPrev.value.push(i);
     }
 }
+
+defineExpose({
+    generateRandomString,
+});
 </script>
 
 <template>

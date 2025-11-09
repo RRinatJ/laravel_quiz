@@ -131,4 +131,13 @@ export interface Game {
     can_skip: boolean;
 }
 
+export interface aiQuestionText {
+    text: string;
+    description: string;
+    answers: {
+        answer: string;
+        is_correct: boolean;
+    }[];
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

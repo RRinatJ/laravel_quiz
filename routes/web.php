@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function (): void {
         'update', 'show',
     ]);
     Route::post('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
+
+    Route::get('/ai/get_question', [AiController::class, 'get_question'])->name('ai.get_question');
 });
 
 require __DIR__.'/settings.php';
