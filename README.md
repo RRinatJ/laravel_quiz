@@ -53,3 +53,25 @@ laravel_quiz is a web application created using the Laravel framework with Vue 3
 - Reports
 - Support for the Telegram app. Play quizzes in Telegram chat. 
 - ~~Generate questions or answers using AI~~ (Gemini - prism-php/prism)
+
+## UI
+### User Page
+##### Main Page
+!["Main Page"](/storage/assets/main.JPG)
+##### Question Page
+!["Question Page"](/storage/assets/quiz_question.JPG)
+!["Question Page"](/storage/assets/quiz_question_image.JPG)
+##### Dashboard
+!["Dashboard"](/storage/assets/user_dashboard.JPG)
+
+### Admin Page
+##### Dashboard
+!["Dashboard"](/storage/assets/admin_dashboard.JPG)
+##### Quiz List
+!["Quiz List"](/storage/assets/admin_quiz_list.JPG)
+##### Quiz Form
+!["Quiz Form"](/storage/assets/admin_quiz_form.JPG)
+##### Question List
+!["Question List"](/storage/assets/admin_question_list.JPG)
+##### Question Form
+!["Question Form"](/storage/assets/admin_question_form.JPG)
