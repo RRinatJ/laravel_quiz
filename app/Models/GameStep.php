@@ -58,6 +58,7 @@ final class GameStep extends Model
         return [
             'is_correct' => 'boolean',
             'times_out' => 'boolean',
+            'can_skip' => 'boolean',
         ];
     }
 }
