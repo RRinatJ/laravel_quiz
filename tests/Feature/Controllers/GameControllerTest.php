@@ -9,6 +9,7 @@ use App\Models\Game;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
+use App\Services\GameService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -100,6 +101,14 @@ final class GameControllerTest extends TestCase
             'answer_id' => $answer->id,
         ]));
         $response->assertStatus(302);
+        $service = new GameService();
+        $error = $service->getError($game);
+        if ($answer->is_correct) {
+            $this->assertEquals('', $error);
+        } else {
+            $this->assertEquals('Error answer!', $error);
+        }
+
         $this->assertDatabaseHas('game_steps', ['game_id' => $game->id, 'is_correct' => $answer->is_correct]);
     }
 

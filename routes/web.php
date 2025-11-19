@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\ReportController;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/question/{question}', [QuestionController::class, 'update'])->name('question.update');
 
     Route::get('/ai/get_question', [AiController::class, 'get_question'])->name('ai.get_question');
+
+    Route::get('/reports/popular-quizzes', [ReportController::class, 'popularQuizzes'])->name('reports.popular_quizzes');
+    Route::get('/reports/questions-report', [ReportController::class, 'questionsReport'])->name('reports.questions_report');
 });
 
 require __DIR__.'/settings.php';

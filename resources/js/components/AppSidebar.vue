@@ -14,37 +14,75 @@ import {
 import { dashboard } from '@/routes';
 import { index } from '@/routes/quiz'
 import { index as questionIndex } from '@/routes/question'
+import { popular_quizzes, questions_report } from '@/routes/reports';
 import { computed } from 'vue';
-import { type NavItem } from '@/types';
+import { type NavItem, type NavItemGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { MessageCircleQuestion, FileQuestion, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 const page = usePage();
 const auth = computed(() => page.props.auth);
 
-const mainNavItems: NavItem[] = [
+const mainNavItems: NavItemGroup[] = [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,        
-        can: true
-    },
+        title: 'Platform',        
+        items: [
+            {
+                title: 'Dashboard',
+                href: dashboard(),
+                icon: LayoutGrid,        
+                can: true
+            },
+            {
+                title: 'Quiz',
+                href: index(),
+                icon: MessageCircleQuestion,
+                can: auth.value.role === 'Admin'
+            },
+            {
+                title: 'Question',
+                href: questionIndex(),
+                icon: FileQuestion,
+                can: auth.value.role === 'Admin'
+            },
+        ],
+    },    
     {
-        title: 'Quiz',
-        href: index(),
-        icon: MessageCircleQuestion,
-        can: auth.value.role === 'Admin'
-    },
-    {
-        title: 'Question',
-        href: questionIndex(),
-        icon: FileQuestion,
-        can: auth.value.role === 'Admin'
-    },
+        title: 'Reports',
+        items: [
+            {
+                title: 'Popular Quizzes',
+                href: popular_quizzes(),
+                icon: LayoutGrid,        
+                can: auth.value.role === 'Admin'
+            },
+            {
+                title: 'Questions Report',
+                href: questions_report(),
+                icon: LayoutGrid,        
+                can: auth.value.role === 'Admin'
+            },
+        ],
+    }
 ];
 
-const filteredMainNavItems = computed(() => {
-    return mainNavItems.filter(item => item.can);
+const filteredMainNavItems = computed(() => {   
+    const tempNavItems: NavItemGroup[] = [];
+    mainNavItems.forEach(group => {
+        const temp:NavItem[] = [];
+        group.items.forEach(item => {
+            if(item.can){
+                temp.push(item);
+            }
+        });
+        if(temp.length > 0){
+            tempNavItems.push({
+                title: group.title,
+                items: temp
+            });
+        }
+    });
+    return tempNavItems;
 });
 
 const footerNavItems: NavItem[] = [    
