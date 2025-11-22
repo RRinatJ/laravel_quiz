@@ -30,7 +30,7 @@ final class ReportService
 
         $win_counts = $query
             ->whereHas('latestStep', function ($query): void {
-                $query->where('is_correct', true)->orWhere('can_skip', true);
+                $query->where('is_correct', true)->orWhere('can_skip', true)->whereColumn('games.current_question_id', 'game_steps.question_id');
             })
             ->select('quiz_id')
             ->selectRaw('COUNT(*) as win_count')
