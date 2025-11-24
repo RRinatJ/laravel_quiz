@@ -2,6 +2,11 @@
 
 laravel_quiz is a web application created using the Laravel framework with Vue 3 that allows you to create and play quizzes.
 
+> [!CAUTION]
+>
+> Project is in a development preview
+>
+
 ## Installation
 
 1. Clone the repository or fork this repository:
