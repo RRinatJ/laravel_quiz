@@ -86,12 +86,12 @@ if(Array.isArray(props.filters)){
 </script>
 
 <template>
-    <Head title="Report Popular Quizzes" />
+    <Head title="Report Questions Report" />
     
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="container mx-auto p-4">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold">Popular Quizzes</h1>
+                <h1 class="text-2xl font-bold">Questions Report</h1>
             </div>
             <div class="shadow rounded-lg p-4 mb-6">
                 <div class="w-full max-w-[700px] flex custom-justify-center">

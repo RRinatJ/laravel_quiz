@@ -16,7 +16,7 @@ final class ReportService
         $query = Game::query()
             ->whereBetween('created_at', [$start.' 00:00:00', $end.' 23:59:59']);
 
-        $stat = $query
+        $stat = (clone $query)
             ->select('quiz_id', 'id')
             ->selectRaw('
                 COUNT(*) as play_count, 
@@ -28,9 +28,12 @@ final class ReportService
             ->with('quiz:id,title')
             ->get();
 
-        $win_counts = $query
+        $win_counts = (clone $query)
             ->whereHas('latestStep', function ($query): void {
-                $query->where('is_correct', true)->orWhere('can_skip', true)->whereColumn('games.current_question_id', 'game_steps.question_id');
+                $query->where(function ($q): void {
+                    $q->where('is_correct', true)
+                        ->orWhere('can_skip', true);
+                })->whereColumn('games.current_question_id', 'game_steps.question_id');
             })
             ->select('quiz_id')
             ->selectRaw('COUNT(*) as win_count')

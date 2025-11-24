@@ -75,3 +75,7 @@ laravel_quiz is a web application created using the Laravel framework with Vue 3
 !["Question List"](/storage/assets/admin_question_list.JPG)
 ##### Question Form
 !["Question Form"](/storage/assets/admin_question_form.JPG)
+##### Report Popular Quizzes
+!["Report Popular Quizzes"](/storage/assets/admin_report_popular_quizzes.JPG)
+##### Questions Report
+!["Questions Report"](/storage/assets/admin_questions_report.JPG)
