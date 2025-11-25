@@ -4,6 +4,7 @@ import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, onBeforeUnmount, ref } from 'vue';
 import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
 import { edit } from '@/routes/game';
+import axios from 'axios';
 
 interface Props {
     game: Game;    
@@ -95,6 +96,16 @@ const countDownTimer = () => {
     }
 };
 
+const startAudio = () => {    
+    axios.get('/game/set_update/'+props.game.id)
+    .then(response => {        
+        if(response.data && response.data.status !== undefined){
+            isStarted.value = true; 
+            countDownTimer();            
+        }
+    });
+}
+
 if(isErrorMode.value || isMessageMode.value || isStarted.value === false){
     // 
 }else{    
@@ -133,7 +144,13 @@ if(isErrorMode.value || isMessageMode.value || isStarted.value === false){
                                 >
                                 Your browser does not support the audio element.
                             </audio>  
-                            <Button v-if="isStarted === false" @click="isStarted = true; countDownTimer()" class="option info" >Play</Button>
+                            <button 
+                                v-if="isStarted === false" 
+                                @click="startAudio" 
+                                class="option info" 
+                            >
+                                Play
+                            </button>
                             <div                 
                                 class="text-center mt-4"
                             >

@@ -125,7 +125,7 @@ export interface AnswerInGame {
     image: string;
 }
 export interface Game {
-    id: number;
+    id: string;
     current_question_id: number;
     correct_count: number;
     quiz: Quiz;

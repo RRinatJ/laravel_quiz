@@ -22,7 +22,7 @@ final class GameController extends Controller
             ->route('game.show', ['game_id' => $game->id]);
     }
 
-    public function show($game_id, GameService $service): Response
+    public function show(string $game_id, GameService $service): Response
     {
         $sort_array = (array) session('sort_array');
         $fifty_fifty_hint = (bool) (session('fifty_fifty_hint'));
@@ -52,7 +52,7 @@ final class GameController extends Controller
         ]);
     }
 
-    public function edit($game_id, Request $request, GameService $service): RedirectResponse
+    public function edit(string $game_id, Request $request, GameService $service): RedirectResponse
     {
         $sort_array = $request->array('sort_array');
         $fifty_fifty_hint = $request->boolean('fifty_fifty_hint');
@@ -75,5 +75,14 @@ final class GameController extends Controller
                 'sort_array' => $sort_array,
                 'fifty_fifty_hint' => $fifty_fifty_hint,
             ]);
+    }
+
+    public function setUpdate(string $game_id, GameService $service): array
+    {
+        $game = Game::with('latestStep')->find($game_id);
+
+        return [
+            'status' => $service->setUpdateTime($game) ? 'updated' : 'not_updated',
+        ];
     }
 }

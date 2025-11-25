@@ -22,6 +22,7 @@ Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verif
 Route::get('/game/{quiz_id}', [GameController::class, 'store'])->name('game.create');
 Route::get('/game/questions/{game_id}', [GameController::class, 'show'])->name('game.show');
 Route::post('/game/{game_id}', [GameController::class, 'edit'])->name('game.edit');
+Route::get('/game/set_update/{game_id}', [GameController::class, 'setUpdate'])->name('game.set_update');
 
 Route::middleware('auth')->group(function (): void {
     Route::resource('quiz', QuizController::class)->except([

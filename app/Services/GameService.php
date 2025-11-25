@@ -71,6 +71,10 @@ final readonly class GameService
             'fifty_fifty_hint' => $fifty_fifty_hint,
             'can_skip' => $can_skip,
         ]);
+
+        if ($times_out) {
+            return;
+        }
         if ($game_step->is_correct || $game_step->can_skip) {
             $this->processCorrectQuestion($game, $game_step);
         }
@@ -199,6 +203,15 @@ final readonly class GameService
         }
 
         return $question_id;
+    }
+
+    public function setUpdateTime(Game $game): bool
+    {
+        if ($game->latestStep !== null) {
+            return false;
+        }
+
+        return $game->touch();
     }
 
     public function getLatestGames(?int $user_id = null, ?int $count = null): Collection
