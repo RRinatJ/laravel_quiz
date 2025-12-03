@@ -35,6 +35,10 @@ final class StoreQuizRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'for_telegram' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

@@ -52,6 +52,7 @@ export interface Quiz {
     created_at?: string;
     fifty_fifty_hint?: boolean;
     can_skip?: boolean;
+    for_telegram?: boolean;
 }
 
 export interface PaginatedResourceResponse<T = unknown> {

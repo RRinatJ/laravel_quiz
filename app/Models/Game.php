@@ -27,6 +27,7 @@ final class Game extends Model
         'user_id',
         'fifty_fifty_hint',
         'can_skip',
+        'chat_id',
     ];
 
     /**

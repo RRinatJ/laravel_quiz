@@ -24,6 +24,7 @@ final class Quiz extends Model
         'image',
         'fifty_fifty_hint',
         'can_skip',
+        'for_telegram',
     ];
 
     /**
@@ -60,6 +61,7 @@ final class Quiz extends Model
             'is_work' => 'boolean',
             'fifty_fifty_hint' => 'boolean',
             'can_skip' => 'boolean',
+            'for_telegram' => 'boolean',
         ];
     }
 }

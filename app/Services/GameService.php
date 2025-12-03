@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 final readonly class GameService
 {
-    public function createGame(int $quiz_id): Game
+    public function createGame(int $quiz_id, ?int $chat_id = null): Game
     {
         $quiz = Quiz::with('questions:id')->where('is_work', 1)->find($quiz_id);
         $question_row = $quiz->questions->shuffle()->pluck('id')->toArray();
@@ -26,6 +26,7 @@ final readonly class GameService
             'user_id' => Auth::id(),
             'fifty_fifty_hint' => $quiz->fifty_fifty_hint,
             'can_skip' => $quiz->can_skip,
+            'chat_id' => $chat_id,
         ]);
     }
 

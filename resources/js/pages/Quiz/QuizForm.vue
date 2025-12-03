@@ -10,6 +10,13 @@ import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { store, update } from '@/routes/quiz';
 import { Switch } from '@/components/ui/switch';
+import { InfoIcon } from 'lucide-vue-next';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface Props {
     quiz?: object;
@@ -26,6 +33,7 @@ const form = useForm({
     timer_count: quiz?.timer_count || 1,
     fifty_fifty_hint: quiz?.fifty_fifty_hint || false,
     can_skip: quiz?.can_skip || false,
+    for_telegram:  quiz?.for_telegram || false,
     uploaded_image: null as File | null,
 });
 
@@ -161,6 +169,27 @@ const setUploadedImage = (e: Event) => {
                         <Label for="can_skip">Can Skip Hint</Label><br>
                         <Switch id="can_skip" v-model="form.can_skip" />
                         <InputError class="mt-2" :message="form.errors.can_skip" />
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex flex-wrap">
+                            <Label for="for_telegram" class="mr-2">Can be used in Telegram</Label>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <Button variant="outline" size="icon-xs" class="rounded-full">
+                                            <InfoIcon />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Answer options do not support images.</p>
+                                        <p>The text of the answer options is a maximum of 35 characters, including spaces.</p>                                        
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>                        
+                        <br>
+                        <Switch id="for_telegram" v-model="form.for_telegram" />
+                        <InputError class="mt-2" :message="form.errors.for_telegram" />
                     </div>
                     
                     <Button @click="submit" :disabled="form.processing" size="lg" >
