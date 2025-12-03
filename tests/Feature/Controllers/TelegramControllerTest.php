@@ -27,7 +27,6 @@ final class TelegramControllerTest extends TestCase
     {
         parent::setUp();
 
-        // Мокаем Telegram SDK
         $this->telegramMock = Mockery::mock(Api::class);
         $this->app->instance(Api::class, $this->telegramMock);
     }
@@ -48,7 +47,6 @@ final class TelegramControllerTest extends TestCase
             'for_telegram' => true,
         ]);
 
-        // Создаём мок Update с /start
         $update = $this->createUpdateWithMessage($chatId, '/start');
 
         $this->telegramMock
@@ -160,7 +158,6 @@ final class TelegramControllerTest extends TestCase
             ->once()
             ->andReturn($update);
 
-        // Ничего не ожидаем от сервиса — просто проверяем, что не падает
         $response = $this->postJson('/telegram/webhook');
 
         $response->assertOk()
