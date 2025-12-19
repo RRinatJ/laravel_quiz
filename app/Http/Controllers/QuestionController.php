@@ -39,7 +39,7 @@ final class QuestionController extends Controller
                             $sub_query->where('quiz_id', $quiz_id);
                         });
                     })
-                    ->select('id', 'question', 'image', 'audio')
+                    ->select('id', 'question', 'image', 'audio', 'is_ai')
                     ->with('quizzes', 'answers')
                     ->paginate(5)
                     ->withQueryString()

@@ -28,6 +28,7 @@ final class QuestionResource extends JsonResource
                 'image' => $answer->image,
                 'is_correct' => $answer->is_correct,
             ])->toArray(),
+            'is_ai' => $this->is_ai,
         ];
     }
 }

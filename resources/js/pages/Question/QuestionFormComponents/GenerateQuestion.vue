@@ -64,6 +64,7 @@ const useQuestion = () => {
                             <Label for="theme">Theme</Label>
                             <Input id="theme" placeholder="Theme of question" v-model="theme" />
                             <InputError class="mt-2" v-if="'theme' in questionError" :message="questionError.theme[0]" />
+                            <InputError class="mt-2" v-if="'error' in questionError" :message="questionError.error[0]" />
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <Label for="number_of_options">Number of options</Label>

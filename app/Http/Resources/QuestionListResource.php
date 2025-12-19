@@ -30,6 +30,7 @@ final class QuestionListResource extends JsonResource
                 'image' => $answer->image ? config('app.url').Storage::url($answer->image) : null,
                 'is_correct' => $answer->is_correct,
             ])->toArray(),
+            'is_ai' => $this->is_ai,
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Exceptions\PrismException;
@@ -32,8 +33,10 @@ final readonly class AiService
             return $response->structured;
         } catch (PrismException $e) {
             Log::error('Text generation failed:', ['error' => $e->getMessage()]);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (Throwable $e) {
             Log::error('Generic error:', ['error' => $e->getMessage()]);
+            throw new Exception('An unexpected error occurred while generating the question.', $e->getCode(), $e);
         }
 
         return [];

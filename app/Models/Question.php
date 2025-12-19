@@ -21,6 +21,7 @@ final class Question extends Model
         'question',
         'image',
         'audio',
+        'is_ai',
     ];
 
     /**
@@ -37,5 +38,15 @@ final class Question extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_ai' => 'boolean',
+        ];
     }
 }

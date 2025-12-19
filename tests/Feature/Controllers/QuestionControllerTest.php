@@ -70,6 +70,7 @@ final class QuestionControllerTest extends TestCase
                 ['id' => '333', 'text' => 'Answer 3', 'is_correct' => false],
                 ['id' => '444', 'text' => 'Answer 4', 'is_correct' => false],
             ],
+            'is_ai' => false,
         ]);
 
         $response->assertStatus(302);
@@ -100,6 +101,7 @@ final class QuestionControllerTest extends TestCase
         $response = $this->actingAs($user)->post(route('question.update', $question->id), [
             'question' => '',
             'answers' => [],
+            'is_ai' => false,
         ]);
 
         $response->assertStatus(302);
@@ -115,6 +117,7 @@ final class QuestionControllerTest extends TestCase
         $response = $this->actingAs($user)->post(route('question.update', $question->id), [
             'question' => 'Updated Question',
             'answers' => $question->answers->toArray(),
+            'is_ai' => false,
         ]);
 
         $response->assertStatus(302);

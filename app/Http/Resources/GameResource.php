@@ -22,7 +22,7 @@ final class GameResource extends JsonResource
             'id' => $this->id,
             'correct_count' => $this->correct_count,
             'quiz' => $this->quiz->only(['id', 'title']),
-            'question' => $this->question->only(['id', 'question', 'image', 'audio']),
+            'question' => $this->question->only(['id', 'question', 'image', 'audio', 'is_ai']),
             'fifty_fifty_hint' => $this->fifty_fifty_hint,
             'can_skip' => $this->can_skip,
         ];

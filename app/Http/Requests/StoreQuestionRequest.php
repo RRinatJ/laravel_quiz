@@ -32,6 +32,7 @@ final class StoreQuestionRequest extends FormRequest
             'uploaded_image' => 'required_without_all:question,image,audio,uploaded_audio|nullable|mimes:jpg,jpeg,png,pdf|max:2048',
             'uploaded_audio' => 'required_without_all:question,image,audio,uploaded_image|nullable|mimes:mp3,wav,m4a|max:2048',
             'image' => 'required_without_all:question,uploaded_image,audio,uploaded_audio|nullable|string',
+            'is_ai' => 'required|boolean',
         ];
     }
 

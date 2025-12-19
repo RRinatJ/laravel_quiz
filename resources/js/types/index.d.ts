@@ -118,6 +118,7 @@ export interface Question {
     quizzes?: Quiz[];
     answers?: Answer[];
     created_at?: string;
+    is_ai: boolean;
 }
 
 export interface AnswerInGame {

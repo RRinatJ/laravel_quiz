@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import FormAnswers from "@/pages/Question/QuestionFormComponents/FormAnswers.vue";
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
+import { Switch } from '@/components/ui/switch';
 import { store, update } from '@/routes/question';
 
 interface Props {
@@ -35,6 +36,7 @@ type questionForm = {
     quizzes: number[];  
     answer_images: File[];    
     answers: Answer[];
+    is_ai: boolean;
 };
 
 const form = useForm<questionForm>({
@@ -47,6 +49,7 @@ const form = useForm<questionForm>({
     quizzes: question?.quizzes_ids || [],
     answer_images: [],
     answers: question?.answers || [],
+    is_ai: question?.is_ai || false,
 });
 
 const answers = ref<Answer[]>(question?.answers || []);
@@ -161,6 +164,7 @@ const childFormAnswers = ref(null);
 
 const useGenerateQuestion = (questionText: aiQuestionText ) => {
     form.question = questionText.text; 
+    form.is_ai = true;
     if(childFormAnswers.value){
         answers.value = [];
         questionText.answers.forEach((answer) => {
@@ -269,6 +273,11 @@ const useGenerateQuestion = (questionText: aiQuestionText ) => {
                                 {{ quiz.title }}
                             </Label>                            
                         </div>                        
+                    </div>
+                    <div class="mb-4">
+                        <Label for="is_ai">Is AI</Label><br>
+                        <Switch id="is_ai" v-model="form.is_ai" />
+                        <InputError class="mt-2" :message="form.errors.is_ai" />
                     </div>
                     <div class="mb-4">
                         <form-answers 

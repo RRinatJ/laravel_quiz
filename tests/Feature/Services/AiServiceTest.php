@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Services;
 
 use App\Services\AiService;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Mockery;
 use Prism\Prism\Enums\FinishReason;
@@ -66,6 +67,8 @@ final class AiServiceTest extends TestCase
 
     public function test_it_handles_prism_exception(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('API Error');
         $pendingMock = Mockery::mock(PendingRequest::class);
         $pendingMock->shouldReceive('using')->andThrow(new PrismException('API Error'));
 
@@ -74,23 +77,20 @@ final class AiServiceTest extends TestCase
         Log::shouldReceive('error')->once()->withArgs(fn ($message, array $context): bool => str_contains((string) $context['error'], 'API Error'));
 
         $service = new AiService();
-        $result = $service->getQuestion('History', 3);
-
-        $this->assertSame([], $result);
+        $service->getQuestion('History', 3);
     }
 
     public function test_it_handles_generic_exception(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('unexpected');
         $pendingMock = Mockery::mock(PendingRequest::class);
         $pendingMock->shouldReceive('using')->andThrow(new RuntimeException('Unexpected'));
-
         Prism::shouldReceive('structured')->once()->andReturn($pendingMock);
 
         Log::shouldReceive('error')->once()->withArgs(fn ($message, array $context): bool => str_contains((string) $context['error'], 'Unexpected'));
 
         $service = new AiService();
-        $result = $service->getQuestion('Science', 3);
-
-        $this->assertSame([], $result);
+        $service->getQuestion('Science', 3);
     }
 }
