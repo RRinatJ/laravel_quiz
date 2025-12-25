@@ -8,16 +8,12 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SelectQuizController;
 use App\Http\Controllers\Telegram\TelegramController;
-use App\Models\Quiz;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Inertia\Response;
 
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook'])->name('telegram.webhook');
-Route::get('/', fn (Quiz $quiz_model): Response => Inertia::render('SelectQuiz', [
-    'quizzes' => $quiz_model->getWorking([], true),
-]))->name('home');
+Route::get('/', SelectQuizController::class)->name('home');
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 

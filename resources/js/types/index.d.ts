@@ -46,6 +46,7 @@ export interface User {
 export interface Quiz {
     id: number;
     title: string;
+    description: string | null;
     is_work: boolean;
     timer_count?: number;    
     image: string | null;

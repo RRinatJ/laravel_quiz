@@ -25,6 +25,7 @@ final class Quiz extends Model
         'fifty_fifty_hint',
         'can_skip',
         'for_telegram',
+        'description',
     ];
 
     /**
@@ -33,7 +34,7 @@ final class Quiz extends Model
     public function getWorking(array $with = [], bool $has_questions = false): Collection
     {
         $query = self::query()
-            ->select('id', 'title', 'image')
+            ->select('id', 'title', 'description', 'image')
             ->where('is_work', 1);
         if ($has_questions) {
             $query->whereHas('questions');

@@ -21,6 +21,7 @@ final class StoreQuizRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:3',
+            'description' => 'nullable|string|min:3|max:255',
             'is_work' => [
                 'required',
                 'boolean',

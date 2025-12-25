@@ -29,6 +29,7 @@ const quiz = props.quiz as Quiz;
 const form = useForm({
     id: quiz?.id || null,
     title: quiz?.title || "",
+    description: quiz?.description || "",
     is_work: quiz?.is_work || false,
     timer_count: quiz?.timer_count || 1,
     fifty_fifty_hint: quiz?.fifty_fifty_hint || false,
@@ -126,6 +127,18 @@ const setUploadedImage = (e: Event) => {
                             placeholder="Title" 
                         />
                         <InputError class="mt-2" :message="form.errors.title" />                        
+                    </div>
+                    <div class="mb-4">
+                        <Label for="description">Description</Label>
+                        <Input 
+                            id="description" 
+                            class="mt-1 block w-full" 
+                            v-model="form.description" 
+                            required 
+                            autocomplete="description" 
+                            placeholder="Description" 
+                        />
+                        <InputError class="mt-2" :message="form.errors.description" />                        
                     </div>
                     <div class="mb-4 w-sm">  
                         <Label for="image">Image</Label>
