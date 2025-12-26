@@ -23,7 +23,8 @@ final class SelectQuizController extends Controller
                 ->when($quiz_title->isNotEmpty(), function ($query) use ($quiz_title): void {
                     $query->where('title', 'like', '%'.$quiz_title.'%');
                 })
-                ->get(),
+                ->paginate(10)
+                ->withQueryString(),
             'filters' => [
                 'quiz_title' => $quiz_title,
             ],

@@ -25,7 +25,7 @@ final class GameControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page): Assert => $page
             ->component('SelectQuiz')
-            ->has('quizzes', $quizzes->where('is_work', true)->count())
+            ->has('quizzes.data', $quizzes->where('is_work', true)->count())
         );
     }
 
