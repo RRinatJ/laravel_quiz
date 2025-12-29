@@ -13,12 +13,13 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index } from '@/routes/quiz'
-import { index as questionIndex } from '@/routes/question'
+import { index as questionIndex } from '@/routes/question';
+import { index as articleIndex } from '@/routes/article';
 import { popular_quizzes, questions_report } from '@/routes/reports';
 import { computed } from 'vue';
 import { type NavItem, type NavItemGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { MessageCircleQuestion, FileQuestion, LayoutGrid } from 'lucide-vue-next';
+import { MessageCircleQuestion, FileQuestion, LayoutGrid, Newspaper } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 const page = usePage();
 const auth = computed(() => page.props.auth);
@@ -43,6 +44,12 @@ const mainNavItems: NavItemGroup[] = [
                 title: 'Question',
                 href: questionIndex(),
                 icon: FileQuestion,
+                can: auth.value.role === 'Admin'
+            },
+            {
+                title: 'Article',
+                href: articleIndex(),
+                icon: Newspaper,
                 can: auth.value.role === 'Admin'
             },
         ],

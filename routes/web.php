@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AiController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\QuestionController;
@@ -22,6 +23,8 @@ Route::get('/game/questions/{game_id}', [GameController::class, 'show'])->name('
 Route::post('/game/{game_id}', [GameController::class, 'edit'])->name('game.edit');
 Route::get('/game/set_update/{game_id}', [GameController::class, 'setUpdate'])->name('game.set_update');
 
+Route::get('/articles/{article:slug}', [ArticleController::class, 'by_slug'])->name('article.slug');
+
 Route::middleware('auth')->group(function (): void {
     Route::resource('quiz', QuizController::class)->except([
         'update', 'show',
@@ -37,6 +40,11 @@ Route::middleware('auth')->group(function (): void {
 
     Route::get('/reports/popular-quizzes', [ReportController::class, 'popularQuizzes'])->name('reports.popular_quizzes');
     Route::get('/reports/questions-report', [ReportController::class, 'questionsReport'])->name('reports.questions_report');
+
+    Route::resource('article', ArticleController::class)->except([
+        'update', 'show',
+    ]);
+    Route::post('/article/{article}', [ArticleController::class, 'update'])->name('article.update');
 });
 
 require __DIR__.'/settings.php';

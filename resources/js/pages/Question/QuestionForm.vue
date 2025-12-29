@@ -12,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import FormAnswers from "@/pages/Question/QuestionFormComponents/FormAnswers.vue";
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
 import { Switch } from '@/components/ui/switch';
-import { store, update } from '@/routes/question';
+import { index, store, update } from '@/routes/question';
 
 interface Props {
     question?: { data: object};
@@ -57,7 +57,7 @@ const answers = ref<Answer[]>(question?.answers || []);
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Question List',
-        href: '/question',
+        href: index().url,
     },
 ];
 if (isEditMode.value) {

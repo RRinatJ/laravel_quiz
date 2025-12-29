@@ -148,4 +148,13 @@ export interface aiQuestionText {
     }[];
 }
 
+export interface Article {
+    id: number;
+    title: string;
+    slug: string;
+    content: string;
+    image: string;
+    created_at: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
