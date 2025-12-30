@@ -132,7 +132,12 @@ const deleteImage = () => {
                                     autocomplete="title" 
                                     placeholder="Title" 
                                 />
-                                <a :href="slug(article.slug).url" target="_blank" class="text-sm font-medium leading-normal">
+                                <a 
+                                    v-if="article && article.slug" 
+                                    :href="slug(article.slug).url" 
+                                    target="_blank" 
+                                    class="text-sm font-medium leading-normal"
+                                >
                                     <component :is="ExternalLink" />
                                 </a> 
                             </div>                                
