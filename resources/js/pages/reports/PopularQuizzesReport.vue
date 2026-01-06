@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import DateRangePicker from '@/components/DateRangePicker.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
+import popular_quizzes from '@/routes/reports';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
-import { ref, type Ref } from 'vue';
-import { Button } from '@/components/ui/button';
-import InputError from '@/components/InputError.vue';
-import type { DateRange } from 'reka-ui';
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date';
-import DateRangePicker from '@/components/DateRangePicker.vue';
-import popular_quizzes from '@/routes/reports';
+import type { DateRange } from 'reka-ui';
+import { ref, type Ref } from 'vue';
 
 interface ValidationErrors {
     [field: string]: string;
@@ -25,18 +25,20 @@ interface Props {
         unregistered_count: number;
         registered_count: number;
     }>;
-    filters: {
-        end: string | null;
-        start: string | null;
-    } | [];
+    filters:
+        | {
+              end: string | null;
+              start: string | null;
+          }
+        | [];
 }
 const props = defineProps<Props>();
 
 let start, end;
-if(!Array.isArray(props.filters) && props.filters.start && props.filters.end){
+if (!Array.isArray(props.filters) && props.filters.start && props.filters.end) {
     start = parseDate(props.filters.start);
-    end = parseDate(props.filters.end);    
-}else{
+    end = parseDate(props.filters.end);
+} else {
     end = today(getLocalTimeZone());
     start = end.subtract({ days: 7 });
 }
@@ -45,8 +47,8 @@ const errorsForm = ref<ValidationErrors>({});
 const processing = ref(false);
 
 const dateRange = ref({
-  start,
-  end,
+    start,
+    end,
 }) as Ref<DateRange>;
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -70,68 +72,102 @@ const dateRangeChange = (newRange: DateRange) => {
 const getStat = () => {
     router.get(popular_quizzes.popular_quizzes(), params.value, {
         preserveScroll: true,
-        preserveState : "errors",
+        preserveState: 'errors',
         onError: (errors) => {
             errorsForm.value = errors;
         },
-    })    
+    });
 };
 
 const getWinPrcnt = (winCount: number, playCount: number): string => {
-    if(playCount === 0) return "0";
+    if (playCount === 0) return '0';
     return ((winCount * 100) / playCount).toFixed(2);
 };
 
-if(Array.isArray(props.filters)){
+if (Array.isArray(props.filters)) {
     getStat();
 }
 </script>
 
 <template>
     <Head title="Report Popular Quizzes" />
-    
+
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="container mx-auto p-4">
-            <div class="flex justify-between items-center mb-4">
+            <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">Popular Quizzes</h1>
             </div>
-            <div class="shadow rounded-lg p-4 mb-6">
-                <div class="w-full max-w-[700px] flex custom-justify-center">
-                    <DateRangePicker 
+            <div class="mb-6 rounded-lg p-4 shadow">
+                <div class="custom-justify-center flex w-full max-w-[700px]">
+                    <DateRangePicker
                         :date-range="dateRange"
                         @update:dateRange="dateRangeChange"
                     />
                 </div>
-                <div v-if="errorsForm" >
-                    <span 
-                        v-for="(fieldError, field) in errorsForm" 
+                <div v-if="errorsForm">
+                    <span
+                        v-for="(fieldError, field) in errorsForm"
                         :key="field"
-                    >                                
+                    >
                         <InputError class="mt-2" :message="fieldError" />
                     </span>
                 </div>
-                <div class="flex mt-4">
-                    <Button @click="getStat" :disabled="processing">Get Stats</Button>
+                <div class="mt-4 flex">
+                    <Button @click="getStat" :disabled="processing"
+                        >Get Stats</Button
+                    >
                 </div>
-                <table class="mt-4 min-w-full shadow rounded-lg" v-if="data.length > 0">
+                <table
+                    class="mt-4 min-w-full rounded-lg shadow"
+                    v-if="data.length > 0"
+                >
                     <thead>
                         <tr>
-                            <th class="py-2 px-4 text-left border-b">Quiz ID</th>
-                            <th class="py-2 px-4 text-left border-b">Quiz title</th>                            
-                            <th class="py-2 px-4 text-left border-b">Play count</th>
-                            <th class="py-2 px-4 text-left border-b">Percentage of wins</th>
-                            <th class="py-2 px-4 text-left border-b">Played unregistered</th>
-                            <th class="py-2 px-4 text-left border-b">Played registered</th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Quiz ID
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Quiz title
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Play count
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Percentage of wins
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Played unregistered
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Played registered
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="quiz in data" :key="quiz.quiz_id" >
-                            <td class="py-2 px-4 border-b">{{ quiz.quiz_id }}</td>
-                            <td class="py-2 px-4 border-b">{{ quiz.quiz.title }}</td>
-                            <td class="py-2 px-4 border-b">{{ quiz.play_count }}</td>
-                            <td class="py-2 px-4 border-b">{{ getWinPrcnt(quiz.win_count, quiz.play_count) }}%</td>
-                            <td class="py-2 px-4 border-b">{{ quiz.unregistered_count }}</td>
-                            <td class="py-2 px-4 border-b">{{ quiz.registered_count }}</td>
+                        <tr v-for="quiz in data" :key="quiz.quiz_id">
+                            <td class="border-b px-4 py-2">
+                                {{ quiz.quiz_id }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{ quiz.quiz.title }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{ quiz.play_count }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{
+                                    getWinPrcnt(
+                                        quiz.win_count,
+                                        quiz.play_count,
+                                    )
+                                }}%
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{ quiz.unregistered_count }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{ quiz.registered_count }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

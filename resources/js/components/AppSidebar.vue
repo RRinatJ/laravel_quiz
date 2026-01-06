@@ -12,88 +12,92 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index } from '@/routes/quiz'
-import { index as questionIndex } from '@/routes/question';
 import { index as articleIndex } from '@/routes/article';
+import { index as questionIndex } from '@/routes/question';
+import { index } from '@/routes/quiz';
 import { popular_quizzes, questions_report } from '@/routes/reports';
-import { computed } from 'vue';
 import { type NavItem, type NavItemGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { MessageCircleQuestion, FileQuestion, LayoutGrid, Newspaper } from 'lucide-vue-next';
+import {
+    FileQuestion,
+    LayoutGrid,
+    MessageCircleQuestion,
+    Newspaper,
+} from 'lucide-vue-next';
+import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 const page = usePage();
 const auth = computed(() => page.props.auth);
 
 const mainNavItems: NavItemGroup[] = [
     {
-        title: 'Platform',        
+        title: 'Platform',
         items: [
             {
                 title: 'Dashboard',
                 href: dashboard(),
-                icon: LayoutGrid,        
-                can: true
+                icon: LayoutGrid,
+                can: true,
             },
             {
                 title: 'Quiz',
                 href: index(),
                 icon: MessageCircleQuestion,
-                can: auth.value.role === 'Admin'
+                can: auth.value.role === 'Admin',
             },
             {
                 title: 'Question',
                 href: questionIndex(),
                 icon: FileQuestion,
-                can: auth.value.role === 'Admin'
+                can: auth.value.role === 'Admin',
             },
             {
                 title: 'Article',
                 href: articleIndex(),
                 icon: Newspaper,
-                can: auth.value.role === 'Admin'
+                can: auth.value.role === 'Admin',
             },
         ],
-    },    
+    },
     {
         title: 'Reports',
         items: [
             {
                 title: 'Popular Quizzes',
                 href: popular_quizzes(),
-                icon: LayoutGrid,        
-                can: auth.value.role === 'Admin'
+                icon: LayoutGrid,
+                can: auth.value.role === 'Admin',
             },
             {
                 title: 'Questions Report',
                 href: questions_report(),
-                icon: LayoutGrid,        
-                can: auth.value.role === 'Admin'
+                icon: LayoutGrid,
+                can: auth.value.role === 'Admin',
             },
         ],
-    }
+    },
 ];
 
-const filteredMainNavItems = computed(() => {   
+const filteredMainNavItems = computed(() => {
     const tempNavItems: NavItemGroup[] = [];
-    mainNavItems.forEach(group => {
-        const temp:NavItem[] = [];
-        group.items.forEach(item => {
-            if(item.can){
+    mainNavItems.forEach((group) => {
+        const temp: NavItem[] = [];
+        group.items.forEach((item) => {
+            if (item.can) {
                 temp.push(item);
             }
         });
-        if(temp.length > 0){
+        if (temp.length > 0) {
             tempNavItems.push({
                 title: group.title,
-                items: temp
+                items: temp,
             });
         }
     });
     return tempNavItems;
 });
 
-const footerNavItems: NavItem[] = [    
-];
+const footerNavItems: NavItem[] = [];
 </script>
 
 <template>

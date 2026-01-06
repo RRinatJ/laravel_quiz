@@ -18,7 +18,7 @@ const page = usePage();
 </script>
 
 <template>
-    <SidebarGroup v-for="group in items" :key="group.title" class="px-2 py-0">        
+    <SidebarGroup v-for="group in items" :key="group.title" class="px-2 py-0">
         <SidebarGroupLabel>{{ group.title }}</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in group.items" :key="item.title">

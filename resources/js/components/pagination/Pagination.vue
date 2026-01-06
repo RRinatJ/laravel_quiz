@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import SimplePagination from './SimplePagination.vue';
-import ResourcePagination from './ResourcePagination.vue';
 import { PaginateData, PaginatedResourceResponse } from '@/types';
+import ResourcePagination from './ResourcePagination.vue';
+import SimplePagination from './SimplePagination.vue';
 
 interface Props {
     data: PaginateData;
@@ -9,8 +9,8 @@ interface Props {
 const props = defineProps<Props>();
 
 const hasMeta = (data: PaginateData): data is PaginatedResourceResponse => {
-  return 'meta' in props.data
-}
+    return 'meta' in props.data;
+};
 </script>
 
 <template>

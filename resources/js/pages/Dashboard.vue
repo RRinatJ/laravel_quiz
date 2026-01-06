@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import OnOffIcon from '@/components/OnOffIcon.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
-import { type Quiz, type Question, type Game } from '@/types';
+import {
+    type BreadcrumbItem,
+    type Game,
+    type Question,
+    type Quiz,
+} from '@/types';
 import { Head } from '@inertiajs/vue3';
-import OnOffIcon from '@/components/OnOffIcon.vue';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 
 interface Props {
@@ -35,22 +39,35 @@ const breadcrumbs: BreadcrumbItem[] = [
                     v-if="latestGames.length > 0"
                     class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Games</h2>    
-                    <table class="min-w-full shadow rounded-lg">
+                    <h2
+                        class="px-4 pt-5 pb-3 text-[22px] leading-tight font-bold tracking-[-0.015em]"
+                    >
+                        Latest Games
+                    </h2>
+                    <table class="min-w-full rounded-lg shadow">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 text-left border-b">Quiz</th>
-                                <th class="py-2 px-4 text-left border-b">Answered / Total</th>
-                                <th class="py-2 px-4 text-left border-b">Played</th>                                
+                                <th class="border-b px-4 py-2 text-left">
+                                    Quiz
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Answered / Total
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Played
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="game in latestGames" :key="game.id" >                                
-                                <td class="py-2 px-4 border-b">{{ game.quiz.title }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    {{ game.correct_count }} / {{ game.question_row.length }}
-                                </td>                                
-                                <td class="py-2 px-4 border-b">
+                            <tr v-for="game in latestGames" :key="game.id">
+                                <td class="border-b px-4 py-2">
+                                    {{ game.quiz.title }}
+                                </td>
+                                <td class="border-b px-4 py-2">
+                                    {{ game.correct_count }} /
+                                    {{ game.question_row.length }}
+                                </td>
+                                <td class="border-b px-4 py-2">
                                     {{ game.created_at }}
                                 </td>
                             </tr>
@@ -61,35 +78,55 @@ const breadcrumbs: BreadcrumbItem[] = [
                     v-if="latestQuestions.length > 0"
                     class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Questions</h2>    
-                    <table class="min-w-full shadow rounded-lg">
+                    <h2
+                        class="px-4 pt-5 pb-3 text-[22px] leading-tight font-bold tracking-[-0.015em]"
+                    >
+                        Latest Questions
+                    </h2>
+                    <table class="min-w-full rounded-lg shadow">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 text-left border-b">Question</th>
-                                <th class="py-2 px-4 text-left border-b w-16">Image</th>
-                                <th class="py-2 px-4 text-left border-b">Quiz</th>
-                                <th class="py-2 px-4 text-left border-b">Added</th>                                
+                                <th class="border-b px-4 py-2 text-left">
+                                    Question
+                                </th>
+                                <th class="w-16 border-b px-4 py-2 text-left">
+                                    Image
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Quiz
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Added
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="question in latestQuestions" :key="question.id" >                                
-                                <td class="py-2 px-4 border-b">{{ question.question }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    <img 
-                                        v-if="question.image" 
-                                        class="w-16 h-auto rounded"
-                                        :src="question.image" 
-                                        srcset=""
-                                    >
+                            <tr
+                                v-for="question in latestQuestions"
+                                :key="question.id"
+                            >
+                                <td class="border-b px-4 py-2">
+                                    {{ question.question }}
                                 </td>
-                                <td class="py-2 px-4 border-b">
+                                <td class="border-b px-4 py-2">
+                                    <img
+                                        v-if="question.image"
+                                        class="h-auto w-16 rounded"
+                                        :src="question.image"
+                                        srcset=""
+                                    />
+                                </td>
+                                <td class="border-b px-4 py-2">
                                     <ul>
-                                        <li v-for="question_quiz in question.quizzes" :key="question_quiz.id">
-                                            {{ question_quiz.title }} 
+                                        <li
+                                            v-for="question_quiz in question.quizzes"
+                                            :key="question_quiz.id"
+                                        >
+                                            {{ question_quiz.title }}
                                         </li>
                                     </ul>
                                 </td>
-                                <td class="py-2 px-4 border-b">
+                                <td class="border-b px-4 py-2">
                                     {{ question.created_at }}
                                 </td>
                             </tr>
@@ -100,31 +137,48 @@ const breadcrumbs: BreadcrumbItem[] = [
                     v-if="latestQuizzes.length > 0"
                     class="relative rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Quizzes</h2>
-                    <table class="min-w-full shadow rounded-lg">
+                    <h2
+                        class="px-4 pt-5 pb-3 text-[22px] leading-tight font-bold tracking-[-0.015em]"
+                    >
+                        Latest Quizzes
+                    </h2>
+                    <table class="min-w-full rounded-lg shadow">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 text-left border-b">Title</th>
-                                <th class="py-2 px-4 text-left border-b w-16">Image</th>
-                                <th class="py-2 px-4 text-left border-b">Is work</th>
-                                <th class="py-2 px-4 text-left border-b">Added</th>                                
+                                <th class="border-b px-4 py-2 text-left">
+                                    Title
+                                </th>
+                                <th class="w-16 border-b px-4 py-2 text-left">
+                                    Image
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Is work
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Added
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="quiz in latestQuizzes" :key="quiz.id" >                                
-                                <td class="py-2 px-4 border-b">{{ quiz.title }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    <img 
-                                        v-if="quiz.image" 
-                                        class="w-16 h-auto rounded"
-                                        :src="quiz.image" 
+                            <tr v-for="quiz in latestQuizzes" :key="quiz.id">
+                                <td class="border-b px-4 py-2">
+                                    {{ quiz.title }}
+                                </td>
+                                <td class="border-b px-4 py-2">
+                                    <img
+                                        v-if="quiz.image"
+                                        class="h-auto w-16 rounded"
+                                        :src="quiz.image"
                                         srcset=""
-                                    >
+                                    />
                                 </td>
-                                <td class="py-2 px-4 border-b">
-                                    <OnOffIcon v-if="quiz.is_work !== undefined" :check-value="quiz.is_work" />
+                                <td class="border-b px-4 py-2">
+                                    <OnOffIcon
+                                        v-if="quiz.is_work !== undefined"
+                                        :check-value="quiz.is_work"
+                                    />
                                 </td>
-                                <td class="py-2 px-4 border-b">
+                                <td class="border-b px-4 py-2">
                                     {{ quiz.created_at }}
                                 </td>
                             </tr>

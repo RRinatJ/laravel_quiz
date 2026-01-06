@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import axios, { AxiosError } from 'axios';
-import { type aiQuestionText } from '@/types';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import InputError from '@/components/InputError.vue';
 import OnOffIcon from '@/components/OnOffIcon.vue';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { type aiQuestionText } from '@/types';
+import axios, { AxiosError } from 'axios';
+import { ref } from 'vue';
 const emit = defineEmits(['useGenerateQuestion']);
 
 interface ValidationErrors {
@@ -22,32 +28,38 @@ const questionText = ref<aiQuestionText | null>(null);
 
 const processing = ref(false);
 
-const generateQuestion = () => {    
+const generateQuestion = () => {
     questionError.value = [];
     processing.value = true;
-    axios.get('/ai/get_question/',
-        { params: { theme: theme.value, number_of_options:number_of_options.value } }
-    ).then(response => {        
-        if(response.data){
-            questionText.value = response.data;
-        }
-        processing.value = false;
-    }).catch(error => {
-        if (axios.isAxiosError(error)) {
-            const serverError = error as AxiosError<{
-                errors: ValidationErrors;
-            }>;
-            if (serverError.response?.data?.errors) {
-                questionError.value = serverError.response.data.errors;
+    axios
+        .get('/ai/get_question/', {
+            params: {
+                theme: theme.value,
+                number_of_options: number_of_options.value,
+            },
+        })
+        .then((response) => {
+            if (response.data) {
+                questionText.value = response.data;
             }
-        }
-        processing.value = false;
-    });
+            processing.value = false;
+        })
+        .catch((error) => {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<{
+                    errors: ValidationErrors;
+                }>;
+                if (serverError.response?.data?.errors) {
+                    questionError.value = serverError.response.data.errors;
+                }
+            }
+            processing.value = false;
+        });
 };
 
-const useQuestion = () => {    
+const useQuestion = () => {
     emit('useGenerateQuestion', questionText.value);
-}
+};
 </script>
 
 <template>
@@ -56,25 +68,53 @@ const useQuestion = () => {
             <CardTitle>Generate Question</CardTitle>
             <CardDescription>Get generated question from AI</CardDescription>
         </CardHeader>
-        <CardContent>               
+        <CardContent>
             <form class="w-full" @submit.prevent>
-                <div class="grid items-center w-full gap-4">
-                    <div class="flex flex-wrap -mx-3 mb-2">
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <div class="grid w-full items-center gap-4">
+                    <div class="-mx-3 mb-2 flex flex-wrap">
+                        <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                             <Label for="theme">Theme</Label>
-                            <Input id="theme" placeholder="Theme of question" v-model="theme" />
-                            <InputError class="mt-2" v-if="'theme' in questionError" :message="questionError.theme[0]" />
-                            <InputError class="mt-2" v-if="'error' in questionError" :message="questionError.error[0]" />
+                            <Input
+                                id="theme"
+                                placeholder="Theme of question"
+                                v-model="theme"
+                            />
+                            <InputError
+                                class="mt-2"
+                                v-if="'theme' in questionError"
+                                :message="questionError.theme[0]"
+                            />
+                            <InputError
+                                class="mt-2"
+                                v-if="'error' in questionError"
+                                :message="questionError.error[0]"
+                            />
                         </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <Label for="number_of_options">Number of options</Label>
-                            <Input id="number_of_options" placeholder="4" v-model="number_of_options" />
-                            <InputError class="mt-2" v-if="'number_of_options' in questionError" :message="questionError.number_of_options[0]" />
+                        <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+                            <Label for="number_of_options"
+                                >Number of options</Label
+                            >
+                            <Input
+                                id="number_of_options"
+                                placeholder="4"
+                                v-model="number_of_options"
+                            />
+                            <InputError
+                                class="mt-2"
+                                v-if="'number_of_options' in questionError"
+                                :message="questionError.number_of_options[0]"
+                            />
                         </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 flex items-end">
-                            <Button @click="generateQuestion()" :disabled="processing">Get</Button>
-                        </div>                        
-                    </div>                                        
+                        <div
+                            class="mb-6 flex w-full items-end px-3 md:mb-0 md:w-1/3"
+                        >
+                            <Button
+                                @click="generateQuestion()"
+                                :disabled="processing"
+                                >Get</Button
+                            >
+                        </div>
+                    </div>
                 </div>
             </form>
             <div v-if="questionText !== null" class="mt-4">
@@ -86,26 +126,41 @@ const useQuestion = () => {
                     <p class="font-bold">Description</p>
                     <p>{{ questionText.description }}</p>
                 </div>
-                <div class="mb-4">                    
-                    <table class="min-w-full shadow rounded-lg">
+                <div class="mb-4">
+                    <table class="min-w-full rounded-lg shadow">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 text-left border-b">Answer</th>
-                                <th class="py-2 px-4 text-left border-b">Is Correct</th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Answer
+                                </th>
+                                <th class="border-b px-4 py-2 text-left">
+                                    Is Correct
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(answer, index) in questionText.answers" :key="index">
-                                <td class="py-2 px-4 border-b">{{ answer.answer }}</td>
-                                <td class="py-2 px-4 border-b"><OnOffIcon :check-value="answer.is_correct" /></td>                             
+                            <tr
+                                v-for="(answer, index) in questionText.answers"
+                                :key="index"
+                            >
+                                <td class="border-b px-4 py-2">
+                                    {{ answer.answer }}
+                                </td>
+                                <td class="border-b px-4 py-2">
+                                    <OnOffIcon
+                                        :check-value="answer.is_correct"
+                                    />
+                                </td>
                             </tr>
                         </tbody>
-                    </table>     
+                    </table>
                 </div>
                 <div>
-                    <Button @click="useQuestion()" :disabled="processing">Use</Button>
-                </div>                
-            </div>            
-        </CardContent>        
+                    <Button @click="useQuestion()" :disabled="processing"
+                        >Use</Button
+                    >
+                </div>
+            </div>
+        </CardContent>
     </Card>
 </template>

@@ -48,7 +48,7 @@ export interface Quiz {
     title: string;
     description: string | null;
     is_work: boolean;
-    timer_count?: number;    
+    timer_count?: number;
     image: string | null;
     created_at?: string;
     fifty_fifty_hint?: boolean;
@@ -59,10 +59,10 @@ export interface Quiz {
 export interface PaginatedResourceResponse<T = unknown> {
     data: T[];
     links: {
-        first: string,
-        last: string,
-        prev: string | null,
-        next: string | null
+        first: string;
+        last: string;
+        prev: string | null;
+        next: string | null;
     };
     meta: {
         current_page: number;
@@ -77,7 +77,7 @@ export interface PaginatedResourceResponse<T = unknown> {
             label: string;
             active: boolean;
         }[];
-    }
+    };
 }
 
 export interface PaginatedResponse<T = unknown> {
@@ -100,11 +100,11 @@ export interface PaginatedResponse<T = unknown> {
     total: number;
 }
 
-export type PaginateData = PaginatedResponse | PaginatedResourceResponse
+export type PaginateData = PaginatedResponse | PaginatedResourceResponse;
 
 export interface Answer {
     id: number | string;
-    text: string;    
+    text: string;
     image: string;
     is_correct: boolean;
     question_id?: number;
@@ -113,7 +113,7 @@ export interface Answer {
 export interface Question {
     id: number;
     question: string | null;
-    image: string | null;    
+    image: string | null;
     audio: string | null;
     quizzes_ids?: number[];
     quizzes?: Quiz[];

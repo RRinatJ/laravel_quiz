@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Quiz, type BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/vue3';
-import { type Question, PaginatedResourceResponse } from '@/types';
-import { Button } from '@/components/ui/button';
-import { useForm } from '@inertiajs/vue3';
 import OnOffIcon from '@/components/OnOffIcon.vue';
-import { Badge } from '@/components/ui/badge';
-import { ref, watch } from 'vue';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Pagination from '@/components/pagination/Pagination.vue';
-import { create, edit, destroy } from '@/routes/question';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { create, destroy, edit } from '@/routes/question';
+import {
+    PaginatedResourceResponse,
+    Quiz,
+    type BreadcrumbItem,
+    type Question,
+} from '@/types';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
 interface Props {
     questions: PaginatedResourceResponse<Question>;
@@ -28,17 +37,21 @@ const props = defineProps<Props>();
 const quiz_id = ref(props.filters?.quiz_id || null);
 
 watch(quiz_id, () => {
-    filter()
+    filter();
 });
 
 const filter = () => {
-    router.get('/question', {
-        quiz_id: quiz_id.value,
-    }, {
-        preserveState: true,
-        replace: true
-    })
-}
+    router.get(
+        '/question',
+        {
+            quiz_id: quiz_id.value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        },
+    );
+};
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -51,8 +64,8 @@ const form = useForm({
     id: null,
 });
 
-const deleteQuestion = (id:number) => {
-    if(confirm("Are you sure you want to remove this question?")){        
+const deleteQuestion = (id: number) => {
+    if (confirm('Are you sure you want to remove this question?')) {
         form.delete(destroy(id).url, {
             preserveScroll: true,
         });
@@ -65,104 +78,142 @@ const deleteQuestion = (id:number) => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="container mx-auto p-4">
-            <div class="flex justify-between items-center mb-4">
+            <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">Question list</h1>
             </div>
             <div v-if="error" class="mb-6">
                 <div
-                    class="p-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                    class="rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
                     role="alert"
                 >
                     <span class="font-medium">
-                    {{ error }}
+                        {{ error }}
                     </span>
                 </div>
             </div>
             <div v-if="message" class="mb-6">
                 <div
-                class="p-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-                role="alert"
+                    class="rounded-lg bg-green-100 p-4 text-sm text-green-700 dark:bg-green-200 dark:text-green-800"
+                    role="alert"
                 >
-                <span class="font-medium">
-                    {{ message }}
-                </span>
+                    <span class="font-medium">
+                        {{ message }}
+                    </span>
                 </div>
             </div>
-            <div class="shadow rounded-lg p-4 mb-6">  
+            <div class="mb-6 rounded-lg p-4 shadow">
                 <Button size="lg" class="mr-2 h-9 w-9">
-                    <Link :href="create()" >
-                        Create
-                    </Link> 
+                    <Link :href="create()"> Create </Link>
                 </Button>
-                <br><br>
-                <div class="max-w-7xl flex items-center py-4">                    
+                <br /><br />
+                <div class="flex max-w-7xl items-center py-4">
                     <Select v-model="quiz_id">
                         <SelectTrigger class="w-full">
                             <SelectValue placeholder="Choose a Quiz" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectGroup>                            
-                            <SelectItem :value="null">
-                                Choose a Quiz
-                            </SelectItem>                            
-                            <SelectItem v-for="quiz_option in quizzes" :value="quiz_option.id" :key="quiz_option.id">
-                                {{ quiz_option.title }}
-                            </SelectItem>                            
-                        </SelectGroup>
+                            <SelectGroup>
+                                <SelectItem :value="null">
+                                    Choose a Quiz
+                                </SelectItem>
+                                <SelectItem
+                                    v-for="quiz_option in quizzes"
+                                    :value="quiz_option.id"
+                                    :key="quiz_option.id"
+                                >
+                                    {{ quiz_option.title }}
+                                </SelectItem>
+                            </SelectGroup>
                         </SelectContent>
-                    </Select>                
-                </div>                
-                <table class="min-w-full shadow rounded-lg">
+                    </Select>
+                </div>
+                <table class="min-w-full rounded-lg shadow">
                     <thead>
                         <tr>
-                            <th class="py-2 px-4 text-left border-b">ID</th>
-                            <th class="py-2 px-4 text-left border-b">Question</th>
-                            <th class="py-2 px-4 text-left border-b w-32">Image</th> 
-                            <th class="py-2 px-4 text-left border-b">Audio</th> 
-                            <th class="py-2 px-4 text-left border-b">Quizzes</th>
-                            <th class="py-2 px-4 text-left border-b">Answers</th>
-                            <th class="py-2 px-4 text-left border-b">Edit/Delete</th>
+                            <th class="border-b px-4 py-2 text-left">ID</th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Question
+                            </th>
+                            <th class="w-32 border-b px-4 py-2 text-left">
+                                Image
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">Audio</th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Quizzes
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Answers
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
+                                Edit/Delete
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="question in questions.data" :key="question.id" >
-                            <td class="py-2 px-4 border-b">{{ question.id }}</td>
-                            <td class="py-2 px-4 border-b">{{ question.question }}</td>                        
-                            <td class="py-2 px-4 border-b">
-                                <img 
-                                    v-if="question.image" 
-                                    class="w-32 h-auto rounded"
-                                    :src="question.image" 
+                        <tr
+                            v-for="question in questions.data"
+                            :key="question.id"
+                        >
+                            <td class="border-b px-4 py-2">
+                                {{ question.id }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {{ question.question }}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                <img
+                                    v-if="question.image"
+                                    class="h-auto w-32 rounded"
+                                    :src="question.image"
                                     srcset=""
-                                >
+                                />
                             </td>
-                            <td class="py-2 px-4 border-b">
-                                <OnOffIcon :check-value="question.audio" :size="'sm'" />
+                            <td class="border-b px-4 py-2">
+                                <OnOffIcon
+                                    :check-value="question.audio"
+                                    :size="'sm'"
+                                />
                             </td>
-                            <td class="py-2 px-4 border-b">                            
+                            <td class="border-b px-4 py-2">
                                 <ul>
-                                    <li v-for="question_quiz in question.quizzes" :key="question_quiz.id">
-                                        {{ question_quiz.title }} 
-                                        <OnOffIcon v-if="question_quiz.is_work !== undefined" :check-value="question_quiz.is_work" :size="'sm'" />
+                                    <li
+                                        v-for="question_quiz in question.quizzes"
+                                        :key="question_quiz.id"
+                                    >
+                                        {{ question_quiz.title }}
+                                        <OnOffIcon
+                                            v-if="
+                                                question_quiz.is_work !==
+                                                undefined
+                                            "
+                                            :check-value="question_quiz.is_work"
+                                            :size="'sm'"
+                                        />
                                     </li>
                                 </ul>
-                            </td>                        
-                            <td class="py-2 px-4 border-b">   
-                                <div class="grid auto-cols-max grid-flow-col gap-4">
-                                    <div 
-                                        v-for="answer in question.answers" 
-                                        :key="answer.id" 
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                <div
+                                    class="grid auto-cols-max grid-flow-col gap-4"
+                                >
+                                    <div
+                                        v-for="answer in question.answers"
+                                        :key="answer.id"
                                     >
-                                        <img 
-                                            v-if="answer.image" 
-                                            class="w-16 h-auto rounded"
-                                            :src="answer.image" 
+                                        <img
+                                            v-if="answer.image"
+                                            class="h-auto w-16 rounded"
+                                            :src="answer.image"
                                             srcset=""
-                                        >
-                                        <Badge     
+                                        />
+                                        <Badge
                                             v-if="answer.text"
-                                            :class="'whitespace-normal w-min'"
-                                            :variant="answer.is_correct ? 'destructive' : 'default'"
+                                            :class="'w-min whitespace-normal'"
+                                            :variant="
+                                                answer.is_correct
+                                                    ? 'destructive'
+                                                    : 'default'
+                                            "
                                             class="mr-1"
                                         >
                                             {{ answer.text }}
@@ -170,13 +221,18 @@ const deleteQuestion = (id:number) => {
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-2 px-4 border-b">                            
-                                <Button size="lg" class="mb-2 mr-2 h-9 w-9">
-                                    <Link :href="edit(question.id)" >
-                                    Edit
+                            <td class="border-b px-4 py-2">
+                                <Button size="lg" class="mr-2 mb-2 h-9 w-9">
+                                    <Link :href="edit(question.id)">
+                                        Edit
                                     </Link>
                                 </Button>
-                                <Button variant="destructive" size="lg" class="mb-2 mr-2 h-9 w-9"  @click="deleteQuestion(question.id)">
+                                <Button
+                                    variant="destructive"
+                                    size="lg"
+                                    class="mr-2 mb-2 h-9 w-9"
+                                    @click="deleteQuestion(question.id)"
+                                >
                                     Delete
                                 </Button>
                             </td>
@@ -184,7 +240,7 @@ const deleteQuestion = (id:number) => {
                     </tbody>
                 </table>
                 <div class="mt-4" v-if="questions !== undefined">
-                    <Pagination :data="questions"/>                  
+                    <Pagination :data="questions" />
                 </div>
             </div>
         </div>

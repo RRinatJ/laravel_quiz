@@ -29,7 +29,7 @@
 /* Общие стили */
 body #showGame {
     margin: 0;
-    padding: 0;    
+    padding: 0;
     display: flex;
     flex-direction: column;
 }
@@ -56,7 +56,7 @@ body #showGame {
 
 #showGame .timer {
     position: absolute;
-    left: 50%;    
+    left: 50%;
     transform: translateX(-50%); /* Центрируем по горизонтали */
 }
 
@@ -65,7 +65,7 @@ body #showGame {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
 }
 
 #showGame .question {
@@ -143,7 +143,7 @@ body #showGame {
     color: #fff;
 }
 
-#showGame .option:disabled {    
+#showGame .option:disabled {
     background-color: dimgrey;
     color: linen;
 }
