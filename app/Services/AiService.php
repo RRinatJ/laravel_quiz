@@ -25,7 +25,7 @@ final readonly class AiService
         ])->render();
         try {
             $response = Prism::structured()
-                ->using(Provider::Gemini, config('prism.providers.gemini.model'))
+                ->using(Provider::Gemini, config('services.prism.gemini.model'))
                 ->withSchema($this->getSchemaQuestion())
                 ->withPrompt($prompt)
                 ->asStructured();

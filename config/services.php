@@ -37,4 +37,10 @@ return [
         ],
     ],
 
+    'prism' => [
+        'gemini' => [
+            'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+        ],
+    ],
+
 ];
