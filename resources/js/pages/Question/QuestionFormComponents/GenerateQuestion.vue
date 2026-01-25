@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { get_question } from '@/routes/ai';
 import { type aiQuestionText } from '@/types';
 import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
@@ -32,7 +33,7 @@ const generateQuestion = () => {
     questionError.value = [];
     processing.value = true;
     axios
-        .get('/ai/get_question/', {
+        .get(get_question().url, {
             params: {
                 theme: theme.value,
                 number_of_options: number_of_options.value,

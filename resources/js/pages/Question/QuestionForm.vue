@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
+import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ interface Props {
     message?: string;
     quizzes: Quiz[];
     is_ai_available: boolean;
+    is_tmdb_available: boolean;
 }
 
 const props = defineProps<Props>();
@@ -36,6 +38,7 @@ type questionForm = {
     question: string;
     uploaded_image: File | null;
     uploaded_audio: File | null;
+    tmdb_image: string;
     image: string;
     audio: string;
     quizzes: number[];
@@ -49,6 +52,7 @@ const form = useForm<questionForm>({
     question: question?.question || '',
     uploaded_image: null,
     uploaded_audio: null,
+    tmdb_image: '',
     image: question?.image || '',
     audio: question?.audio || '',
     quizzes: question?.quizzes_ids || [],
@@ -133,6 +137,7 @@ const setUploadedAnswerImage = (data: { file: File; index: number }) => {
 const deleteImage = () => {
     form.image = '';
     form.uploaded_image = null;
+    form.tmdb_image = '';
     question.image = '';
 };
 const deleteAudio = () => {
@@ -177,6 +182,10 @@ const useGenerateQuestion = (questionText: aiQuestionText) => {
         });
     }
 };
+
+const setImageFromTmdb = (file_path: string) => {
+    form.tmdb_image = file_path;
+};
 </script>
 
 <template>
@@ -202,9 +211,14 @@ const useGenerateQuestion = (questionText: aiQuestionText) => {
                             </span>
                         </div>
                     </div>
-                    <GenerateQuestion
+                    <SearchImage
+                        v-if="is_tmdb_available"
+                        @set-image-from-tmdb="setImageFromTmdb"
                         class="mb-4"
+                    ></SearchImage>
+                    <GenerateQuestion
                         v-if="props.is_ai_available"
+                        class="mb-4"
                         @use-generate-question="useGenerateQuestion"
                     ></GenerateQuestion>
                     <div class="mb-4">
@@ -230,6 +244,11 @@ const useGenerateQuestion = (questionText: aiQuestionText) => {
                             :src="'/storage/' + question.image"
                             srcset=""
                         />
+                        <div v-if="form && form.tmdb_image" class="relative">
+                            <div class="mb-4">
+                                <img :src="form.tmdb_image" srcset="" />
+                            </div>
+                        </div>
                         <div class="mt-2" v-if="question && question.image">
                             <Button variant="destructive" @click="deleteImage"
                                 >Delete Image</Button
@@ -237,6 +256,7 @@ const useGenerateQuestion = (questionText: aiQuestionText) => {
                         </div>
                         <div class="mt-2">
                             <Input
+                                :disabled="form.tmdb_image !== ''"
                                 class="mt-1 block"
                                 id="image"
                                 type="file"

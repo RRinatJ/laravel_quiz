@@ -11,6 +11,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SelectQuizController;
 use App\Http\Controllers\Telegram\TelegramController;
+use App\Http\Controllers\TmdbImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook'])->name('telegram.webhook');
@@ -45,6 +46,11 @@ Route::middleware('auth')->group(function (): void {
         'update', 'show',
     ]);
     Route::post('/article/{article}', [ArticleController::class, 'update'])->name('article.update');
+
+    Route::prefix('tmdb')->name('tmdb.')->group(function (): void {
+        Route::get('/search', [TmdbImageController::class, 'search'])->name('search');
+        Route::get('/images', [TmdbImageController::class, 'images'])->name('images');
+    });
 });
 
 require __DIR__.'/settings.php';

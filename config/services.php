@@ -43,4 +43,23 @@ return [
         ],
     ],
 
+    'tmdb' => [
+        'api_key' => env('TMDB_API_KEY', ''),
+        'types' => [
+            'movie' => 'movie',
+            'tv' => 'tv',
+            'person' => 'person',
+        ],
+        'urls' => [
+            'movie_search' => 'https://api.themoviedb.org/3/search/movie',
+            'movie_images_by_id' => 'https://api.themoviedb.org/3/movie/{movie_id}/images',
+
+            'tv_search' => 'https://api.themoviedb.org/3/search/tv',
+            'tv_images_by_id' => 'https://api.themoviedb.org/3/tv/{series_id}/images',
+
+            'person_search' => 'https://api.themoviedb.org/3/search/person',
+            'person_images_by_id' => 'https://api.themoviedb.org/3/person/{person_id}/images',
+        ],
+    ],
+
 ];

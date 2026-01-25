@@ -27,7 +27,7 @@ final class GameController extends Controller
         $sort_array = (array) session('sort_array');
         $fifty_fifty_hint = (bool) (session('fifty_fifty_hint'));
 
-        $game = Game::with('quiz', 'question.answers', 'latestStep')->find($game_id);
+        $game = Game::with('quiz', 'question.answers', 'question.tmdb_image', 'latestStep')->find($game_id);
 
         $game_data = $service->show(
             $game,
@@ -49,6 +49,7 @@ final class GameController extends Controller
             'correct_answer_id' => $game_data['correct_answer_id'],
             'firstQuestion' => $game_data['firstQuestion'],
             'countDown' => $countDown,
+            'tmdbImage' => $game_data['tmdb_image'],
         ]);
     }
 

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Services\Tmdb\Service as TmdbService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -16,6 +17,8 @@ final class QuestionService
 {
     public function store(array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
+
+        $tmdb_image = $data['tmdb_image'] ?? null;
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
         $questionValidated = $this->sanitizeRequest($data);
@@ -26,6 +29,17 @@ final class QuestionService
         if (is_null($uplodedImage) === false) {
             $createQuestion->image = $this->uploadFile($uplodedImage);
             $createQuestion->save();
+        }
+
+        if (is_null($tmdb_image) === false) {
+            $tmdbService = new TmdbService();
+            $createQuestion->image = $tmdbService->saveTmdbImage($tmdb_image);
+            $createQuestion->save();
+            if ($createQuestion->image !== '') {
+                $createQuestion->tmdb_image()->create([
+                    'tmdb_image' => $tmdb_image,
+                ]);
+            }
         }
         if (is_null($uplodedAudio) === false) {
             $createQuestion->audio = $this->uploadFile($uplodedAudio, 'audio');
@@ -39,16 +53,32 @@ final class QuestionService
 
     public function update(Question $question, array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
+        $tmdb_image = $data['tmdb_image'] ?? null;
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
 
         $questionValidated = $this->sanitizeRequest($data);
         $updateQuestion = $question->update($questionValidated);
+        if ($question->wasChanged('image')) {
+            $question->tmdb_image()->delete();
+        }
 
         if ($updateQuestion) {
             if (is_null($uplodedImage) === false) {
                 $question->image = $this->uploadFile($uplodedImage);
                 $question->save();
+                $question->tmdb_image()->delete();
+            }
+            if (is_null($tmdb_image) === false) {
+                $tmdbService = new TmdbService();
+                $question->image = $tmdbService->saveTmdbImage($tmdb_image);
+                $question->save();
+                if ($question->image !== '') {
+                    $question->tmdb_image()->updateOrCreate(
+                        ['question_id' => $question->id],
+                        ['tmdb_image' => $tmdb_image],
+                    );
+                }
             }
             if (is_null($uplodedAudio) === false) {
                 $question->audio = $this->uploadFile($uplodedAudio, 'audio');

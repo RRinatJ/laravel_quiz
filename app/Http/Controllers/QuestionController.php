@@ -58,6 +58,7 @@ final class QuestionController extends Controller
         return Inertia::render('Question/QuestionForm', [
             'quizzes' => $quiz_model->select('id', 'title')->get(),
             'is_ai_available' => (bool) config('prism.providers.gemini.api_key'),
+            'is_tmdb_available' => (bool) config('services.tmdb.api_key'),
         ]);
     }
 
@@ -93,6 +94,7 @@ final class QuestionController extends Controller
             'quizzes' => $quiz_model->select('id', 'title')->get(),
             'message' => session('message'),
             'is_ai_available' => (bool) config('prism.providers.gemini.api_key'),
+            'is_tmdb_available' => (bool) config('services.tmdb.api_key'),
         ]);
     }
 
@@ -134,6 +136,7 @@ final class QuestionController extends Controller
                         Storage::disk('public')->delete($answer->image);
                     }
                 }
+                $question->tmdb_image()->delete();
             }
 
             return redirect()->route('question.index')->with('message', 'Quiz Deleted Successfully');

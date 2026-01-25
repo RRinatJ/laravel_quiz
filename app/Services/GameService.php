@@ -42,6 +42,7 @@ final readonly class GameService
         if ($error === '') {
             $correct_answer_id = null;
         }
+        $tmdb_image = (bool) $game->question->tmdb_image;
 
         return [
             'answers' => $answers,
@@ -49,6 +50,7 @@ final readonly class GameService
             'message' => $message,
             'correct_answer_id' => $correct_answer_id,
             'firstQuestion' => $game->latestStep === null,
+            'tmdb_image' => $tmdb_image,
         ];
     }
 

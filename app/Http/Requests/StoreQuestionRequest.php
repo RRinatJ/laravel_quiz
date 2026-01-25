@@ -20,8 +20,7 @@ final class StoreQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'question' => 'required_without_all:uploaded_image,uploaded_audio,image,audio|nullable|string|min:3',
+            'question' => 'required_without_all:uploaded_image,uploaded_audio,image,audio,tmdb_image|nullable|string|min:3',
             'quizzes' => 'nullable|array',
             'answers' => 'required|array|min:2',
             'answers.*.id' => 'required',
@@ -29,9 +28,10 @@ final class StoreQuestionRequest extends FormRequest
             'answers.*.is_correct' => 'required|boolean',
             'answers.*.image' => 'required_without:answers.*.text|nullable|string',
             'answer_images' => 'nullable|array',
-            'uploaded_image' => 'required_without_all:question,image,audio,uploaded_audio|nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-            'uploaded_audio' => 'required_without_all:question,image,audio,uploaded_image|nullable|mimes:mp3,wav,m4a|max:2048',
-            'image' => 'required_without_all:question,uploaded_image,audio,uploaded_audio|nullable|string',
+            'uploaded_image' => 'required_without_all:question,image,audio,uploaded_audio,tmdb_image|nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'uploaded_audio' => 'required_without_all:question,image,audio,uploaded_imag,tmdb_image|nullable|mimes:mp3,wav,m4a|max:2048',
+            'tmdb_image' => 'nullable|string',
+            'image' => 'required_without_all:question,uploaded_image,audio,uploaded_audio,tmdb_image|nullable|string',
             'is_ai' => 'required|boolean',
         ];
     }
