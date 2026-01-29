@@ -236,7 +236,10 @@ if (isErrorMode.value || isMessageMode.value || isStarted.value === false) {
                                 Skip
                             </button>
                         </div>
-                        <div v-if="tmdbImage" class="mt-4 flex">
+                        <div
+                            v-if="tmdbImage"
+                            class="mt-4 flex px-4 pt-1 pb-3 text-sm leading-normal font-normal text-[#49749c]"
+                        >
                             <span class="mr-2">This image is provided by</span>
                             <a
                                 href="https://www.themoviedb.org/"

@@ -41,10 +41,12 @@ final class TmdbImageController extends Controller
             $type_api = $this->service->init($type->toString());
 
             return response()->json($type_api->images($tmdb_id));
-        } catch (Exception $exception) {
+        } catch (Exception $e) {
             return response()->json([
-                'tmdb_image' => $exception->getMessage(),
-            ], 401);
+                'errors' => [
+                    'error' => [$e->getMessage()],
+                ],
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
     }
 }

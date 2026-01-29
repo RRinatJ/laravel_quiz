@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
+import ShowMessage from '@/components/ShowMessage.vue';
 import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -201,16 +202,7 @@ const setImageFromTmdb = (file_path: string) => {
             </div>
             <div class="mb-6 rounded-lg p-4 shadow">
                 <div>
-                    <div v-if="props.message" class="mb-4">
-                        <div
-                            class="rounded-lg bg-green-100 p-4 text-sm text-green-700 dark:bg-green-200 dark:text-green-800"
-                            role="alert"
-                        >
-                            <span class="font-medium">
-                                {{ props.message }}
-                            </span>
-                        </div>
-                    </div>
+                    <ShowMessage class="mb-4" :message="props.message" />
                     <SearchImage
                         v-if="is_tmdb_available"
                         @set-image-from-tmdb="setImageFromTmdb"

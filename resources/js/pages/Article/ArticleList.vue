@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import Pagination from '@/components/pagination/Pagination.vue';
+import ShowError from '@/components/ShowError.vue';
+import ShowMessage from '@/components/ShowMessage.vue';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { create, destroy, edit, slug } from '@/routes/article';
@@ -47,26 +49,8 @@ const deleteArticle = (id: number) => {
             <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">Article list</h1>
             </div>
-            <div v-if="error" class="mb-6">
-                <div
-                    class="rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
-                    role="alert"
-                >
-                    <span class="font-medium">
-                        {{ error }}
-                    </span>
-                </div>
-            </div>
-            <div v-if="message" class="mb-6">
-                <div
-                    class="rounded-lg bg-green-100 p-4 text-sm text-green-700 dark:bg-green-200 dark:text-green-800"
-                    role="alert"
-                >
-                    <span class="font-medium">
-                        {{ message }}
-                    </span>
-                </div>
-            </div>
+            <ShowError class="mb-6" :message="error" />
+            <ShowMessage class="mb-6" :message="message" />
             <div class="mb-6 rounded-lg p-4 shadow">
                 <Button size="lg" class="mr-2 h-9 w-9">
                     <Link :href="create()"> Create </Link>

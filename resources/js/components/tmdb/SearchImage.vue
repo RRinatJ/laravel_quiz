@@ -144,6 +144,10 @@ const setImageFromTmdb = (file_path: string, size: string) => {
                         </SelectItem>
                     </SelectContent>
                 </Select>
+                <InputError
+                    v-if="'type' in searchError"
+                    :message="searchError.type[0]"
+                />
             </div>
 
             <div class="mb-2 space-y-6">
@@ -160,8 +164,8 @@ const setImageFromTmdb = (file_path: string, size: string) => {
                         placeholder="Search query..."
                     />
                     <InputError
-                        v-if="'error' in searchError"
-                        :message="searchError.error[0]"
+                        v-if="'query' in searchError"
+                        :message="searchError.query[0]"
                     />
                 </div>
                 <div class="flex items-center gap-4">
