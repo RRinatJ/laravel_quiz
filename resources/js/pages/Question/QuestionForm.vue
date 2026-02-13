@@ -131,9 +131,19 @@ const setUploadedAudio = (e: Event) => {
         form.uploaded_audio = file;
     }
 };
-const setUploadedAnswerImage = (data: { file: File; index: number }) => {
-    form.answer_images.push(data.file);
-    answers.value[data.index].image = data.file.name;
+const setUploadedAnswerImage = (data: {
+    file?: File;
+    index: number;
+    tmdb_image?: string;
+}) => {
+    if (data.file) {
+        form.answer_images.push(data.file);
+        answers.value[data.index].image = data.file.name;
+        answers.value[data.index].tmdb_image = '';
+    } else if (data.tmdb_image) {
+        answers.value[data.index].image = '';
+        answers.value[data.index].tmdb_image = data.tmdb_image;
+    }
 };
 const deleteImage = () => {
     form.image = '';
@@ -148,6 +158,7 @@ const deleteAudio = () => {
 };
 const deleteImageAnswer = (i: number) => {
     answers.value[i].image = '';
+    answers.value[i].tmdb_image = '';
 };
 const deleteAnswer = (i: number) => {
     answers.value.splice(i, 1);

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Pagination from '@/components/pagination/Pagination.vue';
 import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
+import { home } from '@/routes';
 import { create } from '@/routes/game';
 import { PaginatedResponse, Quiz } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -20,7 +21,7 @@ const quiz_title = ref(props.filters?.quiz_title || '');
 
 const filter = useDebounceFn(() => {
     router.get(
-        '/',
+        home().url,
         {
             quiz_title: quiz_title.value,
         },

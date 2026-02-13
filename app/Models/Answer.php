@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 final class Answer extends Model
 {
@@ -21,6 +22,14 @@ final class Answer extends Model
         'is_correct',
         'question_id',
     ];
+
+    /**
+     * @return HasOne<TmdbImage, $this>
+     */
+    public function tmdb_image(): HasOne
+    {
+        return $this->HasOne(TmdbImage::class);
+    }
 
     /**
      * @return array<string, string>

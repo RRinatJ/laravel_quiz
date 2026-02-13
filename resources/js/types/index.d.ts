@@ -108,6 +108,7 @@ export interface Answer {
     image: string;
     is_correct: boolean;
     question_id?: number;
+    tmdb_image?: string;
 }
 
 export interface Question {

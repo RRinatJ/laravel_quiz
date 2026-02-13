@@ -42,7 +42,7 @@ final readonly class GameService
         if ($error === '') {
             $correct_answer_id = null;
         }
-        $tmdb_image = (bool) $game->question->tmdb_image;
+        $tmdb_image = (bool) $game->question->tmdb_image || (bool) $game->question->answers->filter(fn ($answer): bool => $answer->tmdb_image !== null)->count();
 
         return [
             'answers' => $answers,

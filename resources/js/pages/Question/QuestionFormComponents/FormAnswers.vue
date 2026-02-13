@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
+import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { type Answer } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import { FileImage } from 'lucide-vue-next';
 import { ref } from 'vue';
 const emit = defineEmits([
@@ -21,6 +23,7 @@ interface Props {
     errors?: string;
 }
 defineProps<Props>();
+const page = usePage();
 
 const emptyAnswerDefault = {
     id: '',
@@ -32,7 +35,7 @@ const cloneObject = (data: object) => {
     return JSON.parse(JSON.stringify(data));
 };
 const emptyAnswer = ref(cloneObject(emptyAnswerDefault));
-const isPrev = ref<number[]>([]);
+const isPrev = ref(new Set<number>());
 
 const generateRandomString = (length: number) => {
     const characters =
@@ -69,8 +72,23 @@ const setUploadedAnswerImage = (e: Event, i: number) => {
             index: i,
             file: answerFile,
         });
-        isPrev.value.push(i);
+        isPrev.value.add(i);
     }
+};
+const expanded = ref(new Set<number | string>());
+function tmdbToggleAnswer(id: number | string) {
+    if (expanded.value.has(id)) {
+        expanded.value.delete(id);
+    } else {
+        expanded.value.add(id);
+    }
+}
+const setImageFromTmdb = (file_path: string, i: number) => {
+    emit('setAnswerImage', {
+        index: i,
+        tmdb_image: file_path,
+    });
+    isPrev.value.delete(i);
 };
 
 defineExpose({
@@ -127,16 +145,45 @@ defineExpose({
                                         </div>
                                     </div>
                                 </div>
-                                <div class="-mx-3 mb-2 flex flex-wrap p-4">
-                                    <div v-if="answer && answer.image">
-                                        <div
-                                            class="mt-1 mr-4 mb-1 w-48"
-                                            v-if="answer.image"
+                                <div v-if="page.props.is_tmdb_available">
+                                    <div class="mb-2">
+                                        <Button
+                                            @click="tmdbToggleAnswer(answer.id)"
                                         >
+                                            {{
+                                                expanded.has(answer.id)
+                                                    ? 'Hide Tmdb'
+                                                    : 'Show Tmdb'
+                                            }}
+                                        </Button>
+                                    </div>
+                                    <Transition name="fade-expand">
+                                        <SearchImage
+                                            v-if="expanded.has(answer.id)"
+                                            @set-image-from-tmdb="
+                                                setImageFromTmdb($event, index)
+                                            "
+                                            class="mb-4"
+                                        ></SearchImage>
+                                    </Transition>
+                                </div>
+                                <div class="-mx-3 mb-2 flex flex-wrap p-4">
+                                    <div
+                                        v-if="
+                                            answer &&
+                                            (answer.image || answer.tmdb_image)
+                                        "
+                                    >
+                                        <div class="mt-1 mr-4 mb-1 w-48">
                                             <component
-                                                v-if="isPrev.includes(index)"
+                                                v-if="isPrev.has(index)"
                                                 :is="FileImage"
                                                 class=""
+                                            />
+                                            <img
+                                                v-else-if="answer.tmdb_image"
+                                                :src="answer.tmdb_image"
+                                                srcset=""
                                             />
                                             <img
                                                 v-else
@@ -180,3 +227,16 @@ defineExpose({
         </Card>
     </div>
 </template>
+
+<style scoped>
+.fade-expand-enter-active,
+.fade-expand-leave-active {
+    transition: all 0.35s ease;
+}
+
+.fade-expand-enter-from,
+.fade-expand-leave-to {
+    opacity: 0;
+    transform: translateY(-12px);
+}
+</style>

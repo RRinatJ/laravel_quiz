@@ -18,7 +18,7 @@ final class QuestionService
     public function store(array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
 
-        $tmdb_image = $data['tmdb_image'] ?? null;
+        $tmdb_image = empty($data['tmdb_image']) ? null : $data['tmdb_image'];
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
         $questionValidated = $this->sanitizeRequest($data);
@@ -53,7 +53,7 @@ final class QuestionService
 
     public function update(Question $question, array $data, ?UploadedFile $uplodedImage, ?UploadedFile $uplodedAudio, array $answerImages): Question
     {
-        $tmdb_image = $data['tmdb_image'] ?? null;
+        $tmdb_image = empty($data['tmdb_image']) ? null : $data['tmdb_image'];
         $quizzes_ids = $data['quizzes'] ?? [];
         $answers = $this->decodeAnswers($data['answers'] ?? []);
 
@@ -125,8 +125,15 @@ final class QuestionService
     {
         $createdAnswers = [];
         $data_answer_ids = [];
+        $tmdb_image_add = [];
+        $tmdbService = new TmdbService();
         foreach ($answers as $answer) {
             $answer['image'] = empty($answer['image']) ? null : $this->findAndUploadAnswerImage($answer['image'], $answerImages);
+
+            $tmdb_image = empty($answer['tmdb_image']) ? null : $answer['tmdb_image'];
+            if (is_null($tmdb_image) === false) {                
+                $answer['image'] = $tmdbService->saveTmdbImage($tmdb_image);
+            }
 
             $updated_data = [
                 'text' => mb_trim((string) $answer['text']),
@@ -138,15 +145,37 @@ final class QuestionService
                 $data_answer_ids[] = $answer['id'];
                 $update_answer = $question->answers->firstWhere('id', $answer['id']);
                 $update_answer->update($updated_data);
+                if ($update_answer->wasChanged('image')) {
+                    $update_answer->tmdb_image()->delete();
+                }
+
+                if (is_null($tmdb_image) === false) {
+                    $update_answer->tmdb_image()->updateOrCreate(
+                        ['answer_id' => $update_answer->id],
+                        [
+                            'tmdb_image' => $tmdb_image,
+                        ],
+                    );
+                }
 
                 continue;
             }
 
             $createdAnswers[] = new Answer($updated_data);
+            if (is_null($tmdb_image) === false) {
+                $tmdb_image_add[$updated_data['image']] = $tmdb_image;
+            }
         }
 
         if ($createdAnswers !== []) {
             $question->answers()->saveMany($createdAnswers);
+            foreach ($question->answers as $createdAnswer) {
+                if (array_key_exists($createdAnswer->image, $tmdb_image_add)) {
+                    $createdAnswer->tmdb_image()->create([
+                        'tmdb_image' => $tmdb_image_add[$createdAnswer->image],
+                    ]);
+                }
+            }
         }
 
         $deleted_ids = array_diff($answer_ids, $data_answer_ids);

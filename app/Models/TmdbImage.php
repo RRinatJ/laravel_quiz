@@ -16,5 +16,6 @@ final class TmdbImage extends Model
     protected $fillable = [
         'question_id',
         'tmdb_image',
+        'answer_id',
     ];
 }

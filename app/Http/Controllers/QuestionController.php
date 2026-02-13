@@ -126,7 +126,7 @@ final class QuestionController extends Controller
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
         try {
-            $question->load('answers');
+            $question->load('answers.tmdb_image');
             if ($question->delete()) {
                 if ($question->image) {
                     Storage::disk('public')->delete($question->image);
@@ -134,6 +134,7 @@ final class QuestionController extends Controller
                 foreach ($question->answers as $answer) {
                     if ($answer->image) {
                         Storage::disk('public')->delete($answer->image);
+                        $answer->tmdb_image()->delete();
                     }
                 }
                 $question->tmdb_image()->delete();

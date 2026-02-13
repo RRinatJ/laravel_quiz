@@ -240,7 +240,7 @@ if (isErrorMode.value || isMessageMode.value || isStarted.value === false) {
                             v-if="tmdbImage"
                             class="mt-4 flex px-4 pt-1 pb-3 text-sm leading-normal font-normal text-[#49749c]"
                         >
-                            <span class="mr-2">This image is provided by</span>
+                            <span class="mr-2">Image provided by</span>
                             <a
                                 href="https://www.themoviedb.org/"
                                 target="_blank"
