@@ -54,6 +54,7 @@ export interface Quiz {
     fifty_fifty_hint?: boolean;
     can_skip?: boolean;
     for_telegram?: boolean;
+    likes_count?: number;
 }
 
 export interface PaginatedResourceResponse<T = unknown> {

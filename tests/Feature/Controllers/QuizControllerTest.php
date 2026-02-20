@@ -160,4 +160,21 @@ final class QuizControllerTest extends TestCase
         $this->actingAs($user)->post(route('quiz.update', $quiz->id), [])->assertStatus(403);
         $this->actingAs($user)->delete(route('quiz.destroy', $quiz->id))->assertStatus(403);
     }
+
+    public function test_quiz_like(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create(['role' => UserRole::PLAYER]);
+        $quiz = Quiz::factory()->create();
+        $response = $this->actingAs($user)->get(route('quiz.like', $quiz->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['liked' => true, 'count' => 1]);
+        $this->assertDatabaseHas('likes', ['user_id' => $user->id, 'likeable_id' => $quiz->id, 'likeable_type' => Quiz::class]);
+
+        $response = $this->actingAs($user)->get(route('quiz.like', $quiz->id));
+        $response->assertStatus(200);
+        $response->assertJson(['liked' => false, 'count' => 0]);
+        $this->assertDatabaseMissing('likes', ['user_id' => $user->id, 'likeable_id' => $quiz->id, 'likeable_type' => Quiz::class]);
+    }
 }

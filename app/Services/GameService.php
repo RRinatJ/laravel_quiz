@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Number;
 
 final readonly class GameService
 {
@@ -42,7 +43,16 @@ final readonly class GameService
         if ($error === '') {
             $correct_answer_id = null;
         }
+
         $tmdb_image = (bool) $game->question->tmdb_image || (bool) $game->question->answers->filter(fn ($answer): bool => $answer->tmdb_image !== null)->count();
+        $quiz_like_info = [];
+
+        if ($message !== '' || $error !== '') {
+            $quiz_like_info = [
+                'liked' => Auth::user() ? $game->quiz->isLikedBy(Auth::user()) : false,
+                'count' => Number::abbreviate($game->quiz->likesCount()),
+            ];
+        }
 
         return [
             'answers' => $answers,
@@ -51,6 +61,7 @@ final readonly class GameService
             'correct_answer_id' => $correct_answer_id,
             'firstQuestion' => $game->latestStep === null,
             'tmdb_image' => $tmdb_image,
+            'quiz_like_info' => $quiz_like_info,
         ];
     }
 

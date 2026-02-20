@@ -50,6 +50,7 @@ final class GameController extends Controller
             'firstQuestion' => $game_data['firstQuestion'],
             'countDown' => $countDown,
             'tmdbImage' => $game_data['tmdb_image'],
+            'quizLikeInfo' => $game_data['quiz_like_info'],
         ]);
     }
 

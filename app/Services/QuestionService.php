@@ -131,7 +131,7 @@ final class QuestionService
             $answer['image'] = empty($answer['image']) ? null : $this->findAndUploadAnswerImage($answer['image'], $answerImages);
 
             $tmdb_image = empty($answer['tmdb_image']) ? null : $answer['tmdb_image'];
-            if (is_null($tmdb_image) === false) {                
+            if (is_null($tmdb_image) === false) {
                 $answer['image'] = $tmdbService->saveTmdbImage($tmdb_image);
             }
 

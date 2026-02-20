@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 final class Quiz extends Model
 {
     /** @use HasFactory<\Database\Factories\QuizFactory> */
-    use HasFactory;
+    use HasFactory, HasLikes;
 
     /**
      * @var list<string>

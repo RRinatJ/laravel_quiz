@@ -12,9 +12,11 @@ use App\Models\Quiz;
 use App\Models\User;
 use Exception;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -94,5 +96,13 @@ final class QuizController extends Controller
         } catch (Exception) {
             return redirect()->route('quiz.index')->with('error', 'Failed to delete the quiz');
         }
+    }
+
+    public function like(Quiz $quiz): JsonResponse
+    {
+        $changes = $quiz->toggleLike($this->user);
+        $changes['count'] = Number::abbreviate($changes['count']);
+
+        return response()->json($changes);
     }
 }

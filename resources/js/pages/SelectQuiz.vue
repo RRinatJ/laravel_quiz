@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import FilterItem from '@/components/FilterItem.vue';
 import Pagination from '@/components/pagination/Pagination.vue';
 import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
 import { home } from '@/routes';
 import { create } from '@/routes/game';
-import { PaginatedResponse, Quiz } from '@/types';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { PaginatedResourceResponse, Quiz } from '@/types';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
+import { Heart } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 
 interface Props {
-    quizzes: PaginatedResponse<Quiz>;
+    quizzes: PaginatedResourceResponse<Quiz>;
     filters?: {
         quiz_title: string;
     };
@@ -17,13 +19,17 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const page = usePage();
+const user = page.props.auth.user;
 const quiz_title = ref(props.filters?.quiz_title || '');
+const filterByLiked = ref(false);
 
 const filter = useDebounceFn(() => {
     router.get(
         home().url,
         {
             quiz_title: quiz_title.value,
+            liked: filterByLiked.value,
         },
         {
             preserveState: true,
@@ -35,6 +41,11 @@ const filter = useDebounceFn(() => {
 watch(quiz_title, () => {
     filter();
 });
+
+const filterLiked = () => {
+    filterByLiked.value = !filterByLiked.value;
+    filter();
+};
 </script>
 
 <template>
@@ -77,6 +88,26 @@ watch(quiz_title, () => {
                                     />
                                 </div>
                             </label>
+                            <div
+                                class="flex flex-col items-center gap-3 py-3 md:flex-row"
+                                :class="user === null ? 'hidden' : ''"
+                            >
+                                <FilterItem
+                                    :checkValue="filterByLiked"
+                                    text="Liked Quizzes"
+                                    @click="filterLiked"
+                                >
+                                    <Heart
+                                        :stroke-width="0"
+                                        :size="16"
+                                        :class="
+                                            filterByLiked
+                                                ? 'fill-white'
+                                                : 'fill-red-500'
+                                        "
+                                    />
+                                </FilterItem>
+                            </div>
                         </div>
                         <div class="flex flex-wrap justify-between gap-3 py-4">
                             <p
@@ -115,6 +146,29 @@ watch(quiz_title, () => {
                                         >
                                             {{ quiz.description }}
                                         </p>
+                                        <div class="flex items-center gap-3">
+                                            <!-- <p class="text-[#617589] text-sm font-normal leading-normal">Last Score: 80</p> -->
+                                            <div
+                                                v-if="
+                                                    quiz.likes_count &&
+                                                    quiz.likes_count > 0
+                                                "
+                                                class="flex items-center gap-1 text-[#617589]"
+                                            >
+                                                <span
+                                                    class="material-symbols-outlined text-[16px]"
+                                                    ><Heart
+                                                        :size="16"
+                                                        class="fill-[#49739c]"
+                                                /></span>
+                                                <span
+                                                    class="text-sm leading-normal font-normal"
+                                                    >{{
+                                                        quiz.likes_count
+                                                    }}</span
+                                                >
+                                            </div>
+                                        </div>
                                     </div>
                                 </Link>
                             </div>
@@ -124,7 +178,7 @@ watch(quiz_title, () => {
                         class="mt-4"
                         v-if="
                             quizzes !== undefined &&
-                            quizzes.total > quizzes.per_page
+                            quizzes.meta.total > quizzes.meta.per_page
                         "
                     >
                         <Pagination :data="quizzes" />

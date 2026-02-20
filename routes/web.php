@@ -28,9 +28,10 @@ Route::get('/articles/{article:slug}', [ArticleController::class, 'by_slug'])->n
 
 Route::middleware('auth')->group(function (): void {
     Route::resource('quiz', QuizController::class)->except([
-        'update', 'show',
+        'update', 'show', 'like',
     ]);
     Route::post('/quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
+    Route::get('/quiz/{quiz}/like', [QuizController::class, 'like'])->name('quiz.like');
 
     Route::resource('question', QuestionController::class)->except([
         'update', 'show',
