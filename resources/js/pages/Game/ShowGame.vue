@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
-import { edit } from '@/routes/game';
+import { home } from '@/routes';
+import { edit, set_update } from '@/routes/game';
 import { like } from '@/routes/quiz';
 import { AnswerInGame, Game } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
@@ -74,7 +75,7 @@ const setAnswerId = (choserAnswerId: number) => {
 };
 
 const NewGame = () => {
-    router.get('/');
+    router.get(home());
 };
 
 const fiftyFiftyHint = () => {
@@ -107,7 +108,7 @@ const countDownTimer = () => {
 };
 
 const startAudio = () => {
-    axios.get('/game/set_update/' + props.game.id).then((response) => {
+    axios.get(set_update.url(props.game.id)).then((response) => {
         if (response.data && response.data.status !== undefined) {
             isStarted.value = true;
             countDownTimer();

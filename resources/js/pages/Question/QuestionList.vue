@@ -83,7 +83,7 @@ const deleteQuestion = (id: number) => {
             <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">Question list</h1>
             </div>
-            <ShowError class="mb-6" :message="error" />
+            <ShowError class="mb-6" :error="error" />
             <ShowMessage class="mb-6" :message="message" />
             <div class="mb-6 rounded-lg p-4 shadow">
                 <Button size="lg" class="mr-2 h-9 w-9">

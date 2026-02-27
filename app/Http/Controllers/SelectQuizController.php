@@ -17,6 +17,7 @@ final class SelectQuizController extends Controller
     {
         $quiz_title = $request->string('quiz_title');
         $liked = $request->boolean('liked');
+        $popular = $request->boolean('popular');
 
         return Inertia::render('SelectQuiz', [
             'quizzes' => SelectQuizResource::collection(
@@ -32,6 +33,10 @@ final class SelectQuizController extends Controller
                         $query->whereHas('likes', function ($sub_query): void {
                             $sub_query->where('user_id', Auth::id());
                         });
+                    })
+                    ->when($popular, function ($query): void {
+                        $query->withCount('games')
+                            ->orderBy('games_count', 'desc');
                     })
                     ->paginate(10)
                     ->withQueryString()

@@ -2,12 +2,13 @@
 import FilterItem from '@/components/FilterItem.vue';
 import Pagination from '@/components/pagination/Pagination.vue';
 import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
+import ShowError from '@/components/ShowError.vue';
 import { home } from '@/routes';
 import { create } from '@/routes/game';
 import { PaginatedResourceResponse, Quiz } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
-import { Heart } from 'lucide-vue-next';
+import { Heart, TrendingUp } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 
 interface Props {
@@ -17,25 +18,36 @@ interface Props {
     };
 }
 
+interface filterParams extends Record<string, any> {
+    quiz_title?: string;
+    liked?: boolean;
+    popular?: boolean;
+}
+
 const props = defineProps<Props>();
 
 const page = usePage();
 const user = page.props.auth.user;
+const error = page.props.errors.error as string | undefined;
 const quiz_title = ref(props.filters?.quiz_title || '');
 const filterByLiked = ref(false);
+const sortByPopular = ref(false);
 
 const filter = useDebounceFn(() => {
-    router.get(
-        home().url,
-        {
-            quiz_title: quiz_title.value,
-            liked: filterByLiked.value,
-        },
-        {
-            preserveState: true,
-            replace: true,
-        },
-    );
+    const params = <filterParams>{};
+    if (quiz_title.value) {
+        params.quiz_title = quiz_title.value;
+    }
+    if (filterByLiked.value) {
+        params.liked = filterByLiked.value;
+    }
+    if (sortByPopular.value) {
+        params.popular = sortByPopular.value;
+    }
+    router.get(home().url, params, {
+        preserveState: true,
+        replace: true,
+    });
 }, 500);
 
 watch(quiz_title, () => {
@@ -44,6 +56,10 @@ watch(quiz_title, () => {
 
 const filterLiked = () => {
     filterByLiked.value = !filterByLiked.value;
+    filter();
+};
+const sortPopular = () => {
+    sortByPopular.value = !sortByPopular.value;
     filter();
 };
 </script>
@@ -90,12 +106,12 @@ const filterLiked = () => {
                             </label>
                             <div
                                 class="flex flex-col items-center gap-3 py-3 md:flex-row"
-                                :class="user === null ? 'hidden' : ''"
                             >
                                 <FilterItem
                                     :checkValue="filterByLiked"
                                     text="Liked Quizzes"
                                     @click="filterLiked"
+                                    :class="user === null ? 'hidden' : ''"
                                 >
                                     <Heart
                                         :stroke-width="0"
@@ -104,6 +120,21 @@ const filterLiked = () => {
                                             filterByLiked
                                                 ? 'fill-white'
                                                 : 'fill-red-500'
+                                        "
+                                    />
+                                </FilterItem>
+                                <FilterItem
+                                    :checkValue="sortByPopular"
+                                    text="By Popular"
+                                    @click="sortPopular"
+                                >
+                                    <TrendingUp
+                                        :stroke-width="0"
+                                        :size="32"
+                                        :class="
+                                            sortByPopular
+                                                ? 'fill-white'
+                                                : 'fill-blue-500'
                                         "
                                     />
                                 </FilterItem>
@@ -116,6 +147,7 @@ const filterLiked = () => {
                                 Select a Quiz
                             </p>
                         </div>
+                        <ShowError class="mb-6" :error="error" />
                         <div
                             class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
                         >

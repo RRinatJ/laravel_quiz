@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
 use App\Services\GameService;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +17,11 @@ final class GameController extends Controller
 {
     public function store(int $quiz_id, GameService $gameService): RedirectResponse
     {
-        $game = $gameService->createGame($quiz_id);
+        try {
+            $game = $gameService->createGame($quiz_id);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return redirect()
             ->route('game.show', ['game_id' => $game->id]);

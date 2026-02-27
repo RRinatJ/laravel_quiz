@@ -8,6 +8,7 @@ use App\Models\Game;
 use App\Models\GameStep;
 use App\Models\Question;
 use App\Models\Quiz;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
@@ -17,6 +18,7 @@ final readonly class GameService
     public function createGame(int $quiz_id, ?int $chat_id = null): Game
     {
         $quiz = Quiz::with('questions:id')->where('is_work', 1)->find($quiz_id);
+        throw_if($quiz === null, new Exception('Quiz not found'));
         $question_row = $quiz->questions->shuffle()->pluck('id')->toArray();
 
         return Game::query()->create([

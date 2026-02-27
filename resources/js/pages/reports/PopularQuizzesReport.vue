@@ -149,7 +149,12 @@ if (Array.isArray(props.filters)) {
                                 {{ quiz.quiz_id }}
                             </td>
                             <td class="border-b px-4 py-2">
-                                {{ quiz.quiz.title }}
+                                <span v-if="quiz.quiz">{{
+                                    quiz.quiz.title
+                                }}</span>
+                                <span v-else class="text-gray-500 italic"
+                                    >Deleted</span
+                                >
                             </td>
                             <td class="border-b px-4 py-2">
                                 {{ quiz.play_count }}
