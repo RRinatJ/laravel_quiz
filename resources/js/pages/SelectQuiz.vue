@@ -13,6 +13,13 @@ import { ref, watch } from 'vue';
 
 interface Props {
     quizzes: PaginatedResourceResponse<Quiz>;
+    games_result: {
+        [key: number]: {
+            quiz_id: number;
+            correct_count: number;
+            created_at: string;
+        };
+    };
     filters?: {
         quiz_title: string;
         liked: boolean;
@@ -206,7 +213,16 @@ const sortLikes = () => {
                                             {{ quiz.description }}
                                         </p>
                                         <div class="flex items-center gap-3">
-                                            <!-- <p class="text-[#617589] text-sm font-normal leading-normal">Last Score: 80</p> -->
+                                            <p
+                                                v-if="games_result[quiz.id]"
+                                                class="text-sm leading-normal font-normal text-[#617589]"
+                                            >
+                                                Last Score:
+                                                {{
+                                                    games_result[quiz.id]
+                                                        .correct_count
+                                                }}
+                                            </p>
                                             <div
                                                 v-if="
                                                     quiz.likes_count &&
