@@ -15,6 +15,9 @@ interface Props {
     quizzes: PaginatedResourceResponse<Quiz>;
     filters?: {
         quiz_title: string;
+        liked: boolean;
+        popular: boolean;
+        sort_by_likes: boolean;
     };
 }
 
@@ -22,6 +25,7 @@ interface filterParams extends Record<string, any> {
     quiz_title?: string;
     liked?: boolean;
     popular?: boolean;
+    sort_by_likes?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -30,8 +34,9 @@ const page = usePage();
 const user = page.props.auth.user;
 const error = page.props.errors.error as string | undefined;
 const quiz_title = ref(props.filters?.quiz_title || '');
-const filterByLiked = ref(false);
-const sortByPopular = ref(false);
+const filterByLiked = ref(props.filters?.liked || false);
+const sortByPopular = ref(props.filters?.popular || false);
+const sortByLikes = ref(props.filters?.sort_by_likes || false);
 
 const filter = useDebounceFn(() => {
     const params = <filterParams>{};
@@ -43,6 +48,9 @@ const filter = useDebounceFn(() => {
     }
     if (sortByPopular.value) {
         params.popular = sortByPopular.value;
+    }
+    if (sortByLikes.value) {
+        params.sort_by_likes = sortByLikes.value;
     }
     router.get(home().url, params, {
         preserveState: true,
@@ -60,6 +68,10 @@ const filterLiked = () => {
 };
 const sortPopular = () => {
     sortByPopular.value = !sortByPopular.value;
+    filter();
+};
+const sortLikes = () => {
+    sortByLikes.value = !sortByLikes.value;
     filter();
 };
 </script>
@@ -135,6 +147,21 @@ const sortPopular = () => {
                                             sortByPopular
                                                 ? 'fill-white'
                                                 : 'fill-blue-500'
+                                        "
+                                    />
+                                </FilterItem>
+                                <FilterItem
+                                    :checkValue="sortByLikes"
+                                    text="Sort By Likes"
+                                    @click="sortLikes"
+                                >
+                                    <Heart
+                                        :stroke-width="0"
+                                        :size="16"
+                                        :class="
+                                            sortByLikes
+                                                ? 'fill-white'
+                                                : 'fill-red-500'
                                         "
                                     />
                                 </FilterItem>
