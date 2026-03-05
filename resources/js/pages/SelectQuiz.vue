@@ -215,9 +215,9 @@ const sortLikes = () => {
                                         <div class="flex items-center gap-3">
                                             <p
                                                 v-if="games_result[quiz.id]"
-                                                class="text-sm leading-normal font-normal text-[#617589]"
+                                                class="text-sm leading-normal font-normal text-[#415161]"
                                             >
-                                                Last Score:
+                                                Last Score: 
                                                 {{
                                                     games_result[quiz.id]
                                                         .correct_count
