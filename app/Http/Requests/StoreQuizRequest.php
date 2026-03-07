@@ -40,6 +40,10 @@ final class StoreQuizRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'ignore_error' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

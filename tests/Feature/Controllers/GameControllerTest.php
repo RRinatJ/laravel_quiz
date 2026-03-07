@@ -165,4 +165,53 @@ final class GameControllerTest extends TestCase
         $this->assertDatabaseHas('game_steps', ['game_id' => $game->id, 'can_skip' => true]);
         $this->assertDatabaseHas('games', ['quiz_id' => $quiz->id, 'correct_count' => 1, 'user_id' => $user->id, 'can_skip' => false]);
     }
+
+    public function test_ignore_error_game(): void
+    {
+        $quiz = Quiz::factory()->has(Question::factory()->has(Answer::factory()->count(2))->count(2))->create(
+            [
+                'ignore_error' => true,
+                'is_work' => true,
+            ]
+        );
+
+        $this->get(route('game.create', [
+            'quiz_id' => $quiz->id,
+        ]));
+        $game = Game::with('question.answers', 'quiz')->where('quiz_id', $quiz->id)->first();
+
+        $answer = $game->question->answers->first();
+        $answer->is_correct = false;
+        $answer->save();
+
+        $response = $this->post(route('game.edit', [
+            'game_id' => $game->id,
+            'sort_array' => [],
+            'answer_id' => $answer->id,
+        ]));
+        $response->assertStatus(302);
+
+        $game = Game::with('question.answers', 'quiz')->where('quiz_id', $quiz->id)->first();
+        $answer = $game->question->answers->first();
+        $answer->is_correct = true;
+        $answer->save();
+
+        $response = $this->post(route('game.edit', [
+            'game_id' => $game->id,
+            'sort_array' => [],
+            'answer_id' => $answer->id,
+        ]));
+        $response->assertStatus(302);
+
+        $response = $this->get(route('game.show', [
+            'game_id' => $game->id,
+        ]));
+        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page): Assert => $page
+            ->component('Game/ShowGame')
+            ->where('game.id', $game->id)
+            ->where('game.quiz.id', $quiz->id)
+            ->where('questionsCount', 2)
+            ->where('game.correct_count', 1));
+    }
 }

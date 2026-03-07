@@ -45,9 +45,12 @@ final class GameController extends Controller
             $countDown = 0;
         }
 
+        $currentStepIndex = array_search($game->latestStep?->question_id, $game->question_row);
+
         return Inertia::render('Game/ShowGame', [
             'game' => new GameResource($game),
             'answers' => $game_data['answers'],
+            'currentStep' => $currentStepIndex !== false ? $currentStepIndex + 1 : 0,
             'questionsCount' => count($game->question_row),
             'error' => $game_data['error'],
             'message' => $game_data['message'],
@@ -64,12 +67,12 @@ final class GameController extends Controller
         $sort_array = $request->array('sort_array');
         $fifty_fifty_hint = $request->boolean('fifty_fifty_hint');
         $can_skip = $request->boolean('can_skip');
-        $game = Game::with('quiz', 'question.answers')->find($game_id);
+        $game = Game::with('quiz', 'question.answers', 'latestStep')->find($game_id);
+        $error = $game->latestStep !== null ? $service->getError($game) : '';
         abort_if(
-            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false),
+            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false) || ($error === '' || $error === '0') === false,
             400
         );
-
         $service->processAnswer(
             $request->integer('answer_id'),
             $game,

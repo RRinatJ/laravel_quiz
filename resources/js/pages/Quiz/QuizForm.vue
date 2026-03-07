@@ -35,6 +35,7 @@ const form = useForm({
     fifty_fifty_hint: quiz?.fifty_fifty_hint || false,
     can_skip: quiz?.can_skip || false,
     for_telegram: quiz?.for_telegram || false,
+    ignore_error: quiz?.ignore_error || false,
     uploaded_image: null as File | null,
 });
 
@@ -191,6 +192,14 @@ const setUploadedImage = (e: Event) => {
                         <InputError
                             class="mt-2"
                             :message="form.errors.can_skip"
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <Label for="ignore_error">Ignore Error</Label><br />
+                        <Switch id="ignore_error" v-model="form.ignore_error" />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.ignore_error"
                         />
                     </div>
                     <div class="mb-4">

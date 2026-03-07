@@ -65,6 +65,7 @@ final class QuizControllerTest extends TestCase
             'fifty_fifty_hint' => true,
             'can_skip' => false,
             'for_telegram' => false,
+            'ignore_error' => false,
         ]);
 
         $response->assertStatus(302);
@@ -114,6 +115,7 @@ final class QuizControllerTest extends TestCase
             'fifty_fifty_hint' => true,
             'can_skip' => false,
             'for_telegram' => false,
+            'ignore_error' => false,
         ]);
 
         $response->assertStatus(302);

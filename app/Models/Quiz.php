@@ -27,6 +27,7 @@ final class Quiz extends Model
         'fifty_fifty_hint',
         'can_skip',
         'for_telegram',
+        'ignore_error',
         'description',
     ];
 
@@ -73,6 +74,7 @@ final class Quiz extends Model
             'fifty_fifty_hint' => 'boolean',
             'can_skip' => 'boolean',
             'for_telegram' => 'boolean',
+            'ignore_error' => 'boolean',
         ];
     }
 }

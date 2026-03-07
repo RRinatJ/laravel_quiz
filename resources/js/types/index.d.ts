@@ -54,6 +54,7 @@ export interface Quiz {
     fifty_fifty_hint?: boolean;
     can_skip?: boolean;
     for_telegram?: boolean;
+    ignore_error?: boolean;
     likes_count?: number;
 }
 
@@ -139,6 +140,7 @@ export interface Game {
     created_at?: string;
     fifty_fifty_hint: boolean;
     can_skip: boolean;
+    time_taken?: string;
 }
 
 export interface aiQuestionText {

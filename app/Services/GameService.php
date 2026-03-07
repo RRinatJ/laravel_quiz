@@ -88,11 +88,17 @@ final readonly class GameService
             'can_skip' => $can_skip,
         ]);
 
-        if ($times_out) {
+        if ($times_out && ! $game->quiz->ignore_error) {
             return;
         }
         if ($game_step->is_correct || $game_step->can_skip) {
             $this->processCorrectQuestion($game, $game_step);
+        } elseif ($game->quiz->ignore_error) {
+            $current_question_id = $this->goToNextQuestion($game, $game_step->question_id);
+            if ($current_question_id !== null) {
+                $game->current_question_id = $current_question_id;
+            }
+            $game->save();
         }
     }
 
@@ -106,6 +112,7 @@ final readonly class GameService
     public function getError(Game $game): string
     {
         return match (true) {
+            $game->quiz->ignore_error === true => '',
             $game->latestStep->times_out => 'Times is out!',
             $game->latestStep->is_correct === false && $game->latestStep->can_skip === false => 'Error answer!',
             default => ''

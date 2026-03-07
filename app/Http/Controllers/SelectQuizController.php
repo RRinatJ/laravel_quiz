@@ -9,9 +9,9 @@ use App\Models\Game;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Cache;
 
 final class SelectQuizController extends Controller
 {
@@ -49,17 +49,15 @@ final class SelectQuizController extends Controller
         $games_result = collect();
         if (Auth::check() && count($quizzes_ids) > 0) {
             $games_result = Cache::flexible(
-                    'games_result.'.md5(serialize($quizzes_ids).Auth::id()), 
-                    [110, 120], 
-                    function () use ($quizzes_ids) {
-                        return Game::query()
-                            ->selectRaw('quiz_id, correct_count, MAX(created_at) AS created_at')
-                            ->where('user_id', Auth::id())
-                            ->whereIn('quiz_id', $quizzes_ids)
-                            ->groupBy('quiz_id')
-                            ->get()
-                            ->keyBy('quiz_id');
-            });
+                'games_result.'.md5(serialize($quizzes_ids).Auth::id()),
+                [110, 120],
+                fn () => Game::query()
+                    ->selectRaw('quiz_id, correct_count, MAX(created_at) AS created_at')
+                    ->where('user_id', Auth::id())
+                    ->whereIn('quiz_id', $quizzes_ids)
+                    ->groupBy('quiz_id')
+                    ->get()
+                    ->keyBy('quiz_id'));
         }
 
         return Inertia::render('SelectQuiz', [
