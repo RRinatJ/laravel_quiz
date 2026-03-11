@@ -29,7 +29,7 @@ final class StoreQuestionRequest extends FormRequest
             'answers.*.image' => 'required_without_all:answers.*.text,answers.*.tmdb_image|nullable|string',
             'answers.*.tmdb_image' => 'nullable|string',
             'answer_images' => 'nullable|array',
-            'uploaded_image' => 'required_without_all:question,image,audio,uploaded_audio,tmdb_image|nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'uploaded_image' => 'required_without_all:question,image,audio,uploaded_audio,tmdb_image|nullable|mimes:jpg,jpeg,png|max:2048',
             'uploaded_audio' => 'required_without_all:question,image,audio,uploaded_image,tmdb_image|nullable|mimes:mp3,wav,m4a|max:2048',
             'tmdb_image' => 'nullable|string',
             'image' => 'required_without_all:question,uploaded_image,audio,uploaded_audio,tmdb_image|nullable|string',

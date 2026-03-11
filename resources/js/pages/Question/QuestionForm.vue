@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
+import Overlay from '@/components/Overlay.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
 import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
@@ -240,7 +242,7 @@ const setImageFromTmdb = (file_path: string) => {
                         />
                     </div>
                     <div class="mb-4">
-                        <Label for="image">Image</Label>
+                        <Label>Image</Label>
                         <img
                             v-if="question && question.image"
                             class="mt-1 w-96"
@@ -257,14 +259,14 @@ const setImageFromTmdb = (file_path: string) => {
                                 >Delete Image</Button
                             >
                         </div>
-                        <div class="mt-2">
-                            <Input
-                                :disabled="form.tmdb_image !== ''"
-                                class="mt-1 block"
-                                id="image"
-                                type="file"
-                                @input="setUploadedImage"
-                            />
+                        <div class="mt-2 md:w-sm">
+                            <Overlay :isBlur="form.tmdb_image !== ''">
+                                <DropFile
+                                    id="question-image"
+                                    class="mt-2"
+                                    @input="setUploadedImage"
+                                />
+                            </Overlay>
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.image"

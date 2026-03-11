@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
 import { Button } from '@/components/ui/button';
@@ -37,6 +38,7 @@ const form = useForm({
     for_telegram: quiz?.for_telegram || false,
     ignore_error: quiz?.ignore_error || false,
     uploaded_image: null as File | null,
+    image: quiz?.image || null,
 });
 
 const isEditMode = computed(() => !!props.quiz);
@@ -89,6 +91,12 @@ const setUploadedImage = (e: Event) => {
     }
     form.uploaded_image = files[0];
 };
+
+const deleteImage = () => {
+    form.uploaded_image = null;
+    form.image = null;
+    quiz.image = null;
+};
 </script>
 
 <template>
@@ -105,7 +113,7 @@ const setUploadedImage = (e: Event) => {
             <div class="mb-6 rounded-lg p-4 shadow">
                 <div>
                     <ShowMessage class="mb-6" :message="props.message" />
-                    <div class="mb-4 w-sm">
+                    <div class="mb-4 md:w-sm">
                         <Label for="title">Title</Label>
                         <Input
                             id="title"
@@ -132,18 +140,22 @@ const setUploadedImage = (e: Event) => {
                             :message="form.errors.description"
                         />
                     </div>
-                    <div class="mb-4 w-sm">
-                        <Label for="image">Image</Label>
+                    <div class="mb-4 md:w-sm">
+                        <Label>Image</Label>
                         <img
                             v-if="quiz && quiz.image"
                             class="mt-1 w-96"
                             :src="'/storage/' + quiz.image"
                             srcset=""
                         />
-                        <Input
-                            class="mt-1 block"
-                            id="image"
-                            type="file"
+                        <div class="mt-2 mb-2" v-if="quiz && quiz.image">
+                            <Button variant="destructive" @click="deleteImage">
+                                Delete Image
+                            </Button>
+                        </div>
+                        <DropFile
+                            id="quiz-image"
+                            class="mt-2"
                             @input="setUploadedImage"
                         />
                         <InputError
@@ -151,7 +163,7 @@ const setUploadedImage = (e: Event) => {
                             :message="form.errors.uploaded_image"
                         />
                     </div>
-                    <div class="mb-4 w-sm">
+                    <div class="mb-4 md:w-sm">
                         <Label for="timer_count">Timer Count</Label>
                         <Input
                             id="timer_count"
