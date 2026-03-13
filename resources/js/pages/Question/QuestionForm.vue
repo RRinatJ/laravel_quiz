@@ -22,6 +22,7 @@ import {
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
+import { CircleX } from 'lucide-vue-next';
 
 interface Props {
     question?: { data: object };
@@ -241,23 +242,25 @@ const setImageFromTmdb = (file_path: string) => {
                             :message="form.errors.question"
                         />
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
-                        <img
-                            v-if="question && question.image"
-                            class="mt-1 w-96"
-                            :src="'/storage/' + question.image"
-                            srcset=""
-                        />
-                        <div v-if="form && form.tmdb_image" class="relative">
-                            <div class="mb-4">
-                                <img :src="form.tmdb_image" srcset="" />
+                        <div class="relative">
+                            <img
+                                v-if="question && question.image"
+                                class="mt-1"
+                                :src="'/storage/' + question.image"
+                                srcset=""
+                            />
+                            <div v-if="form && form.tmdb_image" class="relative">
+                                <div class="mb-4">
+                                    <img :src="form.tmdb_image" srcset="" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-2" v-if="question && question.image">
-                            <Button variant="destructive" @click="deleteImage"
-                                >Delete Image</Button
-                            >
+                            <div class="absolute top-3 right-3" v-if="(question && question.image) || form.tmdb_image">
+                                <Button variant="destructive" @click="deleteImage">
+                                    <CircleX />
+                                </Button>
+                            </div>
                         </div>
                         <div class="mt-2 md:w-sm">
                             <Overlay :isBlur="form.tmdb_image !== ''">

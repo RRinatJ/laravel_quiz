@@ -18,6 +18,7 @@ import { type BreadcrumbItem, type Quiz } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { InfoIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { CircleX } from 'lucide-vue-next';
 
 interface Props {
     quiz?: object;
@@ -142,16 +143,18 @@ const deleteImage = () => {
                     </div>
                     <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
-                        <img
-                            v-if="quiz && quiz.image"
-                            class="mt-1 w-96"
-                            :src="'/storage/' + quiz.image"
-                            srcset=""
-                        />
-                        <div class="mt-2 mb-2" v-if="quiz && quiz.image">
-                            <Button variant="destructive" @click="deleteImage">
-                                Delete Image
-                            </Button>
+                        <div class="relative">
+                            <img
+                                v-if="quiz && quiz.image"
+                                class="mt-1"
+                                :src="'/storage/' + quiz.image"
+                                srcset=""
+                            />
+                            <div class="absolute top-3 right-3" v-if="quiz && quiz.image">
+                                <Button variant="destructive" @click="deleteImage">
+                                    <CircleX />
+                                </Button>
+                            </div>
                         </div>
                         <DropFile
                             id="quiz-image"
