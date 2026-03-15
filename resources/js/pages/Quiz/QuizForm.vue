@@ -143,7 +143,7 @@ const deleteImage = () => {
                     </div>
                     <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
-                        <div class="relative">
+                        <div class="relative inline-block">
                             <img
                                 v-if="quiz && quiz.image"
                                 class="mt-1"

@@ -244,7 +244,7 @@ const setImageFromTmdb = (file_path: string) => {
                     </div>
                     <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
-                        <div class="relative">
+                        <div class="relative inline-block">
                             <img
                                 v-if="question && question.image"
                                 class="mt-1"
