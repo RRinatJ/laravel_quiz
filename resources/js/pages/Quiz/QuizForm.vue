@@ -16,9 +16,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { store, update } from '@/routes/quiz';
 import { type BreadcrumbItem, type Quiz } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { InfoIcon } from 'lucide-vue-next';
+import { CircleX, InfoIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { CircleX } from 'lucide-vue-next';
 
 interface Props {
     quiz?: object;
@@ -150,8 +149,14 @@ const deleteImage = () => {
                                 :src="'/storage/' + quiz.image"
                                 srcset=""
                             />
-                            <div class="absolute top-3 right-3" v-if="quiz && quiz.image">
-                                <Button variant="destructive" @click="deleteImage">
+                            <div
+                                class="absolute top-3 right-3"
+                                v-if="quiz && quiz.image"
+                            >
+                                <Button
+                                    variant="destructive"
+                                    @click="deleteImage"
+                                >
                                     <CircleX />
                                 </Button>
                             </div>

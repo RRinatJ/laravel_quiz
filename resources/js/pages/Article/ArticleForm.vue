@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
-import DropFile from '@/components/DropFile.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,9 +10,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { index, slug, store, update } from '@/routes/article';
 import { type Article, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { ExternalLink } from 'lucide-vue-next';
+import { CircleX, ExternalLink } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { CircleX } from 'lucide-vue-next';
 
 interface Props {
     article?: object;
@@ -144,8 +143,14 @@ const deleteImage = () => {
                                 :src="'/storage/' + article.image"
                                 srcset=""
                             />
-                            <div class="absolute top-3 right-3" v-if="article && article.image">
-                                <Button variant="destructive" @click="deleteImage">
+                            <div
+                                class="absolute top-3 right-3"
+                                v-if="article && article.image"
+                            >
+                                <Button
+                                    variant="destructive"
+                                    @click="deleteImage"
+                                >
                                     <CircleX />
                                 </Button>
                             </div>
@@ -154,7 +159,7 @@ const deleteImage = () => {
                             id="article-image"
                             class="mt-2"
                             @input="setUploadedImage"
-                        />                        
+                        />
                         <InputError
                             class="mt-2"
                             :message="form.errors.uploaded_image"

@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Actions\QuizStoreAction;
 use App\Actions\QuizUpdateAction;
 use App\Enums\UserRole;
+use App\Http\Requests\SearchQuizRequest;
 use App\Http\Requests\StoreQuizRequest;
 use App\Models\Quiz;
 use App\Models\User;
@@ -104,5 +105,19 @@ final class QuizController extends Controller
         $changes['count'] = Number::abbreviate($changes['count']);
 
         return response()->json($changes);
+    }
+
+    public function search(SearchQuizRequest $request): JsonResponse
+    {
+        $quiz_title = $request->string('quiz_title');
+        $quizzes = Quiz::query()
+            ->select('id', 'title')
+            ->withCount('questions')
+            ->where('is_work', 1)
+            ->when($quiz_title->isNotEmpty(), function ($query) use ($quiz_title): void {
+                $query->where('title', 'like', '%'.$quiz_title.'%');
+            })->get();
+
+        return response()->json($quizzes);
     }
 }

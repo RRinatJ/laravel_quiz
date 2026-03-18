@@ -21,7 +21,7 @@ final class QuestionResource extends JsonResource
             'question' => $this->question,
             'image' => $this->image,
             'audio' => $this->audio,
-            'quizzes_ids' => $this->quizzes->pluck('id')->toArray(),
+            'quizzes' => $this->quizzes,
             'answers' => $this->answers->map(fn ($answer): array => [
                 'id' => $answer->id,
                 'text' => $answer->text,

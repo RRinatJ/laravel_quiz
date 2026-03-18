@@ -56,6 +56,7 @@ export interface Quiz {
     for_telegram?: boolean;
     ignore_error?: boolean;
     likes_count?: number;
+    questions_count?: number;
 }
 
 export interface PaginatedResourceResponse<T = unknown> {

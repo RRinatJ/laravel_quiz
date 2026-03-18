@@ -2,10 +2,10 @@
 import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
 import Overlay from '@/components/Overlay.vue';
+import QuizzesSearch from '@/components/QuizzesSearch.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
 import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -20,14 +20,13 @@ import {
     type aiQuestionText,
 } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
+import { CircleX } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
-import { CircleX } from 'lucide-vue-next';
 
 interface Props {
     question?: { data: object };
     message?: string;
-    quizzes: Quiz[];
     is_ai_available: boolean;
     is_tmdb_available: boolean;
 }
@@ -45,7 +44,7 @@ type questionForm = {
     tmdb_image: string;
     image: string;
     audio: string;
-    quizzes: number[];
+    quizzes: Quiz[];
     answer_images: File[];
     answers: Answer[];
     is_ai: boolean;
@@ -59,7 +58,7 @@ const form = useForm<questionForm>({
     tmdb_image: '',
     image: question?.image || '',
     audio: question?.audio || '',
-    quizzes: question?.quizzes_ids || [],
+    quizzes: question?.quizzes || [],
     answer_images: [],
     answers: question?.answers || [],
     is_ai: question?.is_ai || false,
@@ -98,6 +97,7 @@ const submit = () => {
         form.transform((data) => ({
             ...data,
             answers: JSON.stringify(answers.value),
+            quizzes: form.quizzes.map((quiz) => quiz.id),
         })).post(update(question.id).url, {
             preserveScroll: true,
             preserveState: 'errors',
@@ -107,6 +107,7 @@ const submit = () => {
         form.transform((data) => ({
             ...data,
             answers: JSON.stringify(answers.value),
+            quizzes: form.quizzes.map((quiz) => quiz.id),
         })).post(store().url, {
             preserveScroll: true,
             preserveState: 'errors',
@@ -169,16 +170,6 @@ const deleteAnswer = (i: number) => {
 const addToFormAnswers = (answer: Answer) => {
     answers.value.push(answer);
 };
-const handleChange = (newValue: boolean | 'indeterminate', itemId: number) => {
-    if (newValue === 'indeterminate') {
-        return;
-    }
-    if (newValue) {
-        form.quizzes.push(itemId);
-    } else {
-        form.quizzes = form.quizzes.filter((id) => id !== itemId);
-    }
-};
 
 const childFormAnswers = ref(null);
 
@@ -200,6 +191,15 @@ const useGenerateQuestion = (questionText: aiQuestionText) => {
 
 const setImageFromTmdb = (file_path: string) => {
     form.tmdb_image = file_path;
+};
+
+const addToQuizzes = (searchedQuiz: Quiz) => {
+    if (form.quizzes.some((quiz) => quiz.id === searchedQuiz.id) === false) {
+        form.quizzes.push(searchedQuiz);
+    }
+};
+const filterQuizzes = (searchedQuiz: Quiz) => {
+    form.quizzes = form.quizzes.filter((quiz) => quiz.id !== searchedQuiz.id);
 };
 </script>
 
@@ -251,13 +251,25 @@ const setImageFromTmdb = (file_path: string) => {
                                 :src="'/storage/' + question.image"
                                 srcset=""
                             />
-                            <div v-if="form && form.tmdb_image" class="relative">
+                            <div
+                                v-if="form && form.tmdb_image"
+                                class="relative"
+                            >
                                 <div class="mb-4">
                                     <img :src="form.tmdb_image" srcset="" />
                                 </div>
                             </div>
-                            <div class="absolute top-3 right-3" v-if="(question && question.image) || form.tmdb_image">
-                                <Button variant="destructive" @click="deleteImage">
+                            <div
+                                class="absolute top-3 right-3"
+                                v-if="
+                                    (question && question.image) ||
+                                    form.tmdb_image
+                                "
+                            >
+                                <Button
+                                    variant="destructive"
+                                    @click="deleteImage"
+                                >
                                     <CircleX />
                                 </Button>
                             </div>
@@ -290,7 +302,7 @@ const setImageFromTmdb = (file_path: string) => {
                                 >Delete Audio</Button
                             >
                         </div>
-                        <div class="mt-2">
+                        <div class="mt-2 md:w-sm">
                             <Input
                                 class="mt-1 block"
                                 id="audio"
@@ -303,28 +315,12 @@ const setImageFromTmdb = (file_path: string) => {
                             />
                         </div>
                     </div>
-                    <div class="mb-4 space-y-2">
-                        <Label>Quizzes</Label>
-                        <div
-                            v-for="quiz in quizzes"
-                            :key="quiz.id"
-                            class="flex flex-row items-center space-y-0 space-x-3"
-                        >
-                            <Checkbox
-                                :id="'quizcheckbox' + quiz.id"
-                                :model-value="form.quizzes.includes(quiz.id)"
-                                @update:model-value="
-                                    (newValue) =>
-                                        handleChange(newValue, quiz.id)
-                                "
-                            />
-                            <Label
-                                class="font-normal"
-                                :for="'quizcheckbox' + quiz.id"
-                            >
-                                {{ quiz.title }}
-                            </Label>
-                        </div>
+                    <div class="mb-4 space-y-2 md:w-sm">
+                        <QuizzesSearch
+                            @add-to-quizzes="addToQuizzes"
+                            @filter-quizzes="filterQuizzes"
+                            :quizzes="form.quizzes"
+                        />
                     </div>
                     <div class="mb-4">
                         <Label for="is_ai">Is AI</Label><br />

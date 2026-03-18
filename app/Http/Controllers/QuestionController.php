@@ -56,7 +56,6 @@ final class QuestionController extends Controller
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
         return Inertia::render('Question/QuestionForm', [
-            'quizzes' => $quiz_model->select('id', 'title')->get(),
             'is_ai_available' => (bool) config('prism.providers.gemini.api_key'),
             'is_tmdb_available' => (bool) config('services.tmdb.api_key'),
         ]);
@@ -89,9 +88,10 @@ final class QuestionController extends Controller
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
+        $question->load('quizzes:id,title');
+
         return Inertia::render('Question/QuestionForm', [
             'question' => new QuestionResource($question),
-            'quizzes' => $quiz_model->select('id', 'title')->get(),
             'message' => session('message'),
             'is_ai_available' => (bool) config('prism.providers.gemini.api_key'),
             'is_tmdb_available' => (bool) config('services.tmdb.api_key'),

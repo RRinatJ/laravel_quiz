@@ -147,6 +147,8 @@ final class QuizControllerTest extends TestCase
         $this->get(route('quiz.edit', $quiz->id))->assertRedirect(route('login'));
         $this->post(route('quiz.update', $quiz->id), [])->assertRedirect(route('login'));
         $this->delete(route('quiz.destroy', $quiz->id))->assertRedirect(route('login'));
+        $this->get(route('quiz.like', $quiz->id))->assertRedirect(route('login'));
+        $this->get(route('quiz.search'))->assertRedirect(route('login'));
     }
 
     public function test_quiz_routes_require_admin_role(): void
@@ -161,6 +163,7 @@ final class QuizControllerTest extends TestCase
         $this->actingAs($user)->get(route('quiz.edit', $quiz->id))->assertStatus(403);
         $this->actingAs($user)->post(route('quiz.update', $quiz->id), [])->assertStatus(403);
         $this->actingAs($user)->delete(route('quiz.destroy', $quiz->id))->assertStatus(403);
+        $this->actingAs($user)->get(route('quiz.search'))->assertStatus(403);
     }
 
     public function test_quiz_like(): void
@@ -178,5 +181,27 @@ final class QuizControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['liked' => false, 'count' => 0]);
         $this->assertDatabaseMissing('likes', ['user_id' => $user->id, 'likeable_id' => $quiz->id, 'likeable_type' => Quiz::class]);
+    }
+
+    public function test_quiz_search(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
+        $quizzes = Quiz::factory()->count(3)->create();
+        $quiz = $quizzes->random();
+        $quiz->is_work = true;
+        $quiz->save();
+
+        $response = $this->actingAs($user)->get(route('quiz.search', [
+            'quiz_title' => $quiz->title,
+        ]));
+        $response->assertStatus(200);
+        $response->assertJson([
+            [
+                'id' => $quiz->id,
+                'title' => $quiz->title,
+                'questions_count' => 0,
+            ],
+        ]);
     }
 }
