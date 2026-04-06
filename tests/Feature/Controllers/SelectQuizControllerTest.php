@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Models\Game;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -35,6 +36,7 @@ final class SelectQuizControllerTest extends TestCase
             ->where('filters.liked', false)
             ->where('filters.popular', false)
             ->where('filters.sort_by_likes', false)
+            ->where('filters.tag', '')
         );
     }
 
@@ -258,6 +260,9 @@ final class SelectQuizControllerTest extends TestCase
 
         $quiz->like($user);
 
+        $tag = Tag::factory()->create();
+        $quiz->syncTags([$tag->name]);
+
         /** @var User $another_user */
         $another_user = User::factory()->create();
 
@@ -268,16 +273,19 @@ final class SelectQuizControllerTest extends TestCase
             'liked' => true,
             'popular' => true,
             'sort_by_likes' => true,
+            'tag' => $tag->name,
         ]));
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page): Assert => $page
             ->component('SelectQuiz')
             ->has('quizzes.data', 1)
+            ->has('tags.data', 1)
             ->where('filters.quiz_title', 'Test')
             ->where('filters.liked', true)
             ->where('filters.popular', true)
             ->where('filters.sort_by_likes', true)
+            ->where('filters.tag', $tag->name)
         );
     }
 }

@@ -16,6 +16,7 @@ import { index as articleIndex } from '@/routes/article';
 import { index as questionIndex } from '@/routes/question';
 import { index } from '@/routes/quiz';
 import { popular_quizzes, questions_report } from '@/routes/reports';
+import { index as tagIndex } from '@/routes/tag';
 import { type NavItem, type NavItemGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
@@ -23,6 +24,7 @@ import {
     LayoutGrid,
     MessageCircleQuestion,
     Newspaper,
+    Tags,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
@@ -55,6 +57,12 @@ const mainNavItems: NavItemGroup[] = [
                 title: 'Article',
                 href: articleIndex(),
                 icon: Newspaper,
+                can: auth.value.role === 'Admin',
+            },
+            {
+                title: 'Tags',
+                href: tagIndex(),
+                icon: Tags,
                 can: auth.value.role === 'Admin',
             },
         ],

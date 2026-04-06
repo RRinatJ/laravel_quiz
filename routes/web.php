@@ -10,6 +10,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SelectQuizController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\Telegram\TelegramController;
 use App\Http\Controllers\TmdbImageController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,11 @@ Route::middleware('auth')->group(function (): void {
         'update', 'show',
     ]);
     Route::post('/article/{article}', [ArticleController::class, 'update'])->name('article.update');
+
+    Route::resource('tag', TagController::class)->except([
+        'show',
+    ]);
+    Route::get('/tag/search', [TagController::class, 'search'])->name('tag.search');
 
     Route::prefix('tmdb')->name('tmdb.')->group(function (): void {
         Route::get('/search', [TmdbImageController::class, 'search'])->name('search');

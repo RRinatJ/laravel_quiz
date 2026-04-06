@@ -9,6 +9,7 @@ use App\Actions\QuizUpdateAction;
 use App\Enums\UserRole;
 use App\Http\Requests\SearchQuizRequest;
 use App\Http\Requests\StoreQuizRequest;
+use App\Http\Resources\QuizResource;
 use App\Models\Quiz;
 use App\Models\User;
 use Exception;
@@ -31,10 +32,13 @@ final class QuizController extends Controller
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
         return Inertia::render('Quiz/QuizList', [
-            'quizzes' => Quiz::query()
-                ->select('id', 'title', 'is_work', 'image', 'timer_count', 'fifty_fifty_hint', 'can_skip')
-                ->paginate(5)
-                ->withQueryString(),
+            'quizzes' => QuizResource::collection(
+                Quiz::query()
+                    ->select('id', 'title', 'is_work', 'image', 'timer_count', 'fifty_fifty_hint', 'can_skip')
+                    ->with('tags:id,name')
+                    ->paginate(5)
+                    ->withQueryString()
+            ),
             'message' => session('message'),
             'error' => session('error'),
         ]);
@@ -66,7 +70,7 @@ final class QuizController extends Controller
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
         return Inertia::render('Quiz/QuizForm', [
-            'quiz' => $quiz,
+            'quiz' => new QuizResource($quiz),
             'message' => session('message'),
         ]);
     }

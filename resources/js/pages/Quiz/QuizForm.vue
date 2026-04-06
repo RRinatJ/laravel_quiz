@@ -2,6 +2,7 @@
 import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
+import TagsSearch from '@/components/TagsSearch.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,18 +15,18 @@ import {
 } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { store, update } from '@/routes/quiz';
-import { type BreadcrumbItem, type Quiz } from '@/types';
+import { type BreadcrumbItem, type Quiz, type Tag } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { CircleX, InfoIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
-    quiz?: object;
+    quiz?: { data: object };
     message?: string;
 }
 
 const props = defineProps<Props>();
-const quiz = props.quiz as Quiz;
+const quiz = props.quiz?.data as Quiz;
 
 const form = useForm({
     id: quiz?.id || null,
@@ -39,6 +40,7 @@ const form = useForm({
     ignore_error: quiz?.ignore_error || false,
     uploaded_image: null as File | null,
     image: quiz?.image || null,
+    tags: quiz?.tags || [],
 });
 
 const isEditMode = computed(() => !!props.quiz);
@@ -96,6 +98,15 @@ const deleteImage = () => {
     form.uploaded_image = null;
     form.image = null;
     quiz.image = null;
+};
+
+const addToTags = (searchedTag: Tag) => {
+    if (form.tags.some((tag) => tag.name === searchedTag.name) === false) {
+        form.tags.push(searchedTag);
+    }
+};
+const filterTags = (searchedTag: Tag) => {
+    form.tags = form.tags.filter((tag) => tag.name !== searchedTag.name);
 };
 </script>
 
@@ -184,6 +195,13 @@ const deleteImage = () => {
                         <InputError
                             class="mt-2"
                             :message="form.errors.timer_count"
+                        />
+                    </div>
+                    <div class="mb-4 space-y-2 md:w-sm">
+                        <TagsSearch
+                            @add-to-tags="addToTags"
+                            @filter-tags="filterTags"
+                            :tags="form.tags"
                         />
                     </div>
                     <div class="mb-4">

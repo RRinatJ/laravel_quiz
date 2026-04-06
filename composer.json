@@ -16,7 +16,8 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
-        "prism-php/prism": "^0.98.0"
+        "prism-php/prism": "^0.98.0",
+        "spatie/laravel-tags": "^4.11"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.0",

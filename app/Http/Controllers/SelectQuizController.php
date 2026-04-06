@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SelectQuizResource;
+use App\Http\Resources\TagResource;
 use App\Models\Game;
 use App\Models\Quiz;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -21,6 +23,7 @@ final class SelectQuizController extends Controller
         $liked = $request->boolean('liked');
         $popular = $request->boolean('popular');
         $sort_by_likes = $request->boolean('sort_by_likes');
+        $tag = $request->string('tag');
 
         $quizzes = Quiz::query()
             ->select('id', 'title', 'description', 'image')
@@ -34,6 +37,9 @@ final class SelectQuizController extends Controller
                 $query->whereHas('likes', function ($sub_query): void {
                     $sub_query->where('user_id', Auth::id());
                 });
+            })
+            ->when($tag->isNotEmpty(), function ($query) use ($tag): void {
+                $query->withAnyTags([$tag]);
             })
             ->when($popular, function ($query): void {
                 $query->withCount('games')
@@ -60,16 +66,26 @@ final class SelectQuizController extends Controller
                     ->keyBy('quiz_id'));
         }
 
+        $tags = Cache::remember('select-quiz-tags', 360, fn () => TagResource::collection(Tag::query()
+            ->select('id', 'name')
+            ->withCount('quizzes')
+            ->where('quizzes_count', '>', 0)
+            ->orderBy('quizzes_count', 'desc')
+            ->get()
+        ));
+
         return Inertia::render('SelectQuiz', [
             'quizzes' => SelectQuizResource::collection(
                 $quizzes
             ),
             'games_result' => $games_result,
+            'tags' => $tags,
             'filters' => [
                 'quiz_title' => $quiz_title,
                 'liked' => $liked,
                 'popular' => $popular,
                 'sort_by_likes' => $sort_by_likes,
+                'tag' => $tag,
             ],
         ]);
     }

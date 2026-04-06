@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import OnOffIcon from '@/components/OnOffIcon.vue';
+import Pagination from '@/components/pagination/Pagination.vue';
 import ShowError from '@/components/ShowError.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
-import Pagination from '@/components/pagination/Pagination.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { create, destroy, edit } from '@/routes/quiz';
@@ -67,6 +68,7 @@ const deleteQuiz = (id: number) => {
                                 Time count
                             </th>
                             <th class="border-b px-4 py-2 text-left">Hints</th>
+                            <th class="border-b px-4 py-2 text-left">Tags</th>
                             <th class="border-b px-4 py-2 text-left">
                                 Edit/Delete
                             </th>
@@ -104,6 +106,16 @@ const deleteQuiz = (id: number) => {
                                     v-if="quiz.can_skip !== undefined"
                                     :check-value="quiz.can_skip"
                                 />
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                <Badge
+                                    v-for="tag in quiz.tags"
+                                    :key="tag.id"
+                                    class="mr-1 w-min whitespace-nowrap"
+                                    variant="secondary"
+                                >
+                                    {{ tag.name }}
+                                </Badge>
                             </td>
                             <td class="border-b px-4 py-2">
                                 <Button size="lg" class="mr-2 h-9 w-9">

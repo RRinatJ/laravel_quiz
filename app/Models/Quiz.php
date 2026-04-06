@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Tags\HasTags;
 
 final class Quiz extends Model
 {
     /** @use HasFactory<\Database\Factories\QuizFactory> */
-    use HasFactory, HasLikes;
+    use HasFactory, HasLikes, HasTags;
 
     /**
      * @var list<string>

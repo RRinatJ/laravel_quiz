@@ -5,11 +5,11 @@ import PublicAppTemplate from '@/components/PublicAppTemplate.vue';
 import ShowError from '@/components/ShowError.vue';
 import { home } from '@/routes';
 import { create } from '@/routes/game';
-import { PaginatedResourceResponse, Quiz } from '@/types';
+import { PaginatedResourceResponse, Quiz, Tag } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
 import { Heart, TrendingUp } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 interface Props {
     quizzes: PaginatedResourceResponse<Quiz>;
@@ -20,11 +20,13 @@ interface Props {
             created_at: string;
         };
     };
+    tags: { data: Tag[] };
     filters?: {
         quiz_title: string;
         liked: boolean;
         popular: boolean;
         sort_by_likes: boolean;
+        tag: string;
     };
 }
 
@@ -33,6 +35,7 @@ interface filterParams extends Record<string, any> {
     liked?: boolean;
     popular?: boolean;
     sort_by_likes?: boolean;
+    tag?: string;
 }
 
 const props = defineProps<Props>();
@@ -44,6 +47,12 @@ const quiz_title = ref(props.filters?.quiz_title || '');
 const filterByLiked = ref(props.filters?.liked || false);
 const sortByPopular = ref(props.filters?.popular || false);
 const sortByLikes = ref(props.filters?.sort_by_likes || false);
+const filterTag = ref(props.filters?.tag || '');
+const showAllTags = ref(false);
+
+const tagOnScreen = computed(() => {
+    return showAllTags.value ? props.tags.data : props.tags.data.slice(0, 6);
+});
 
 const filter = useDebounceFn(() => {
     const params = <filterParams>{};
@@ -58,6 +67,9 @@ const filter = useDebounceFn(() => {
     }
     if (sortByLikes.value) {
         params.sort_by_likes = sortByLikes.value;
+    }
+    if (filterTag.value) {
+        params.tag = filterTag.value;
     }
     router.get(home().url, params, {
         preserveState: true,
@@ -79,6 +91,14 @@ const sortPopular = () => {
 };
 const sortLikes = () => {
     sortByLikes.value = !sortByLikes.value;
+    filter();
+};
+const filterByTag = (name: string) => {
+    if (filterTag.value === name) {
+        filterTag.value = '';
+    } else {
+        filterTag.value = name;
+    }
     filter();
 };
 </script>
@@ -172,6 +192,34 @@ const sortLikes = () => {
                                         "
                                     />
                                 </FilterItem>
+                            </div>
+                            <div
+                                v-if="tags.data.length > 0"
+                                class="flex w-full flex-col items-center gap-3 py-3 md:flex-row md:flex-wrap"
+                            >
+                                <FilterItem
+                                    v-for="tag in tagOnScreen"
+                                    :key="tag.id"
+                                    :checkValue="filterTag === tag.name"
+                                    :text="
+                                        tag.name +
+                                        ' (' +
+                                        tag.quizzes_count +
+                                        ')'
+                                    "
+                                    @click="filterByTag(tag.name)"
+                                ></FilterItem>
+                                <div
+                                    v-if="props.tags.data.length > 6"
+                                    class="flex cursor-pointer items-center justify-center text-sm underline"
+                                    @click="showAllTags = !showAllTags"
+                                >
+                                    {{
+                                        showAllTags
+                                            ? 'Show Less...'
+                                            : 'Show All...'
+                                    }}
+                                </div>
                             </div>
                         </div>
                         <div class="flex flex-wrap justify-between gap-3 py-4">

@@ -57,6 +57,7 @@ export interface Quiz {
     ignore_error?: boolean;
     likes_count?: number;
     questions_count?: number;
+    tags?: Tag[];
 }
 
 export interface PaginatedResourceResponse<T = unknown> {
@@ -160,6 +161,16 @@ export interface Article {
     content: string;
     image: string;
     created_at: string;
+}
+
+export interface Tag {
+    id: number;
+    name: string;
+    slug: string;
+    type: string | null;
+    order_column: number | null;
+    created_at: string;
+    quizzes_count?: number;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
