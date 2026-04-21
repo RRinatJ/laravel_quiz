@@ -4,6 +4,7 @@ import InputError from '@/components/InputError.vue';
 import Overlay from '@/components/Overlay.vue';
 import QuizzesSearch from '@/components/QuizzesSearch.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
+import Tiptap from '@/components/Tiptap.vue';
 import SearchImage from '@/components/tmdb/SearchImage.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -227,15 +228,22 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                         class="mb-4"
                         @use-generate-question="useGenerateQuestion"
                     ></GenerateQuestion>
-                    <div class="mb-4">
-                        <Label for="question">Question</Label>
-                        <Input
-                            id="question"
-                            class="mt-1 block w-full"
+                    <div class="mb-4 max-w-screen-sm">
+                        <Label>Question</Label>
+                        <tiptap
+                            class="mt-1"
                             v-model="form.question"
-                            required
-                            autocomplete="question"
-                            placeholder="Question text"
+                            :active-buttons="[
+                                'bold',
+                                'italic',
+                                'strike',
+                                'code',
+                                'blockquote',
+                                'bulletList',
+                                'orderedList',
+                                'undo',
+                                'redo',
+                            ]"
                         />
                         <InputError
                             class="mt-2"

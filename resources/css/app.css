@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @import 'tw-animate-css';
 
@@ -168,5 +169,24 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    .tiptap {
+        @apply prose max-w-none prose-neutral focus:outline-none dark:prose-invert;
+        min-height: 300px;
+    }
+
+    .tiptap p {
+        @apply my-3;
+    }
+
+    .tiptap h1 {
+        @apply mt-6 mb-4 text-3xl font-bold;
+    }
+    .tiptap h2 {
+        @apply mt-5 mb-3 text-2xl font-semibold;
+    }
+    .tiptap h3 {
+        @apply mt-4 mb-2 text-xl font-semibold;
     }
 }

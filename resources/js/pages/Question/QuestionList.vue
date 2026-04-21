@@ -142,7 +142,10 @@ const deleteQuestion = (id: number) => {
                                 {{ question.id }}
                             </td>
                             <td class="border-b px-4 py-2">
-                                {{ question.question }}
+                                <span
+                                    v-html="question.question"
+                                    class="prose"
+                                ></span>
                             </td>
                             <td class="border-b px-4 py-2">
                                 <img

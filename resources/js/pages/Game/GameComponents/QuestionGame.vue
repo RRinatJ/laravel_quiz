@@ -36,8 +36,10 @@ defineProps<Props>();
                 </p>
             </div>
         </div>
-        <p v-if="question.question">
-            {{ question.question }}
-        </p>
+        <article
+            v-if="question.question"
+            class="prose prose-sm sm:prose lg:prose-lg xl:prose-xl"
+            v-html="question.question"
+        ></article>
     </div>
 </template>
