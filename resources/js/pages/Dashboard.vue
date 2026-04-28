@@ -106,7 +106,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 :key="question.id"
                             >
                                 <td class="border-b px-4 py-2">
-                                    {{ question.question }}
+                                    <span class="prose" v-html="question.question"></span>
                                 </td>
                                 <td class="border-b px-4 py-2">
                                     <img

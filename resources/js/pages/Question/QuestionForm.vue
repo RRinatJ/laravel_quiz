@@ -19,17 +19,21 @@ import {
     type BreadcrumbItem,
     type Question,
     type aiQuestionText,
+    type Log,
+
 } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { CircleX } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
+import LogTable from '@/components/log/LogTable.vue';
 
 interface Props {
     question?: { data: object };
     message?: string;
     is_ai_available: boolean;
     is_tmdb_available: boolean;
+    logs?: { data: Log[] };
 }
 
 const props = defineProps<Props>();
@@ -250,6 +254,7 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                             :message="form.errors.question"
                         />
                     </div>
+                    
                     <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
                         <div class="relative inline-block">
@@ -353,8 +358,13 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                     >
                         {{ submitText }}
                     </Button>
-                </div>
+                </div>                
             </div>
+            
+            <LogTable 
+                v-if="logs && logs.data"
+                :items="logs.data" class="mb-4" 
+            />
         </div>
     </AppLayout>
 </template>

@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Tags\HasTags;
 
 final class Quiz extends Model
 {
     /** @use HasFactory<\Database\Factories\QuizFactory> */
-    use HasFactory, HasLikes, HasTags;
+    use HasFactory, HasLikes, HasTags, LogsActivity;
 
     /**
      * @var list<string>
@@ -63,6 +65,13 @@ final class Quiz extends Model
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly($this->fillable)
+            ->logOnlyDirty(); // Prevent logging if nothing changed
     }
 
     /**

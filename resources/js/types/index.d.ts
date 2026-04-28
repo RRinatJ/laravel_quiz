@@ -173,4 +173,33 @@ export interface Tag {
     quizzes_count?: number;
 }
 
+export interface LogChanges {
+    id?: number;
+    attributes: Record<string, unknown>;
+    old: Record<string, unknown>;
+}
+
+export interface Log {
+    id: number;
+    user: User;
+    description: string;
+    changes: LogChanges;
+    properties: {
+        quizzes?: {
+            attached: Quiz[];
+            detached: Quiz[];
+        };
+        answers?: {
+            attached: Answer[];
+            detached: Answer[];
+            updated: LogChanges[];
+        };
+        tags?: {
+            attached: {name: string}[];
+            detached: {name: string}[];
+        };
+    };
+    created_at: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

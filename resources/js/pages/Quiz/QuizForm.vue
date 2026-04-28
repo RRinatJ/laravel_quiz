@@ -13,16 +13,18 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import LogTable from '@/components/log/LogTable.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { store, update } from '@/routes/quiz';
-import { type BreadcrumbItem, type Quiz, type Tag } from '@/types';
+import { type BreadcrumbItem, type Quiz, type Tag, type Log } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { CircleX, InfoIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
     quiz?: { data: object };
-    message?: string;
+    message?: string;    
+    logs?: { data: Log[] };
 }
 
 const props = defineProps<Props>();
@@ -287,6 +289,11 @@ const filterTags = (searchedTag: Tag) => {
                     </Button>
                 </div>
             </div>
+
+            <LogTable 
+                v-if="logs && logs.data"
+                :items="logs.data" class="mb-4" 
+            />
         </div>
     </AppLayout>
 </template>

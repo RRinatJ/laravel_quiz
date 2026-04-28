@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
         "prism-php/prism": "^0.98.0",
+        "spatie/laravel-activitylog": "^5.0",
         "spatie/laravel-tags": "^4.11"
     },
     "require-dev": {

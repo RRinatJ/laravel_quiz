@@ -80,6 +80,10 @@ body #showGame {
     text-align: start;
 }
 
+#showGame .question article p:only-child {
+    text-align: center;
+}
+
 #showGame .question p {
     font-size: 20px;
     color: #333;

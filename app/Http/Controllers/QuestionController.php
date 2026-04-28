@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Resources\LogResource;
 use App\Http\Resources\QuestionListResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
@@ -20,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Activitylog\Models\Activity;
 
 final class QuestionController extends Controller
 {
@@ -51,7 +53,7 @@ final class QuestionController extends Controller
         ]);
     }
 
-    public function create(Quiz $quiz_model): Response
+    public function create(): Response
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
@@ -88,13 +90,19 @@ final class QuestionController extends Controller
     {
         abort_if(! $this->user->checkRole(UserRole::ADMIN), 403);
 
-        $question->load('quizzes:id,title');
+        $question->load('quizzes:id,title', 'answers');
 
         return Inertia::render('Question/QuestionForm', [
             'question' => new QuestionResource($question),
             'message' => session('message'),
             'is_ai_available' => (bool) config('prism.providers.gemini.api_key'),
             'is_tmdb_available' => (bool) config('services.tmdb.api_key'),
+            'logs' => LogResource::collection(
+                Activity::forSubject($question)
+                    ->with('causer:id,name')
+                    ->orderBy('id', 'desc')
+                    ->get()
+            ),
         ]);
     }
 

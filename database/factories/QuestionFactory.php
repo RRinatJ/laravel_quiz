@@ -21,6 +21,7 @@ final class QuestionFactory extends Factory
         return [
             'question' => $this->faker->sentence(),
             'image' => null,
+            'is_ai' => false,
         ];
     }
 }

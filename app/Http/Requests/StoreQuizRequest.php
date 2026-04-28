@@ -30,7 +30,7 @@ final class StoreQuizRequest extends FormRequest
             'image' => 'nullable|string',
             'uploaded_image' => 'nullable|mimes:jpg,jpeg,png|max:2048',
             'tags' => 'sometimes|array',
-            'tags.*.name' => 'string',
+            'tags.*.id' => 'integer|exists:tags,id',
             'fifty_fifty_hint' => [
                 'required',
                 'boolean',

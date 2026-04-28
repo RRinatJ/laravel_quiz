@@ -6,11 +6,13 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Quiz;
 use App\Services\Tmdb\Service as TmdbService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 final class QuestionService
@@ -24,7 +26,8 @@ final class QuestionService
         $questionValidated = $this->sanitizeRequest($data);
 
         $createQuestion = Question::query()->create($questionValidated);
-        $createQuestion->quizzes()->sync($quizzes_ids);
+        $quiz_changes = $createQuestion->quizzes()->sync($quizzes_ids);
+        $this->logQuizzesChanges($createQuestion, $quiz_changes);
 
         if (is_null($uplodedImage) === false) {
             $createQuestion->image = $this->uploadFile($uplodedImage);
@@ -46,7 +49,8 @@ final class QuestionService
             $createQuestion->save();
         }
 
-        $this->processAnswers($createQuestion, $answers, $answerImages);
+        $answer_changes = $this->processAnswers($createQuestion, $answers, $answerImages);
+        $this->logAnswersChanges($createQuestion, [], $answer_changes);
 
         return $createQuestion;
     }
@@ -62,7 +66,6 @@ final class QuestionService
         if ($question->wasChanged('image')) {
             $question->tmdb_image()->delete();
         }
-
         if ($updateQuestion) {
             if (is_null($uplodedImage) === false) {
                 $question->image = $this->uploadFile($uplodedImage);
@@ -85,11 +88,13 @@ final class QuestionService
                 $question->save();
             }
 
-            $question->quizzes()->sync($quizzes_ids);
+            $quiz_changes = $question->quizzes()->sync($quizzes_ids);
+            $this->logQuizzesChanges($question, $quiz_changes);
 
+            $init_answers = $question->answers->keyBy('id')->toArray();
             $answer_ids = $question->answers->pluck('id')->toArray();
-
-            $this->processAnswers($question, $answers, $answerImages, $answer_ids);
+            $answer_changes = $this->processAnswers($question, $answers, $answerImages, $answer_ids);
+            $this->logAnswersChanges($question, $init_answers, $answer_changes);
         }
 
         return $question;
@@ -121,12 +126,86 @@ final class QuestionService
             });
     }
 
-    private function processAnswers(Question $question, array $answers, array $answerImages, array $answer_ids = []): void
+    public function logQuizzesChanges(Question $question, array $changes): void
+    {
+        if (! empty($changes['attached']) || ! empty($changes['detached'])) {
+            $quizzes = [];
+            $db_quizzes = Quiz::query()
+                ->whereIn('id', array_merge($changes['attached'], $changes['detached']))
+                ->select('id', 'title')
+                ->get();
+
+            $quizzes['attached'] = $db_quizzes->whereIn('id', $changes['attached'])->values()->toArray();
+            $quizzes['detached'] = $db_quizzes->whereIn('id', $changes['detached'])->values()->toArray();
+
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($question)
+                ->event('quizzes_updated')
+                ->withProperties([
+                    'quizzes' => $quizzes,
+                ])
+                ->log('Updated quizzes');
+        }
+    }
+
+    public function logAnswersChanges(Question $question, array $init_answers, array $changes): void
+    {
+        if (! empty($changes['attached']) || ! empty($changes['detached']) || ! empty($changes['updated'])) {
+            $answers = [
+                'detached' => [],
+                'updated' => [],
+            ];
+            if (! empty($changes['updated'])) {
+                foreach ($changes['updated'] as $updated) {
+                    $db_answer = $init_answers[$updated['id']] ?? [];
+                    if ($db_answer) {
+                        $temp = [];
+                        foreach ($updated as $field => $value) {
+                            if ($db_answer[$field] !== $value) {
+                                $temp['id'] = $updated['id'];
+                                $temp['attributes'][$field] = $value;
+                                $temp['old'][$field] = $db_answer[$field];
+                            }
+                        }
+                        $answers['updated'][] = $temp;
+                    }
+                }
+            }
+            if (! empty($changes['detached'])) {
+                foreach ($changes['detached'] as $detached) {
+                    if (isset($init_answers[$detached])) {
+                        $answers['detached'][] = Arr::only($init_answers[$detached], ['id', 'text', 'image', 'is_correct']);
+                    }
+                }
+            }
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($question)
+                ->event('answers_updated')
+                ->withProperties([
+                    'answers' => [
+                        'attached' => $changes['attached'],
+                        'detached' => $answers['detached'],
+                        'updated' => $answers['updated'],
+                    ],
+                ])
+                ->log('Updated answers');
+        }
+    }
+
+    private function processAnswers(Question $question, array $answers, array $answerImages, array $answer_ids = []): array
     {
         $createdAnswers = [];
         $data_answer_ids = [];
         $tmdb_image_add = [];
         $tmdbService = new TmdbService();
+        $changes = [
+            'attached' => [],
+            'detached' => [],
+            'updated' => [],
+        ];
+
         foreach ($answers as $answer) {
             $answer['image'] = empty($answer['image']) ? null : $this->findAndUploadAnswerImage($answer['image'], $answerImages);
 
@@ -145,6 +224,10 @@ final class QuestionService
                 $data_answer_ids[] = $answer['id'];
                 $update_answer = $question->answers->firstWhere('id', $answer['id']);
                 $update_answer->update($updated_data);
+                if ($update_answer->wasChanged()) {
+                    $updated_data['id'] = $update_answer->id;
+                    $changes['updated'][] = $updated_data;
+                }
                 if ($update_answer->wasChanged('image')) {
                     $update_answer->tmdb_image()->delete();
                 }
@@ -162,13 +245,16 @@ final class QuestionService
             }
 
             $createdAnswers[] = new Answer($updated_data);
+
             if (is_null($tmdb_image) === false) {
                 $tmdb_image_add[$updated_data['image']] = $tmdb_image;
             }
         }
 
         if ($createdAnswers !== []) {
-            $question->answers()->saveMany($createdAnswers);
+            $saved_answers = $question->answers()->saveMany($createdAnswers);
+            $changes['attached'] = collect($saved_answers)->map->only('id', 'text', 'image', 'is_correct')->toArray();
+
             foreach ($question->answers as $createdAnswer) {
                 if (array_key_exists($createdAnswer->image, $tmdb_image_add)) {
                     $createdAnswer->tmdb_image()->create([
@@ -180,8 +266,11 @@ final class QuestionService
 
         $deleted_ids = array_diff($answer_ids, $data_answer_ids);
         if ($deleted_ids !== []) {
+            $changes['detached'] = $deleted_ids;
             Answer::query()->whereIn('id', $deleted_ids)->delete();
         }
+
+        return $changes;
     }
 
     private function findAndUploadAnswerImage(string $imageName, array $answerImages): string

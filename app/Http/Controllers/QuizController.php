@@ -9,6 +9,7 @@ use App\Actions\QuizUpdateAction;
 use App\Enums\UserRole;
 use App\Http\Requests\SearchQuizRequest;
 use App\Http\Requests\StoreQuizRequest;
+use App\Http\Resources\LogResource;
 use App\Http\Resources\QuizResource;
 use App\Models\Quiz;
 use App\Models\User;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Activitylog\Models\Activity;
 
 final class QuizController extends Controller
 {
@@ -72,6 +74,12 @@ final class QuizController extends Controller
         return Inertia::render('Quiz/QuizForm', [
             'quiz' => new QuizResource($quiz),
             'message' => session('message'),
+            'logs' => LogResource::collection(
+                Activity::forSubject($quiz)
+                    ->with('causer:id,name')
+                    ->orderBy('id', 'desc')
+                    ->get()
+            ),
         ]);
     }
 
