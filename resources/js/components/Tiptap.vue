@@ -18,7 +18,7 @@ import {
     Strikethrough,
     Undo2,
 } from 'lucide-vue-next';
-import { onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, watch } from 'vue';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -42,6 +42,13 @@ const editor = useEditor({
         emit('update:modelValue', editor.value?.getHTML() || '');
     },
 });
+
+watch(
+    () => modelValue,
+    (val: string) => {
+        editor.value?.commands.setContent(val);
+    },
+);
 
 onBeforeUnmount(() => {
     editor.value?.destroy();
