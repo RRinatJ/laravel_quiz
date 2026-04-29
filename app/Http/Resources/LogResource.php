@@ -19,7 +19,6 @@ final class LogResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => [
-                'id' => $this->causer_id,
                 'name' => $this->causer->name ?? 'Unknown',
             ],
             'description' => $this->description,
