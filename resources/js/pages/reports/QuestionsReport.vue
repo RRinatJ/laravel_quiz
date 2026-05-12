@@ -146,7 +146,10 @@ if (Array.isArray(props.filters)) {
                             <td class="border-b px-4 py-2">
                                 <div v-if="question.question">
                                     <div v-if="question.question.question">
-                                        {{ question.question.question }}
+                                        <span
+                                            v-html="question.question.question"
+                                            class="prose"
+                                        ></span>
                                     </div>
                                     <div v-if="question.question.image">
                                         <img
