@@ -157,6 +157,11 @@ body #showGame {
     color: #fff;
 }
 
+#showGame .option.error {
+    background: hsl(0 84.2% 60.2%) !important;
+    color: #fff;
+}
+
 .filter-selected {
     background: linear-gradient(135deg, #3d98f4 0%, #8b5cf6 100%);
     border-color: transparent !important;

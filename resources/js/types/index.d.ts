@@ -55,6 +55,7 @@ export interface Quiz {
     can_skip?: boolean;
     for_telegram?: boolean;
     ignore_error?: boolean;
+    show_correct_answer?: boolean;
     likes_count?: number;
     questions_count?: number;
     tags?: Tag[];
@@ -195,8 +196,8 @@ export interface Log {
             updated: LogChanges[];
         };
         tags?: {
-            attached: {name: string}[];
-            detached: {name: string}[];
+            attached: { name: string }[];
+            detached: { name: string }[];
         };
     };
     created_at: string;

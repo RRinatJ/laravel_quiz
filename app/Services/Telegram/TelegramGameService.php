@@ -64,7 +64,9 @@ final readonly class TelegramGameService
             $answer_id,
             $game,
             $fifty_fifty_hint,
-            $can_skip
+            $can_skip,
+            false,
+            true
         );
 
         $game->refresh();

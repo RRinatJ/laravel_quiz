@@ -28,6 +28,7 @@ final class Game extends Model
         'fifty_fifty_hint',
         'can_skip',
         'chat_id',
+        'show_correct_answer',
     ];
 
     /**
@@ -71,6 +72,7 @@ final class Game extends Model
             'question_row' => 'array',
             'fifty_fifty_hint' => 'boolean',
             'can_skip' => 'boolean',
+            'show_correct_answer' => 'boolean',
         ];
     }
 }

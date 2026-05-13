@@ -31,17 +31,23 @@ final class GameController extends Controller
     {
         $sort_array = (array) session('sort_array');
         $fifty_fifty_hint = (bool) (session('fifty_fifty_hint'));
+        $show_correct_answer = (bool) (session('show_correct_answer'));
+        $chosen_answer_id = (int) (session('chosen_answer_id'));
 
         $game = Game::with('quiz', 'question.answers.tmdb_image', 'question.tmdb_image', 'latestStep')->find($game_id);
+        if ($game->show_correct_answer && $show_correct_answer === false) {
+            $show_correct_answer = true;
+        }
 
         $game_data = $service->show(
             $game,
             $sort_array,
-            $fifty_fifty_hint
+            $fifty_fifty_hint,
+            $show_correct_answer
         );
 
         $countDown = ceil($game->quiz->timer_count - $game->updated_at->diffInSeconds(now()));
-        if ($game_data['error'] !== '' || $game_data['message'] !== '') {
+        if ($game_data['error'] !== '' || $game_data['message'] !== '' || $show_correct_answer) {
             $countDown = 0;
         }
 
@@ -59,6 +65,8 @@ final class GameController extends Controller
             'countDown' => $countDown,
             'tmdbImage' => $game_data['tmdb_image'],
             'quizLikeInfo' => $game_data['quiz_like_info'],
+            'show_correct_answer' => $show_correct_answer,
+            'chosen_answer_id' => $chosen_answer_id,
         ]);
     }
 
@@ -67,23 +75,34 @@ final class GameController extends Controller
         $sort_array = $request->array('sort_array');
         $fifty_fifty_hint = $request->boolean('fifty_fifty_hint');
         $can_skip = $request->boolean('can_skip');
+        $next = $request->boolean('next');
+        $chosen_answer_id = $request->integer('answer_id');
+
         $game = Game::with('quiz', 'question.answers', 'latestStep')->find($game_id);
+        if ($game->show_correct_answer === true && $next === true) {
+            $game->show_correct_answer = false;
+            $game->save();
+        }
         $error = $game->latestStep !== null ? $service->getError($game) : '';
         abort_if(
-            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false) || ($error === '' || $error === '0') === false,
+            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false) || ($error === '' || $error === '0') === false || $game->show_correct_answer === true,
             400
         );
-        $service->processAnswer(
-            $request->integer('answer_id'),
+
+        $result = $service->processAnswer(
+            $chosen_answer_id,
             $game,
             $fifty_fifty_hint,
-            $can_skip
+            $can_skip,
+            $next
         );
 
         return redirect()
             ->route('game.show', ['game_id' => $game_id])->with([
                 'sort_array' => $sort_array,
                 'fifty_fifty_hint' => $fifty_fifty_hint,
+                'show_correct_answer' => $result['show_correct_answer'] ?? false,
+                'chosen_answer_id' => $chosen_answer_id,
             ]);
     }
 

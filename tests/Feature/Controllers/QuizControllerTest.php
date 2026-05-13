@@ -66,6 +66,7 @@ final class QuizControllerTest extends TestCase
             'can_skip' => false,
             'for_telegram' => false,
             'ignore_error' => false,
+            'show_correct_answer' => false,
         ]);
 
         $response->assertStatus(302);
@@ -116,6 +117,7 @@ final class QuizControllerTest extends TestCase
             'can_skip' => false,
             'for_telegram' => false,
             'ignore_error' => false,
+            'show_correct_answer' => false,
         ]);
 
         $response->assertStatus(302);

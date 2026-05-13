@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
+import LogTable from '@/components/log/LogTable.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
 import TagsSearch from '@/components/TagsSearch.vue';
 import { Button } from '@/components/ui/button';
@@ -13,17 +14,16 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import LogTable from '@/components/log/LogTable.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { store, update } from '@/routes/quiz';
-import { type BreadcrumbItem, type Quiz, type Tag, type Log } from '@/types';
+import { type BreadcrumbItem, type Log, type Quiz, type Tag } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { CircleX, InfoIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
     quiz?: { data: object };
-    message?: string;    
+    message?: string;
     logs?: { data: Log[] };
 }
 
@@ -40,6 +40,7 @@ const form = useForm({
     can_skip: quiz?.can_skip || false,
     for_telegram: quiz?.for_telegram || false,
     ignore_error: quiz?.ignore_error || false,
+    show_correct_answer: quiz?.show_correct_answer || false,
     uploaded_image: null as File | null,
     image: quiz?.image || null,
     tags: quiz?.tags || [],
@@ -244,6 +245,40 @@ const filterTags = (searchedTag: Tag) => {
                     </div>
                     <div class="mb-4">
                         <div class="flex flex-wrap">
+                            <Label for="show_correct_answer" class="mr-2"
+                                >Show Correct Answer</Label
+                            >
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <Button
+                                            variant="outline"
+                                            size="icon-xs"
+                                            class="rounded-full"
+                                        >
+                                            <InfoIcon />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>
+                                            Show the correct answer after a failed try
+                                        </p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
+                        <br />
+                        <Switch
+                            id="show_correct_answer"
+                            v-model="form.show_correct_answer"
+                        />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.show_correct_answer"
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex flex-wrap">
                             <Label for="for_telegram" class="mr-2"
                                 >Can be used in Telegram</Label
                             >
@@ -290,9 +325,10 @@ const filterTags = (searchedTag: Tag) => {
                 </div>
             </div>
 
-            <LogTable 
+            <LogTable
                 v-if="logs && logs.data"
-                :items="logs.data" class="mb-4" 
+                :items="logs.data"
+                class="mb-4"
             />
         </div>
     </AppLayout>

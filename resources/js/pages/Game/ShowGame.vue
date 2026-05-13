@@ -27,6 +27,8 @@ interface Props {
     firstQuestion: boolean;
     countDown: number;
     tmdbImage: boolean;
+    show_correct_answer?: boolean;
+    chosen_answer_id: number | null;
     quizLikeInfo: {
         liked: boolean;
         count: string;
@@ -43,6 +45,7 @@ const countDown = ref(props.countDown);
 const isErrorMode = computed(() => props.error.length !== 0);
 const isMessageMode = computed(() => props.message.length !== 0);
 const isAudioMode = computed(() => !!props.game.question?.audio);
+const showCorrectAnswerMode = computed(() => props.show_correct_answer);
 const isStarted = ref(true);
 
 if (props.firstQuestion === true && isAudioMode.value) {
@@ -60,6 +63,7 @@ type typeForm = {
     sort_array: (number | string)[];
     fifty_fifty_hint: boolean;
     can_skip: boolean;
+    next: boolean;
 };
 
 const form = useForm<typeForm>({
@@ -67,6 +71,7 @@ const form = useForm<typeForm>({
     sort_array: props.answers ? props.answers.map((a) => a.id) : [],
     fifty_fifty_hint: false,
     can_skip: false,
+    next: false,
 });
 
 const completionPrcnt = computed(() => {
@@ -103,6 +108,12 @@ const hintsUsed = computed(() => {
 
 const setAnswerId = (choserAnswerId: number) => {
     form.answer_id = choserAnswerId;
+    sendRequest();
+};
+
+const Next = () => {
+    form.answer_id = props.chosen_answer_id;
+    form.next = true;
     sendRequest();
 };
 
@@ -144,7 +155,12 @@ const startAudio = () => {
     });
 };
 
-if (isErrorMode.value || isMessageMode.value || isStarted.value === false) {
+if (
+    isErrorMode.value ||
+    isMessageMode.value ||
+    isStarted.value === false ||
+    showCorrectAnswerMode.value
+) {
     //
 } else {
     countDownTimer();
@@ -182,14 +198,26 @@ if (isErrorMode.value || isMessageMode.value || isStarted.value === false) {
                         <AnswersGame
                             :answers="answers"
                             :correct_answer_id="correct_answer_id"
+                            :showCorrectAnswerMode="showCorrectAnswerMode"
+                            :chosen_answer_id="chosen_answer_id"
                             @setAnswerId="setAnswerId"
                         />
                         <HintsGame
+                            v-if="showCorrectAnswerMode === false"
                             :fifty_fifty_hint="game.fifty_fifty_hint"
                             :can_skip="game.can_skip"
                             @fiftyFiftyHint="fiftyFiftyHint()"
                             @skipQuestion="skipQuestion()"
                         />
+                        <div class="mt-6 flex justify-center gap-4">
+                            <button
+                                v-if="showCorrectAnswerMode"
+                                class="option info"
+                                @click="Next"
+                            >
+                                Next
+                            </button>
+                        </div>
                         <TmdbImageGame v-if="tmdbImage" />
                         <QuestionIsAi v-if="game.question?.is_ai" />
                     </div>

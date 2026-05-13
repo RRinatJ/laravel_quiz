@@ -47,6 +47,10 @@ final class StoreQuizRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'show_correct_answer' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

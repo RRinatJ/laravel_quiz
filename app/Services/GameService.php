@@ -33,7 +33,7 @@ final readonly class GameService
         ]);
     }
 
-    public function show(Game $game, array $sort_array = [], bool $fifty_fifty_hint = false): array
+    public function show(Game $game, array $sort_array = [], bool $fifty_fifty_hint = false, bool $show_correct_answer = false): array
     {
         $firstQuestion = $game->latestStep === null;
 
@@ -41,8 +41,8 @@ final readonly class GameService
         $message = $firstQuestion ? '' : $this->getMessage($game, $error);
 
         $correct_answer_id = $game->question->answers->where('is_correct', true)->first()?->id;
-        $answers = $this->getAnswers($game, $error, $sort_array, $correct_answer_id, $fifty_fifty_hint);
-        if ($error === '') {
+        $answers = $this->getAnswers($game, $error, $sort_array, $correct_answer_id, $fifty_fifty_hint, $show_correct_answer);
+        if ($error === '' && $show_correct_answer === false) {
             $correct_answer_id = null;
         }
 
@@ -67,16 +67,25 @@ final readonly class GameService
         ];
     }
 
-    public function processAnswer(int $given_answer, Game $game, bool $fifty_fifty_hint, bool $can_skip): void
+    public function processAnswer(int $given_answer, Game $game, bool $fifty_fifty_hint, bool $can_skip, bool $next = false, bool $is_telegram = false): array
     {
         if ($fifty_fifty_hint) {
             $this->processFiftyFiftyHint($game);
 
-            return;
+            return [];
         }
         $chosen_answer_id = $this->getAnswerId($given_answer);
         $is_correct = $this->checkIsCorrectAnswer($game, $chosen_answer_id);
         $times_out = $this->checkTimesOut($game);
+
+        if ($game->quiz->show_correct_answer === true && $is_telegram === false && $next === false && $is_correct === false && $times_out === false) {
+            $game->show_correct_answer = true;
+            $game->save();
+
+            return [
+                'show_correct_answer' => true,
+            ];
+        }
 
         $game_step = GameStep::query()->create([
             'game_id' => $game->id,
@@ -89,7 +98,7 @@ final readonly class GameService
         ]);
 
         if ($times_out && ! $game->quiz->ignore_error) {
-            return;
+            return [];
         }
         if ($game_step->is_correct || $game_step->can_skip) {
             $this->processCorrectQuestion($game, $game_step);
@@ -100,6 +109,8 @@ final readonly class GameService
             }
             $game->save();
         }
+
+        return [];
     }
 
     public function processFiftyFiftyHint(Game $game): void
@@ -130,14 +141,14 @@ final readonly class GameService
         return '';
     }
 
-    public function getAnswers(Game $game, string $error, array $sort_array = [], ?int $correct_answer_id = null, bool $fifty_fifty_hint = false): array
+    public function getAnswers(Game $game, string $error, array $sort_array = [], ?int $correct_answer_id = null, bool $fifty_fifty_hint = false, bool $show_correct_answer = false): array
     {
         $answers = $game->question->answers->shuffle()->select('id', 'text', 'image');
         if ($game->latestStep?->fifty_fifty_hint === true || $fifty_fifty_hint) {
             return $this->hiddenFiftyPrcntIncorrectAnswers($answers, $correct_answer_id);
         }
 
-        if ($error === '') {
+        if ($error === '' && $show_correct_answer === false) {
             return $answers->toArray();
         }
 

@@ -115,7 +115,7 @@ final class ArticleController extends Controller
     public function by_slug(Article $article)
     {
         return Inertia::render('Article/ArticlePage', [
-            'article' => $article->only('id', 'title', 'content', 'image', 'created_at'),
+            'article' => $article->only(['id', 'title', 'content', 'image', 'created_at']),
         ]);
     }
 }

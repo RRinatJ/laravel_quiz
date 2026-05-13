@@ -32,6 +32,7 @@ final class Quiz extends Model
         'for_telegram',
         'ignore_error',
         'description',
+        'show_correct_answer',
     ];
 
     /**
@@ -85,6 +86,7 @@ final class Quiz extends Model
             'can_skip' => 'boolean',
             'for_telegram' => 'boolean',
             'ignore_error' => 'boolean',
+            'show_correct_answer' => 'boolean',
         ];
     }
 }

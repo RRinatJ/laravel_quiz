@@ -38,8 +38,8 @@ final class LogTest extends TestCase
         $this->assertNotNull($activity);
         $this->assertArrayHasKey('attributes', $activity->attribute_changes);
         $this->assertArrayHasKey('old', $activity->attribute_changes);
-        $this->assertEquals(['title' => 'New Title', 'is_work' => false, 'for_telegram' => false, 'ignore_error' => false], $activity->attribute_changes['attributes']);
-        $this->assertEquals(['title' => 'Old Title', 'is_work' => true, 'for_telegram' => false, 'ignore_error' => false], $activity->attribute_changes['old']);
+        $this->assertEquals(['title' => 'New Title', 'is_work' => false, 'for_telegram' => false, 'ignore_error' => false, 'show_correct_answer' => false], $activity->attribute_changes['attributes']);
+        $this->assertEquals(['title' => 'Old Title', 'is_work' => true, 'for_telegram' => false, 'ignore_error' => false, 'show_correct_answer' => false], $activity->attribute_changes['old']);
     }
 
     public function test_logs_quiz_deletion(): void
@@ -68,6 +68,7 @@ final class LogTest extends TestCase
             'ignore_error' => false,
             'image' => null,
             'description' => null,
+            'show_correct_answer' => false,
         ];
         $response = $this->actingAs($user)->post(route('quiz.store'), $data + ['tags' => $tags->toArray()]);
 
@@ -105,6 +106,7 @@ final class LogTest extends TestCase
             'can_skip' => $quiz->can_skip,
             'for_telegram' => false,
             'ignore_error' => false,
+            'show_correct_answer' => false,
         ]);
 
         $response->assertStatus(302);
@@ -176,7 +178,7 @@ final class LogTest extends TestCase
             $activities->where('event', 'updated')->first()->attribute_changes['attributes']
         );
         $this->assertEquals(
-            $quizzes->values()->map->only('id', 'title')->toArray(),
+            $quizzes->values()->map->only(['id', 'title'])->toArray(),
             $activities->where('event', 'quizzes_updated')->first()->properties['quizzes']['attached']
         );
     }

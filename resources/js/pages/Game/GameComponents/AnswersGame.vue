@@ -6,6 +6,8 @@ const emit = defineEmits(['setAnswerId']);
 interface Props {
     answers: AnswerInGame[];
     correct_answer_id: number | null;
+    showCorrectAnswerMode: boolean;
+    chosen_answer_id: number | null;
 }
 defineProps<Props>();
 </script>
@@ -18,7 +20,9 @@ defineProps<Props>();
             class="option"
             :class="{
                 correct: answer.id === correct_answer_id,
+                error: answer.id === chosen_answer_id,
             }"
+            :disabled="showCorrectAnswerMode"
             @click="emit('setAnswerId', answer.id)"
         >
             {{ answer.text }}

@@ -28,6 +28,7 @@ final class GameFactory extends Factory
             'question_row' => [],
             'fifty_fifty_hint' => false,
             'can_skip' => false,
+            'show_correct_answer' => false,
         ];
     }
 

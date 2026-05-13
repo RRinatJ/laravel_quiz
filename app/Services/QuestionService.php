@@ -253,7 +253,7 @@ final class QuestionService
 
         if ($createdAnswers !== []) {
             $saved_answers = $question->answers()->saveMany($createdAnswers);
-            $changes['attached'] = collect($saved_answers)->map->only('id', 'text', 'image', 'is_correct')->toArray();
+            $changes['attached'] = collect($saved_answers)->map->only(['id', 'text', 'image', 'is_correct'])->toArray();
 
             foreach ($question->answers as $createdAnswer) {
                 if (array_key_exists($createdAnswer->image, $tmdb_image_add)) {
