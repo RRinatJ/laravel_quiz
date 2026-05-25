@@ -44,6 +44,7 @@ const tmdbImages = ref<{ [key: string]: any[] }>({});
 const carouselValueKey = computed(() =>
     selectedTmdbType.value == 'person' ? 'profiles' : 'backdrops',
 );
+const lastSearchedType = ref<string | null>(null);
 const itemsPerPage = ref(5);
 const currentPage = ref(1);
 const currentTmdbImagesKey = ref('');
@@ -82,6 +83,7 @@ const tmdbSearch = () => {
         .then((response) => {
             tmdbSearchResult.value = response.data;
             tmdbSearchLoading.value = false;
+            lastSearchedType.value = selectedTmdbType.value;
         })
         .catch((error) => {
             if (axios.isAxiosError(error)) {
@@ -179,7 +181,10 @@ const setImageFromTmdb = (file_path: string, size: string) => {
                     </Button>
                 </div>
             </div>
-            <Overlay :is-blur="tmdbImageLoading">
+            <Overlay
+                v-if="lastSearchedType === selectedTmdbType"
+                :is-blur="tmdbImageLoading"
+            >
                 <TmdbMovieTable
                     v-if="
                         tmdbSearchResult.hasOwnProperty('results') &&
@@ -208,6 +213,7 @@ const setImageFromTmdb = (file_path: string, size: string) => {
                     @search-images="tmdbImagesSearch"
                 />
             </Overlay>
+            <div v-else></div>
             <div v-if="Object.keys(tmdbImages).length" class="mt-4">
                 <div ref="galleryRefEl" class="masonry-grid">
                     <div
