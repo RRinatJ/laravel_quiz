@@ -22,8 +22,11 @@ final readonly class QuizStoreAction
         $tag_changes = $createQuiz->tags()->sync(Arr::pluck($tags, 'id'));
         $this->action->handle($createQuiz, $tag_changes);
         if ($createQuiz && is_null($uploaded_image) === false) {
-            $createQuiz->image = $uploaded_image->store('images', 'public');
-            $createQuiz->save();
+            $image_path = $uploaded_image->store('images', 'public');
+            if ($image_path !== false) {
+                $createQuiz->image = $image_path;
+                $createQuiz->save();
+            }
         }
 
         return $createQuiz;

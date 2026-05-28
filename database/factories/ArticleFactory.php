@@ -22,7 +22,12 @@ final class ArticleFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'content' => fake()->text(),
-            'slug' => fn (array $attributes) => Str::slug($attributes['title'], '-'),
+            'slug' => function (array $attributes): string {
+                /** @var string $title */
+                $title = $attributes['title'];
+
+                return Str::slug($title, '-');
+            },
             'created_at' => now(),
             'updated_at' => now(),
         ];

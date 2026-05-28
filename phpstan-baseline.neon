@@ -1,0 +1,2161 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: Left side of && is always true.
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: app/Actions/QuizStoreAction.php
+
+		-
+			rawMessage: 'Method App\Actions\QuizStoreAction::handle() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/QuizStoreAction.php
+
+		-
+			rawMessage: 'Parameter #1 $array of static method Illuminate\Support\Arr::pluck() expects iterable, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/QuizStoreAction.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Builder<App\Models\Quiz>::create() expects array<string, mixed>, array<mixed, mixed> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/QuizStoreAction.php
+
+		-
+			rawMessage: 'Method App\Actions\QuizUpdateAction::handle() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/QuizUpdateAction.php
+
+		-
+			rawMessage: 'Parameter #1 $array of static method Illuminate\Support\Arr::pluck() expects iterable, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/QuizUpdateAction.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Model::update() expects array<string, mixed>, array<mixed, mixed> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/QuizUpdateAction.php
+
+		-
+			rawMessage: 'Method App\Actions\TagLogAction::handle() has parameter $changes with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/TagLogAction.php
+
+		-
+			rawMessage: 'Parameter #1 ...$arrays of function array_merge expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/TagLogAction.php
+
+		-
+			rawMessage: 'Parameter #2 $values of method Illuminate\Support\Collection<int,App\Models\Tag>::whereIn() expects Illuminate\Contracts\Support\Arrayable|iterable, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Actions/TagLogAction.php
+
+		-
+			rawMessage: 'Parameter #2 ...$arrays of function array_merge expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/TagLogAction.php
+
+		-
+			rawMessage: 'Binary operation "." between ''Index Name: '' and mixed results in an error.'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Console/Commands/TestCommand.php
+
+		-
+			rawMessage: Binary operation "." between non-falsy-string and mixed results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Console/Commands/TestCommand.php
+
+		-
+			rawMessage: Cannot access property $name on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Console/Commands/TestCommand.php
+
+		-
+			rawMessage: Cannot access property $unique on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Console/Commands/TestCommand.php
+
+		-
+			rawMessage: 'Parameter #1 $label of static method App\Enums\UserRole::fromLabel() expects string, int|string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/UpdateUserRole.php
+
+		-
+			rawMessage: 'Parameter $options of function Laravel\Prompts\select expects array<int|string, string>|Illuminate\Support\Collection<int|string, string>, array<mixed> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/UpdateUserRole.php
+
+		-
+			rawMessage: 'Property App\Models\User::$role (int<0, max>) does not accept App\Enums\UserRole.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Console/Commands/UpdateUserRole.php
+
+		-
+			rawMessage: 'Strict comparison using === between int<0, max> and App\Enums\UserRole will always evaluate to false.'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Console/Commands/UpdateUserRole.php
+
+		-
+			rawMessage: 'Method App\Contracts\Tmdb\ApiSearch::images() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Contracts/Tmdb/ApiSearch.php
+
+		-
+			rawMessage: 'Method App\Contracts\Tmdb\ApiSearch::search() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Contracts/Tmdb/ApiSearch.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/AiController.php
+
+		-
+			rawMessage: 'Parameter #1 $theme of method App\Services\AiService::getQuestion() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/AiController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Http\Request::validated().'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: Cannot access offset 'slug' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: Cannot access offset 'title' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: Cannot access offset 'uploaded_image' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: If condition is always true.
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::by_slug() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::create() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::destroy() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::edit() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::index() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::store() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\ArticleController::update() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: PHPDoc tag @var with type Illuminate\Http\Request is not subtype of native type App\Http\Requests\StoreArticleRequest.
+			identifier: varTag.nativeType
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Builder<App\Models\Article>::create() expects array<string, mixed>, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Model::update() expects array<string, mixed>, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Property App\Models\Article::$image (string|null) does not accept string|false.'
+			identifier: assign.propertyType
+			count: 2
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: Unreachable statement - code above always terminates.
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Http/Controllers/ArticleController.php
+
+		-
+			rawMessage: 'Cannot call method hasVerifiedEmail() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationNotificationController.php
+
+		-
+			rawMessage: 'Cannot call method sendEmailVerificationNotification() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationNotificationController.php
+
+		-
+			rawMessage: 'Cannot call method hasVerifiedEmail() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationPromptController.php
+
+		-
+			rawMessage: 'Cannot call method forceFill() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			rawMessage: 'Cannot call method save() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			rawMessage: 'Parameter #1 $key of function __ expects string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			rawMessage: 'Parameter #1 $user of class Illuminate\Auth\Events\PasswordReset constructor expects Illuminate\Contracts\Auth\Authenticatable, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Facades\Hash::make() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Facades\Hash::make() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/RegisteredUserController.php
+
+		-
+			rawMessage: 'Cannot call method hasVerifiedEmail() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Http/Controllers/DashboardController.php
+
+		-
+			rawMessage: 'Cannot call method diffForHumans() on Carbon\CarbonImmutable|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/DashboardController.php
+
+		-
+			rawMessage: Cannot access property $can_skip on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $fifty_fifty_hint on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $latestStep on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $question_row on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $quiz on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $show_correct_answer on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $timer_count on App\Models\Quiz|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot access property $updated_at on App\Models\Game|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Cannot call method diffInSeconds() on Carbon\CarbonImmutable|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Cannot call method save() on App\Models\Game|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\GameController::setUpdate() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #1 $game of method App\Services\GameService::getError() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #1 $game of method App\Services\GameService::setUpdateTime() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #1 $game of method App\Services\GameService::show() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #1 $value of function count expects array|Countable, string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #2 $game of method App\Services\GameService::processAnswer() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function array_search expects array, string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Strict comparison using !== between *NEVER* and false will always evaluate to true.'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/GameController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Http\Request::validated().'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/QuestionController.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/QuestionController.php
+
+		-
+			rawMessage: PHPDoc tag @var with type Illuminate\Http\Request is not subtype of native type App\Http\Requests\StoreQuestionRequest.
+			identifier: varTag.nativeType
+			count: 2
+			path: app/Http/Controllers/QuestionController.php
+
+		-
+			rawMessage: 'Parameter #1 $data of method App\Services\QuestionService::store() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/QuestionController.php
+
+		-
+			rawMessage: 'Parameter #2 $data of method App\Services\QuestionService::update() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/QuestionController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Http\Request::validated().'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: If condition is always true.
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: PHPDoc tag @var with type Illuminate\Http\Request is not subtype of native type App\Http\Requests\StoreQuizRequest.
+			identifier: varTag.nativeType
+			count: 2
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: 'Parameter #1 $data of method App\Actions\QuizStoreAction::handle() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: 'Parameter #1 $number of static method Illuminate\Support\Number::abbreviate() expects float|int, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: 'Parameter #2 $data of method App\Actions\QuizUpdateAction::handle() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: Unreachable statement - code above always terminates.
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Http/Controllers/QuizController.php
+
+		-
+			rawMessage: Cannot access offset 'password' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Http/Controllers/Settings/PasswordController.php
+
+		-
+			rawMessage: 'Cannot call method update() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/PasswordController.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Facades\Hash::make() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Settings/PasswordController.php
+
+		-
+			rawMessage: Cannot access property $email_verified_at on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method delete() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method fill() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method isDirty() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method save() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: Instanceof between App\Models\User|null and Illuminate\Contracts\Auth\MustVerifyEmail will always evaluate to false.
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method hasEnabledTwoFactorAuthentication() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/TwoFactorAuthenticationController.php
+
+		-
+			rawMessage: If condition is always true.
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::create() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::destroy() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::edit() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::index() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::store() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\TagController::update() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Parameter #1 $name of static method Illuminate\Database\Eloquent\Builder<App\Models\Tag>::containing() expects string, Illuminate\Support\Stringable given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: Unreachable statement - code above always terminates.
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Http/Controllers/TagController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Support\Collection::getChat().'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Support\Collection::getText().'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Call to an undefined method Telegram\Bot\Objects\Update::getCallbackQuery().'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Cannot call method getData() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Cannot call method getId() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: If condition is always true.
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Parameter #1 $chat_id of method App\Services\Telegram\TelegramGameService::processAnswer() expects int, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Parameter #1 $chat_id of method App\Services\Telegram\TelegramGameService::startGame() expects int, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Parameter #1 $chat_id of method App\Services\Telegram\TelegramGameService::startMessage() expects int, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Parameter #2 $callback_data of method App\Services\Telegram\TelegramGameService::processAnswer() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Telegram/TelegramController.php
+
+		-
+			rawMessage: 'Cannot call method label() on int<0, max>.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			rawMessage: 'Parameter #1 $string of function mb_trim expects string, string|null given.'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			rawMessage: 'Parameter #1 $string of function str expects string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/AiGetQuestionRequest.php
+
+		-
+			rawMessage: 'Method App\Http\Requests\Auth\LoginRequest::authorize() never returns false so the return type can be changed to true.'
+			identifier: return.tooWideBool
+			count: 1
+			path: app/Http/Requests/Auth/LoginRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/PopularQuizzesRequest.php
+
+		-
+			rawMessage: 'Method App\Http\Requests\PopularQuizzesRequest::messages() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/PopularQuizzesRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/QuestionsReportRequest.php
+
+		-
+			rawMessage: 'Method App\Http\Requests\QuestionsReportRequest::messages() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/QuestionsReportRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/SearchQuizRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/SearchTagRequest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Requests/Settings/ProfileUpdateRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/StoreArticleRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/StoreQuestionRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/StoreQuizRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/StoreTagRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/TmdbImageSearchRequest.php
+
+		-
+			rawMessage: 'Parameter #1 $values of static method Illuminate\Validation\Rule::in() expects array|Illuminate\Contracts\Support\Arrayable|string|UnitEnum, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Requests/TmdbImageSearchRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/TmdbImagesRequest.php
+
+		-
+			rawMessage: 'Parameter #1 $values of static method Illuminate\Validation\Rule::in() expects array|Illuminate\Contracts\Support\Arrayable|string|UnitEnum, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Requests/TmdbImagesRequest.php
+
+		-
+			rawMessage: 'Access to an undefined property (object|string|null)::$id.'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Requests/UpdateTagRequest.php
+
+		-
+			rawMessage: 'Cannot call method checkRole() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Requests/UpdateTagRequest.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$can_skip.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$correct_count.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$created_at.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$fifty_fifty_hint.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$question.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$quiz.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\GameResource::$updated_at.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: 'Cannot call method diffInSeconds() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: 'Cannot call method only() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Http/Resources/GameResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\LogResource::$attribute_changes.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\LogResource::$created_at.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\LogResource::$description.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\LogResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\LogResource::$properties.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Cannot access property $name on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: 'Cannot call method toDateTimeString() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/LogResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$answers.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$audio.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$image.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$is_ai.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$question.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionListResource::$quizzes.
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string results in an error.
+			identifier: binaryOp.invalid
+			count: 3
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Cannot access property $image on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Cannot access property $is_correct on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Cannot access property $text on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: 'Cannot call method map() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: 'Cannot call method pluck() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: 'Cannot call method select() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: 'Cannot call method toArray() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: 'Parameter #1 $path of static method Illuminate\Filesystem\FilesystemAdapter::url() expects string, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: app/Http/Resources/QuestionListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$answers.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$audio.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$image.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$is_ai.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$question.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuestionResource::$quizzes.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Cannot access property $image on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Cannot access property $is_correct on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Cannot access property $text on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: 'Cannot call method map() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: 'Cannot call method toArray() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuestionResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\QuizResource::$tags.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: Cannot access offset 'tags' on array|Illuminate\Contracts\Support\Arrayable|JsonSerializable.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: 'Cannot call method getTranslation() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: 'Cannot call method map() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: 'Cannot call method toArray() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: 'Method App\Http\Resources\QuizResource::toArray() should return array<string, mixed> but returns array|(ArrayAccess&Illuminate\Contracts\Support\Arrayable)|(ArrayAccess&JsonSerializable).'
+			identifier: return.type
+			count: 1
+			path: app/Http/Resources/QuizResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\SelectQuizResource::$likes_count.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/SelectQuizResource.php
+
+		-
+			rawMessage: Cannot access offset 'likes_count' on array|Illuminate\Contracts\Support\Arrayable|JsonSerializable.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Http/Resources/SelectQuizResource.php
+
+		-
+			rawMessage: 'Method App\Http\Resources\SelectQuizResource::toArray() should return array<string, mixed> but returns array|(ArrayAccess&Illuminate\Contracts\Support\Arrayable)|(ArrayAccess&JsonSerializable).'
+			identifier: return.type
+			count: 1
+			path: app/Http/Resources/SelectQuizResource.php
+
+		-
+			rawMessage: 'Parameter #1 $number of static method Illuminate\Support\Number::abbreviate() expects float|int, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/SelectQuizResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\TagListResource::$created_at.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\TagListResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\TagListResource::$name.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagListResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\TagResource::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagResource.php
+
+		-
+			rawMessage: Access to an undefined property App\Http\Resources\TagResource::$name.
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagResource.php
+
+		-
+			rawMessage: 'Method App\Models\Article::createdAt() return type with generic class Illuminate\Database\Eloquent\Casts\Attribute does not specify its types: TGet, TSet'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			rawMessage: 'Parameter #2 $timestamp of function date expects int|null, int|false given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			rawMessage: 'Parameter $get of static method Illuminate\Database\Eloquent\Casts\Attribute<mixed,mixed>::make() expects (callable(mixed, array<string, mixed>): non-falsy-string)|null, Closure(string): non-falsy-string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			rawMessage: 'Class App\Models\Like uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Like.php
+
+		-
+			rawMessage: 'Method App\Models\Like::likeable() return type with generic class Illuminate\Database\Eloquent\Relations\MorphTo does not specify its types: TRelatedModel, TDeclaringModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Like.php
+
+		-
+			rawMessage: 'Method App\Models\Like::user() return type with generic class Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its types: TRelatedModel, TDeclaringModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Like.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::getWorking() has parameter $with with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::getWorking() should return Illuminate\Database\Eloquent\Collection<App\Models\Quiz, $this(App\Models\Quiz)> but returns Illuminate\Database\Eloquent\Collection<int, App\Models\Quiz>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::like() should return App\Models\Like but returns Illuminate\Database\Eloquent\Model.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::likedByUsers() return type with generic class Illuminate\Database\Eloquent\Relations\MorphMany does not specify its types: TRelatedModel, TDeclaringModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::likes() return type with generic class Illuminate\Database\Eloquent\Relations\MorphMany does not specify its types: TRelatedModel, TDeclaringModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::toggleLike() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Quiz::unlike() should return int but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Parameter #1 $relations of method Illuminate\Database\Eloquent\Builder<App\Models\Quiz>::with() expects array<array|(Closure(Illuminate\Database\Eloquent\Relations\Relation<*, *, *>): mixed)|string>|string, array given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Type App\Models\Quiz in generic type Illuminate\Database\Eloquent\Collection<App\Models\Quiz, $this(App\Models\Quiz)> in PHPDoc tag @return is not subtype of template type TKey of (int|string) of class Illuminate\Database\Eloquent\Collection.'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/Quiz.php
+
+		-
+			rawMessage: 'Method App\Models\Tag::createdAt() return type with generic class Illuminate\Database\Eloquent\Casts\Attribute does not specify its types: TGet, TSet'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			rawMessage: 'Method App\Models\Tag::quizzes() return type with generic class Illuminate\Database\Eloquent\Relations\MorphToMany does not specify its types: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor (2-4 required)'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			rawMessage: 'Parameter #2 $timestamp of function date expects int|null, int|false given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			rawMessage: 'Parameter $get of static method Illuminate\Database\Eloquent\Casts\Attribute<mixed,mixed>::make() expects (callable(mixed, array<string, mixed>): non-falsy-string)|null, Closure(string): non-falsy-string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			rawMessage: 'Class App\Models\TmdbImage uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TmdbImage.php
+
+		-
+			rawMessage: 'Method App\Models\User::checkRole() never returns true so the return type can be changed to false.'
+			identifier: return.tooWideBool
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Strict comparison using === between int<0, max> and App\Enums\UserRole will always evaluate to false.'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Services\AiService::getQuestion() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/AiService.php
+
+		-
+			rawMessage: 'Method App\Services\AiService::getQuestion() should return array but returns array<mixed>|null.'
+			identifier: return.type
+			count: 1
+			path: app/Services/AiService.php
+
+		-
+			rawMessage: 'Parameter #2 $model of method Prism\Prism\Structured\PendingRequest::using() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/AiService.php
+
+		-
+			rawMessage: Unreachable statement - code above always terminates.
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/AiService.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 2
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Call to function is_null() with int will always evaluate to false.'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access offset 'id' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $answers on App\Models\Question|null.
+			identifier: property.nonObject
+			count: 4
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $can_skip on App\Models\GameStep|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Question|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $ignore_error on App\Models\Quiz|null.
+			identifier: property.nonObject
+			count: 3
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $is_correct on App\Models\GameStep|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $question_id on App\Models\GameStep|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $show_correct_answer on App\Models\Quiz|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $timer_count on App\Models\Quiz|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $times_out on App\Models\GameStep|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Cannot access property $tmdb_image on App\Models\Question|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method diffForHumans() on Carbon\CarbonImmutable|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method diffInSeconds() on Carbon\CarbonImmutable|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method firstWhere() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method isLikedBy() on App\Models\Quiz|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method likesCount() on App\Models\Quiz|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Cannot call method toArray() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::getAnswers() has parameter $sort_array with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::getAnswers() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::getLatestGames() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::hiddenFiftyPrcntIncorrectAnswers() has parameter $answers with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::hiddenFiftyPrcntIncorrectAnswers() has parameter $correct_answer_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::hiddenFiftyPrcntIncorrectAnswers() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::processAnswer() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::show() has parameter $sort_array with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::show() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::sortAnswersByArrayIds() has parameter $answers with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::sortAnswersByArrayIds() has parameter $sort_array with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::sortAnswersByArrayIds() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Method App\Services\GameService::sortAnswersByArrayIds() should return array but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Offset *NEVER* on string on left side of ?? does not exist.
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Parameter #1 $value of function count expects array|Countable, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Parameter #2 $current_question_id of method App\Services\GameService::goToNextQuestion() expects int, int<0, max>|null given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function array_search expects array, string given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Property App\Models\Game::$current_question_id (int<0, max>|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 2
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: Result of && is always false.
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Strict comparison using !== between null and null will always evaluate to false.'
+			identifier: notIdentical.alwaysFalse
+			count: 1
+			path: app/Services/GameService.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 3
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset 'id' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 5
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset 'image' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset 'is_correct' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset 'text' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset 'tmdb_image' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access offset mixed on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Answer|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Cannot call method diffForHumans() on Carbon\CarbonImmutable|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Cannot call method getClientOriginalName() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Cannot call method tmdb_image() on App\Models\Answer|null.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Cannot call method update() on App\Models\Answer|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Cannot call method wasChanged() on App\Models\Answer|null.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::decodeAnswers() has parameter $answers with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::decodeAnswers() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::decodeAnswers() should return array but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::findAndUploadAnswerImage() has parameter $answerImages with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::getLatestQuestions() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::logAnswersChanges() has parameter $changes with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::logAnswersChanges() has parameter $init_answers with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::logQuizzesChanges() has parameter $changes with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::processAnswers() has parameter $answerImages with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::processAnswers() has parameter $answer_ids with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::processAnswers() has parameter $answers with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::processAnswers() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::sanitizeRequest() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::sanitizeRequest() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::store() has parameter $answerImages with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::store() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::update() has parameter $answerImages with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::update() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Method App\Services\QuestionService::uploadFile() should return string but returns string|false.'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $answers of method App\Services\QuestionService::decodeAnswers() expects array|string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $array of static method Illuminate\Support\Arr::only() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Builder<App\Models\Question>::create() expects array<string, mixed>, array given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Model::update() expects array<string, mixed>, array given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $file of method App\Services\QuestionService::uploadFile() expects Illuminate\Http\UploadedFile, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $ids of method Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Quiz,App\Models\Question,Illuminate\Database\Eloquent\Relations\Pivot,string>::sync() expects array|Illuminate\Database\Eloquent\Model|Illuminate\Support\Collection|int|string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $imageName of method App\Services\QuestionService::findAndUploadAnswerImage() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $key of function array_key_exists expects int|string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $tmdb_image of method App\Services\Tmdb\Service::saveTmdbImage() expects string, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 $value of function collect expects Illuminate\Contracts\Support\Arrayable<(int|string), App\Models\Answer>|iterable<(int|string), App\Models\Answer>|null, iterable<App\Models\Answer> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #1 ...$arrays of function array_merge expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #2 $values of method Illuminate\Support\Collection<int,App\Models\Quiz>::whereIn() expects Illuminate\Contracts\Support\Arrayable|iterable, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: 'Parameter #2 ...$arrays of function array_merge expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Possibly invalid array key type mixed.
+			identifier: offsetAccess.invalidOffset
+			count: 5
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Unable to resolve the template type TKey in call to function collect
+			identifier: argument.templateType
+			count: 1
+			path: app/Services/QuestionService.php
+
+		-
+			rawMessage: Access to an undefined property App\Models\Game::$win_count.
+			identifier: property.notFound
+			count: 2
+			path: app/Services/ReportService.php
+
+		-
+			rawMessage: 'Method App\Services\ReportService::popularQuizzes() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/ReportService.php
+
+		-
+			rawMessage: 'Method App\Services\ReportService::questionsReport() return type with generic class Illuminate\Database\Eloquent\Collection does not specify its types: TKey, TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/ReportService.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Binary operation "." between mixed and ' Start a new game? …' results in an error.
+			identifier: binaryOp.invalid
+			count: 2
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Cannot access offset 'id' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Cannot access offset 'text' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Cannot access property $image on App\Models\Question|null.
+			identifier: property.nonObject
+			count: 3
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Cannot access property $question on App\Models\Question|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: Cannot access property $title on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Cannot call method load() on App\Models\Game|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Cannot call method refresh() on App\Models\Game|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::getAnswers() has parameter $answers with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::getAnswers() return type with generic class Telegram\Bot\Keyboard\Keyboard does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::processMessage() has parameter $game_data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::sendMessage() has parameter $reply_markup with generic class Telegram\Bot\Keyboard\Keyboard but does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::sendPhoto() has parameter $reply_markup with generic class Telegram\Bot\Keyboard\Keyboard but does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Method App\Services\Telegram\TelegramGameService::startMessage() has parameter $quiz_list with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #1 $game of method App\Services\GameService::show() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #1 $game of method App\Services\Telegram\TelegramGameService::processMessage() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #2 $answers of method App\Services\Telegram\TelegramGameService::getAnswers() expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #2 $game of method App\Services\GameService::processAnswer() expects App\Models\Game, App\Models\Game|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #2 $text of method App\Services\Telegram\TelegramGameService::sendMessage() expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Telegram/TelegramGameService.php
+
+		-
+			rawMessage: 'Parameter #1 $client of class App\Services\Tmdb\MovieService constructor expects Illuminate\Http\Client\PendingRequest, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tmdb/FactoryService.php
+
+		-
+			rawMessage: 'Parameter #1 $client of class App\Services\Tmdb\PersonService constructor expects Illuminate\Http\Client\PendingRequest, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tmdb/FactoryService.php
+
+		-
+			rawMessage: 'Parameter #1 $client of class App\Services\Tmdb\TvService constructor expects Illuminate\Http\Client\PendingRequest, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tmdb/FactoryService.php
+
+		-
+			rawMessage: 'Part $tmdb_api_key (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Services/Tmdb/FactoryService.php
+
+		-
+			rawMessage: Property App\Services\Tmdb\FactoryService::$client has no type specified.
+			identifier: missingType.property
+			count: 1
+			path: app/Services/Tmdb/FactoryService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\MovieService::images() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/MovieService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\MovieService::images() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/MovieService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\MovieService::search() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/MovieService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\MovieService::search() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/MovieService.php
+
+		-
+			rawMessage: 'Parameter #1 $url of method Illuminate\Http\Client\PendingRequest::get() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/Tmdb/MovieService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\PersonService::images() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/PersonService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\PersonService::images() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/PersonService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\PersonService::search() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/PersonService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\PersonService::search() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/PersonService.php
+
+		-
+			rawMessage: 'Parameter #1 $url of method Illuminate\Http\Client\PendingRequest::get() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/Tmdb/PersonService.php
+
+		-
+			rawMessage: 'Parameter #2 $contents of method Illuminate\Filesystem\FilesystemAdapter::put() expects Illuminate\Http\File|Illuminate\Http\UploadedFile|Psr\Http\Message\StreamInterface|resource|string, string|false given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tmdb/Service.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\TvService::images() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/TvService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\TvService::images() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/TvService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\TvService::search() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Services/Tmdb/TvService.php
+
+		-
+			rawMessage: 'Method App\Services\Tmdb\TvService::search() should return array|string but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tmdb/TvService.php
+
+		-
+			rawMessage: 'Parameter #1 $url of method Illuminate\Http\Client\PendingRequest::get() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/Tmdb/TvService.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, bool|string given.'
+			identifier: argument.type
+			count: 1
+			path: config/cache.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, bool|string given.'
+			identifier: argument.type
+			count: 1
+			path: config/database.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, bool|string given.'
+			identifier: argument.type
+			count: 1
+			path: config/session.php
