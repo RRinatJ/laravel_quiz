@@ -31,13 +31,13 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::useAggressivePrefetching();
-        Model::automaticallyEagerLoadRelationships();
+        Model::preventLazyLoading(! app()->isProduction());
         Model::shouldBeStrict();
         Date::use(CarbonImmutable::class);
         DB::prohibitDestructiveCommands(
             app()->isProduction(),
         );
-        Password::defaults(fn (): ?Password => app()->isProduction() ? Password::min(12)->max(255)->uncompromised() : null);
+        Password::defaults(fn (): ?Password => app()->isProduction() ? Password::min(8)->max(255)->uncompromised() : null);
         if (app()->isProduction()) {
             URL::forceScheme('https');
         }

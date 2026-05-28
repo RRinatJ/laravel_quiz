@@ -42,7 +42,7 @@ final readonly class TelegramGameService
     public function startGame(int $chat_id, int $quiz_id): void
     {
         $game = $this->gameService->createGame($quiz_id, $chat_id);
-        $game->load('quiz', 'question.answers', 'latestStep');
+        $game->load('quiz', 'question.answers.tmdb_image', 'latestStep');
         $game_data = $this->gameService->show($game);
 
         $this->processMessage($game, $game_data, $chat_id);
@@ -70,6 +70,7 @@ final readonly class TelegramGameService
         );
 
         $game->refresh();
+        $game->load('quiz', 'question.answers.tmdb_image');
         $game_data = $this->gameService->show($game, [], $fifty_fifty_hint);
         if ($game_data['error'] !== '') {
             $this->sendMessage($chat_id, $game_data['error'].' Start a new game? /start');
