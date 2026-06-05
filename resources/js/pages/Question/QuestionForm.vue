@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DropFile from '@/components/DropFile.vue';
 import InputError from '@/components/InputError.vue';
+import LogTable from '@/components/log/LogTable.vue';
 import Overlay from '@/components/Overlay.vue';
 import QuizzesSearch from '@/components/QuizzesSearch.vue';
 import ShowMessage from '@/components/ShowMessage.vue';
@@ -10,23 +11,27 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/AppLayout.vue';
 import FormAnswers from '@/pages/Question/QuestionFormComponents/FormAnswers.vue';
 import { index, store, update } from '@/routes/question';
 import {
     Quiz,
+    type aiQuestionText,
     type Answer,
     type BreadcrumbItem,
-    type Question,
-    type aiQuestionText,
     type Log,
-
+    type Question,
 } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { CircleX } from 'lucide-vue-next';
+import { CircleX, InfoIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import GenerateQuestion from './QuestionFormComponents/GenerateQuestion.vue';
-import LogTable from '@/components/log/LogTable.vue';
 
 interface Props {
     question?: { data: object };
@@ -53,6 +58,7 @@ type questionForm = {
     answer_images: File[];
     answers: Answer[];
     is_ai: boolean;
+    is_manual: boolean;
 };
 
 const form = useForm<questionForm>({
@@ -67,6 +73,7 @@ const form = useForm<questionForm>({
     answer_images: [],
     answers: question?.answers || [],
     is_ai: question?.is_ai || false,
+    is_manual: question?.is_manual || false,
 });
 
 const answers = ref<Answer[]>(question?.answers || []);
@@ -254,7 +261,6 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                             :message="form.errors.question"
                         />
                     </div>
-                    
                     <div class="mb-4 md:w-sm">
                         <Label>Image</Label>
                         <div class="relative inline-block">
@@ -341,9 +347,42 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                         <InputError class="mt-2" :message="form.errors.is_ai" />
                     </div>
                     <div class="mb-4">
+                        <div class="flex flex-wrap">
+                            <Label for="is_manual" class="mr-2"
+                                >Manual input</Label
+                            >
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            class="rounded-full"
+                                        >
+                                            <InfoIcon />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>
+                                            If enabled, players manually input
+                                            the answers.
+                                        </p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
+                        <br />
+                        <Switch id="is_manual" v-model="form.is_manual" />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.is_manual"
+                        />
+                    </div>
+                    <div class="mb-4">
                         <form-answers
                             ref="childFormAnswers"
                             :answers="answers"
+                            :is_manual="form.is_manual"
                             :errors="form.errors.answers"
                             @add-to-form-answers="addToFormAnswers"
                             @set-answer-image="setUploadedAnswerImage"
@@ -358,12 +397,13 @@ const filterQuizzes = (searchedQuiz: Quiz) => {
                     >
                         {{ submitText }}
                     </Button>
-                </div>                
+                </div>
             </div>
-            
-            <LogTable 
+
+            <LogTable
                 v-if="logs && logs.data"
-                :items="logs.data" class="mb-4" 
+                :items="logs.data"
+                class="mb-4"
             />
         </div>
     </AppLayout>

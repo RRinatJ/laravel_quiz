@@ -1369,19 +1369,7 @@ parameters:
 			path: app/Services/GameService.php
 
 		-
-			rawMessage: Cannot access property $answers on App\Models\Question|null.
-			identifier: property.nonObject
-			count: 4
-			path: app/Services/GameService.php
-
-		-
 			rawMessage: Cannot access property $can_skip on App\Models\GameStep|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Services/GameService.php
-
-		-
-			rawMessage: Cannot access property $id on App\Models\Question|null.
 			identifier: property.nonObject
 			count: 1
 			path: app/Services/GameService.php
@@ -1418,12 +1406,6 @@ parameters:
 
 		-
 			rawMessage: Cannot access property $times_out on App\Models\GameStep|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Services/GameService.php
-
-		-
-			rawMessage: Cannot access property $tmdb_image on App\Models\Question|null.
 			identifier: property.nonObject
 			count: 1
 			path: app/Services/GameService.php

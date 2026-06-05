@@ -27,6 +27,7 @@ final class Question extends Model
         'image',
         'audio',
         'is_ai',
+        'is_manual',
     ];
 
     /**
@@ -67,6 +68,7 @@ final class Question extends Model
     {
         return [
             'is_ai' => 'boolean',
+            'is_manual' => 'boolean',
         ];
     }
 }

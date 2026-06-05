@@ -7,6 +7,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property bool $is_manual
+ */
 final class QuestionResource extends JsonResource
 {
     /**
@@ -29,6 +32,7 @@ final class QuestionResource extends JsonResource
                 'is_correct' => $answer->is_correct,
             ])->toArray(),
             'is_ai' => $this->is_ai,
+            'is_manual' => $this->is_manual,
         ];
     }
 }

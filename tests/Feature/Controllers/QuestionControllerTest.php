@@ -71,6 +71,7 @@ final class QuestionControllerTest extends TestCase
                 ['id' => '444', 'text' => 'Answer 4', 'is_correct' => false],
             ],
             'is_ai' => false,
+            'is_manual' => false,
         ]);
 
         $response->assertStatus(302);
@@ -102,6 +103,7 @@ final class QuestionControllerTest extends TestCase
             'question' => '',
             'answers' => [],
             'is_ai' => false,
+            'is_manual' => false,
         ]);
 
         $response->assertStatus(302);
@@ -118,6 +120,7 @@ final class QuestionControllerTest extends TestCase
             'question' => 'Updated Question',
             'answers' => $question->answers->toArray(),
             'is_ai' => false,
+            'is_manual' => false,
         ]);
 
         $response->assertStatus(302);

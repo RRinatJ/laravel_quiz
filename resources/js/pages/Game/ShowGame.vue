@@ -6,6 +6,7 @@ import { Head, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { computed, onBeforeUnmount, ref } from 'vue';
 import AnswersGame from './GameComponents/AnswersGame.vue';
+import AnswersManualInputGame from './GameComponents/AnswersManualInputGame.vue';
 import HeaderGame from './GameComponents/HeaderGame.vue';
 import HintsGame from './GameComponents/HintsGame.vue';
 import LikeGame from './GameComponents/LikeGame.vue';
@@ -64,6 +65,7 @@ type typeForm = {
     fifty_fifty_hint: boolean;
     can_skip: boolean;
     next: boolean;
+    answer_manual_input: string;
 };
 
 const form = useForm<typeForm>({
@@ -72,6 +74,7 @@ const form = useForm<typeForm>({
     fifty_fifty_hint: false,
     can_skip: false,
     next: false,
+    answer_manual_input: '',
 });
 
 const completionPrcnt = computed(() => {
@@ -114,6 +117,11 @@ const setAnswerId = (choserAnswerId: number) => {
 const Next = () => {
     form.answer_id = props.chosen_answer_id;
     form.next = true;
+    sendRequest();
+};
+
+const sendAnswerManualInput = (answerManualInput: string) => {
+    form.answer_manual_input = answerManualInput;
     sendRequest();
 };
 
@@ -196,11 +204,19 @@ if (
                             @startAudio="startAudio"
                         />
                         <AnswersGame
+                            v-if="game.question?.is_manual === false"
                             :answers="answers"
                             :correct_answer_id="correct_answer_id"
                             :showCorrectAnswerMode="showCorrectAnswerMode"
                             :chosen_answer_id="chosen_answer_id"
                             @setAnswerId="setAnswerId"
+                        />
+                        <AnswersManualInputGame
+                            v-else
+                            class="mt-4"
+                            :answers="answers"
+                            :showCorrectAnswerMode="showCorrectAnswerMode"
+                            @sendAnswerManualInput="sendAnswerManualInput"
                         />
                         <HintsGame
                             v-if="showCorrectAnswerMode === false"

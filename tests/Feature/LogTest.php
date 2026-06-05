@@ -125,6 +125,7 @@ final class LogTest extends TestCase
             'image' => null,
             'audio' => null,
             'is_ai' => false,
+            'is_manual' => false,
         ];
         $answers = [
             ['id' => '1', 'text' => 'Answer 1', 'image' => null, 'is_correct' => false],
@@ -165,6 +166,7 @@ final class LogTest extends TestCase
             'question' => 'Updated Question',
             'answers' => $question->answers->toArray(),
             'is_ai' => false,
+            'is_manual' => false,
             'quizzes' => $quizzes->pluck('id')->toArray(),
         ]);
 

@@ -77,6 +77,7 @@ final class GameController extends Controller
         $can_skip = $request->boolean('can_skip');
         $next = $request->boolean('next');
         $chosen_answer_id = $request->integer('answer_id');
+        $answer_manual_input = $request->string('answer_manual_input')->toString();
 
         $game = Game::with('quiz', 'question.answers', 'latestStep')->find($game_id);
         if ($game->show_correct_answer === true && $next === true) {
@@ -85,7 +86,10 @@ final class GameController extends Controller
         }
         $error = $game->latestStep !== null ? $service->getError($game) : '';
         abort_if(
-            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) || ($can_skip && $game->can_skip === false) || ($error === '' || $error === '0') === false || $game->show_correct_answer === true,
+            ($fifty_fifty_hint && $game->fifty_fifty_hint === false) ||
+            ($can_skip && $game->can_skip === false) ||
+            ($error === '' || $error === '0') === false ||
+            $game->show_correct_answer === true,
             400
         );
 
@@ -94,7 +98,9 @@ final class GameController extends Controller
             $game,
             $fifty_fifty_hint,
             $can_skip,
-            $next
+            $next,
+            false,
+            $answer_manual_input
         );
 
         return redirect()

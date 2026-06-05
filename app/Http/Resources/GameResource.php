@@ -24,7 +24,7 @@ final class GameResource extends JsonResource
             'id' => $this->id,
             'correct_count' => $this->correct_count,
             'quiz' => $this->quiz->only(['id', 'title', 'fifty_fifty_hint', 'can_skip', 'show_correct_answer']),
-            'question' => $this->question->only(['id', 'question', 'image', 'audio', 'is_ai']),
+            'question' => $this->question->only(['id', 'question', 'image', 'audio', 'is_ai', 'is_manual']),
             'fifty_fifty_hint' => $this->fifty_fifty_hint,
             'can_skip' => $this->can_skip,
             'time_taken' => gmdate('i:s', $time_taken),

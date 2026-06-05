@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class StoreQuestionRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ final class StoreQuestionRequest extends FormRequest
         return [
             'question' => 'required_without_all:uploaded_image,uploaded_audio,image,audio,tmdb_image|nullable|string|min:3',
             'quizzes' => 'nullable|array',
-            'answers' => 'required|array|min:2',
+            'answers' => [
+                'required',
+                'array',
+                Rule::when($this->boolean('is_manual'), 'min:1', 'min:2'),
+            ],
             'answers.*.id' => 'required',
             'answers.*.text' => 'required_without_all:answers.*.image,answers.*.tmdb_image|nullable|string|min:1',
             'answers.*.is_correct' => 'required|boolean',
@@ -34,6 +39,7 @@ final class StoreQuestionRequest extends FormRequest
             'tmdb_image' => 'nullable|string',
             'image' => 'required_without_all:question,uploaded_image,audio,uploaded_audio,tmdb_image|nullable|string',
             'is_ai' => 'required|boolean',
+            'is_manual' => 'required|boolean',
         ];
     }
 
@@ -42,7 +48,6 @@ final class StoreQuestionRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        // Example: Extracting a role ID from a combined string
         if ($this->has('answers') && is_string($this->input('answers'))) {
             $this->merge([
                 'answers' => json_decode($this->input('answers'), true),

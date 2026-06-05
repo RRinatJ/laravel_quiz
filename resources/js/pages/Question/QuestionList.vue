@@ -123,6 +123,9 @@ const deleteQuestion = (id: number) => {
                             </th>
                             <th class="border-b px-4 py-2 text-left">Audio</th>
                             <th class="border-b px-4 py-2 text-left">
+                                Manual Input
+                            </th>
+                            <th class="border-b px-4 py-2 text-left">
                                 Quizzes
                             </th>
                             <th class="border-b px-4 py-2 text-left">
@@ -158,6 +161,12 @@ const deleteQuestion = (id: number) => {
                             <td class="border-b px-4 py-2">
                                 <OnOffIcon
                                     :check-value="question.audio"
+                                    :size="'sm'"
+                                />
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                <OnOffIcon
+                                    :check-value="question.is_manual"
                                     :size="'sm'"
                                 />
                             </td>

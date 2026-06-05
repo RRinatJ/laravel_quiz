@@ -20,6 +20,7 @@ const emit = defineEmits([
 
 interface Props {
     answers: Answer[];
+    is_manual: boolean;
     errors?: string;
 }
 defineProps<Props>();
@@ -126,6 +127,7 @@ defineExpose({
                                         />
                                     </div>
                                     <div
+                                        v-if="is_manual === false"
                                         class="mb-6 w-full px-3 md:mb-0 md:w-1/3"
                                     >
                                         <Label
@@ -145,7 +147,12 @@ defineExpose({
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="page.props.is_tmdb_available">
+                                <div
+                                    v-if="
+                                        page.props.is_tmdb_available &&
+                                        is_manual === false
+                                    "
+                                >
                                     <div class="mb-2">
                                         <Button
                                             @click="tmdbToggleAnswer(answer.id)"
@@ -167,7 +174,10 @@ defineExpose({
                                         ></SearchImage>
                                     </Transition>
                                 </div>
-                                <div class="-mx-3 mb-2 flex flex-wrap p-4">
+                                <div
+                                    v-if="is_manual === false"
+                                    class="-mx-3 mb-2 flex flex-wrap p-4"
+                                >
                                     <div
                                         v-if="
                                             answer &&

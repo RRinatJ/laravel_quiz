@@ -126,6 +126,7 @@ export interface Question {
     answers?: Answer[];
     created_at?: string;
     is_ai: boolean;
+    is_manual?: boolean;
 }
 
 export interface AnswerInGame {

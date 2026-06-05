@@ -78,7 +78,7 @@ const description = computed(() => {
                     >
                 </div>
                 <div
-                    class="mt-4 flex items-center gap-2 rounded-full bg-green-100 px-4 py-1.5 text-sm font-bold text-green-700"
+                    class="mt-4 flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold"
                     :class="className"
                 >
                     <span class="material-symbols-outlined !text-lg">

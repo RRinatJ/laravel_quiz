@@ -253,7 +253,7 @@ const filterTags = (searchedTag: Tag) => {
                                     <TooltipTrigger as-child>
                                         <Button
                                             variant="outline"
-                                            size="icon-xs"
+                                            size="icon"
                                             class="rounded-full"
                                         >
                                             <InfoIcon />
@@ -261,7 +261,8 @@ const filterTags = (searchedTag: Tag) => {
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>
-                                            Show the correct answer after a failed try
+                                            Show the correct answer after a
+                                            failed try
                                         </p>
                                     </TooltipContent>
                                 </Tooltip>
@@ -287,7 +288,7 @@ const filterTags = (searchedTag: Tag) => {
                                     <TooltipTrigger as-child>
                                         <Button
                                             variant="outline"
-                                            size="icon-xs"
+                                            size="icon"
                                             class="rounded-full"
                                         >
                                             <InfoIcon />

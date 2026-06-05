@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
+use RuntimeException;
 
 final readonly class GameService
 {
@@ -35,13 +36,19 @@ final readonly class GameService
 
     public function show(Game $game, array $sort_array = [], bool $fifty_fifty_hint = false, bool $show_correct_answer = false): array
     {
+        throw_unless($game->question, new RuntimeException('Question not found'));
+
         $firstQuestion = $game->latestStep === null;
 
         $error = $firstQuestion ? '' : $this->getError($game);
         $message = $firstQuestion ? '' : $this->getMessage($game, $error);
 
         $correct_answer_id = $game->question->answers->where('is_correct', true)->first()?->id;
-        $answers = $this->getAnswers($game, $error, $sort_array, $correct_answer_id, $fifty_fifty_hint, $show_correct_answer);
+        $answers = [];
+        if ($game->question->is_manual === false || $show_correct_answer) {
+            $answers = $this->getAnswers($game, $error, $sort_array, $correct_answer_id, $fifty_fifty_hint, $show_correct_answer);
+        }
+
         if ($error === '' && $show_correct_answer === false) {
             $correct_answer_id = null;
         }
@@ -67,18 +74,37 @@ final readonly class GameService
         ];
     }
 
-    public function processAnswer(int $given_answer, Game $game, bool $fifty_fifty_hint, bool $can_skip, bool $next = false, bool $is_telegram = false): array
-    {
+    public function processAnswer(
+        int $given_answer,
+        Game $game,
+        bool $fifty_fifty_hint,
+        bool $can_skip,
+        bool $next = false,
+        bool $is_telegram = false,
+        string $answer_manual_input = ''
+    ): array {
+        throw_unless($game->question, new RuntimeException('Question not found'));
         if ($fifty_fifty_hint) {
             $this->processFiftyFiftyHint($game);
 
             return [];
         }
         $chosen_answer_id = $this->getAnswerId($given_answer);
-        $is_correct = $this->checkIsCorrectAnswer($game, $chosen_answer_id);
+        if ($game->question->is_manual === false) {
+            $is_correct = $this->checkIsCorrectAnswer($game->question, $chosen_answer_id);
+        } else {
+            $is_correct = $this->checkAnswerManualInput($game->question, $answer_manual_input);
+        }
+
         $times_out = $this->checkTimesOut($game);
 
-        if ($game->quiz->show_correct_answer === true && $is_telegram === false && $next === false && $is_correct === false && $times_out === false) {
+        if (
+            $game->quiz->show_correct_answer === true &&
+            $is_telegram === false &&
+            $next === false &&
+            $is_correct === false &&
+            $times_out === false
+        ) {
             $game->show_correct_answer = true;
             $game->save();
 
@@ -143,6 +169,10 @@ final readonly class GameService
 
     public function getAnswers(Game $game, string $error, array $sort_array = [], ?int $correct_answer_id = null, bool $fifty_fifty_hint = false, bool $show_correct_answer = false): array
     {
+        if ($game->question === null) {
+            return [];
+        }
+
         $answers = $game->question->answers->shuffle()->select('id', 'text', 'image');
         if ($game->latestStep?->fifty_fifty_hint === true || $fifty_fifty_hint) {
             return $this->hiddenFiftyPrcntIncorrectAnswers($answers, $correct_answer_id);
@@ -191,11 +221,22 @@ final readonly class GameService
         return $questionDurationTime > $game->quiz->timer_count;
     }
 
-    public function checkIsCorrectAnswer(Game $game, ?int $chosen_answer_id): bool
+    public function checkIsCorrectAnswer(Question $question, ?int $chosen_answer_id): bool
     {
-        $is_correct = $game->question->answers->where('is_correct', true)->where('id', $chosen_answer_id)->first();
+        $is_correct = $question->answers->where('is_correct', true)->where('id', $chosen_answer_id)->first();
 
         return $is_correct !== null;
+    }
+
+    public function checkAnswerManualInput(Question $question, string $answer_manual_input): bool
+    {
+        foreach ($question->answers as $answer) {
+            if ($this->toCheckManualAnswer($answer->text) === $this->toCheckManualAnswer($answer_manual_input)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getAnswerId(int $given_answer): ?int
@@ -246,6 +287,17 @@ final readonly class GameService
         }
 
         return $game->touch();
+    }
+
+    public function toCheckManualAnswer(?string $value): string
+    {
+        if (is_null($value) || $value === '') {
+            return '';
+        }
+
+        $value = preg_replace('/\s+/', '', $value);
+
+        return is_null($value) ? '' : mb_strtolower($value);
     }
 
     public function getLatestGames(?int $user_id = null, ?int $count = null): Collection
