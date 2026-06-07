@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\DTOs\GameProcessAnswerDTO;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
 use App\Services\GameService;
@@ -35,6 +36,7 @@ final class GameController extends Controller
         $chosen_answer_id = (int) (session('chosen_answer_id'));
 
         $game = Game::with('quiz', 'question.answers.tmdb_image', 'question.tmdb_image', 'latestStep')->find($game_id);
+        abort_if(is_null($game), 400, 'Game not found');
         if ($game->show_correct_answer && $show_correct_answer === false) {
             $show_correct_answer = true;
         }
@@ -80,6 +82,7 @@ final class GameController extends Controller
         $answer_manual_input = $request->string('answer_manual_input')->toString();
 
         $game = Game::with('quiz', 'question.answers', 'latestStep')->find($game_id);
+        abort_if(is_null($game), 400, 'Game not found');
         if ($game->show_correct_answer === true && $next === true) {
             $game->show_correct_answer = false;
             $game->save();
@@ -93,7 +96,7 @@ final class GameController extends Controller
             400
         );
 
-        $result = $service->processAnswer(
+        $dto = new GameProcessAnswerDTO(
             $chosen_answer_id,
             $game,
             $fifty_fifty_hint,
@@ -102,6 +105,8 @@ final class GameController extends Controller
             false,
             $answer_manual_input
         );
+
+        $result = $service->processAnswer($dto);
 
         return redirect()
             ->route('game.show', ['game_id' => $game_id])->with([

@@ -48,14 +48,13 @@ final class GameControllerTest extends TestCase
     public function test_show_game_not_found(): void
     {
         app()->detectEnvironment(fn (): string => 'production');
-        $response = $this->get(route('game.show', [
+        $response = $this->getJson(route('game.show', [
             'game_id' => 999,
         ]));
-        $response->assertStatus(500);
-        $response->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ErrorPage')
-            ->where('status', 500)
-        );
+        $response->assertStatus(400);
+        $response->assertJsonFragment([
+            'message' => 'Game not found'
+        ]);
     }
 
     public function test_show_game(): void

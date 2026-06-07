@@ -319,61 +319,13 @@ parameters:
 			path: app/Http/Controllers/DashboardController.php
 
 		-
-			rawMessage: Cannot access property $can_skip on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: Cannot access property $fifty_fifty_hint on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: Cannot access property $latestStep on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: Cannot access property $question_row on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: Cannot access property $quiz on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: Cannot access property $show_correct_answer on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 4
-			path: app/Http/Controllers/GameController.php
-
-		-
 			rawMessage: Cannot access property $timer_count on App\Models\Quiz|null.
 			identifier: property.nonObject
 			count: 1
 			path: app/Http/Controllers/GameController.php
 
 		-
-			rawMessage: Cannot access property $updated_at on App\Models\Game|null.
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
 			rawMessage: 'Cannot call method diffInSeconds() on Carbon\CarbonImmutable|null.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: 'Cannot call method save() on App\Models\Game|null.'
 			identifier: method.nonObject
 			count: 1
 			path: app/Http/Controllers/GameController.php
@@ -391,31 +343,13 @@ parameters:
 			path: app/Http/Controllers/GameController.php
 
 		-
-			rawMessage: 'Parameter #1 $game of method App\Services\GameService::getError() expects App\Models\Game, App\Models\Game|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
 			rawMessage: 'Parameter #1 $game of method App\Services\GameService::setUpdateTime() expects App\Models\Game, App\Models\Game|null given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/GameController.php
 
 		-
-			rawMessage: 'Parameter #1 $game of method App\Services\GameService::show() expects App\Models\Game, App\Models\Game|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
 			rawMessage: 'Parameter #1 $value of function count expects array|Countable, string given.'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/GameController.php
-
-		-
-			rawMessage: 'Parameter #2 $game of method App\Services\GameService::processAnswer() expects App\Models\Game, App\Models\Game|null given.'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/GameController.php
@@ -1921,18 +1855,6 @@ parameters:
 			path: app/Services/Telegram/TelegramGameService.php
 
 		-
-			rawMessage: 'Cannot call method load() on App\Models\Game|null.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/Telegram/TelegramGameService.php
-
-		-
-			rawMessage: 'Cannot call method refresh() on App\Models\Game|null.'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/Telegram/TelegramGameService.php
-
-		-
 			rawMessage: 'Method App\Services\Telegram\TelegramGameService::getAnswers() has parameter $answers with no value type specified in iterable type array.'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1969,25 +1891,7 @@ parameters:
 			path: app/Services/Telegram/TelegramGameService.php
 
 		-
-			rawMessage: 'Parameter #1 $game of method App\Services\GameService::show() expects App\Models\Game, App\Models\Game|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Telegram/TelegramGameService.php
-
-		-
-			rawMessage: 'Parameter #1 $game of method App\Services\Telegram\TelegramGameService::processMessage() expects App\Models\Game, App\Models\Game|null given.'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Telegram/TelegramGameService.php
-
-		-
 			rawMessage: 'Parameter #2 $answers of method App\Services\Telegram\TelegramGameService::getAnswers() expects array, mixed given.'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Telegram/TelegramGameService.php
-
-		-
-			rawMessage: 'Parameter #2 $game of method App\Services\GameService::processAnswer() expects App\Models\Game, App\Models\Game|null given.'
 			identifier: argument.type
 			count: 1
 			path: app/Services/Telegram/TelegramGameService.php

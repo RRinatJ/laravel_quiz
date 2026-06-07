@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTOs\GameProcessAnswerDTO;
 use App\Models\Game;
 use App\Models\GameStep;
 use App\Models\Question;
@@ -74,39 +75,32 @@ final readonly class GameService
         ];
     }
 
-    public function processAnswer(
-        int $given_answer,
-        Game $game,
-        bool $fifty_fifty_hint,
-        bool $can_skip,
-        bool $next = false,
-        bool $is_telegram = false,
-        string $answer_manual_input = ''
-    ): array {
-        throw_unless($game->question, new RuntimeException('Question not found'));
-        if ($fifty_fifty_hint) {
-            $this->processFiftyFiftyHint($game);
+    public function processAnswer(GameProcessAnswerDTO $dto): array
+    {
+        throw_unless($dto->game->question, new RuntimeException('Question not found'));
+        if ($dto->fiftyFiftyHint) {
+            $this->processFiftyFiftyHint($dto->game);
 
             return [];
         }
-        $chosen_answer_id = $this->getAnswerId($given_answer);
-        if ($game->question->is_manual === false) {
-            $is_correct = $this->checkIsCorrectAnswer($game->question, $chosen_answer_id);
+        $chosen_answer_id = $this->getAnswerId($dto->givenAnswer);
+        if ($dto->game->question->is_manual === false) {
+            $is_correct = $this->checkIsCorrectAnswer($dto->game->question, $chosen_answer_id);
         } else {
-            $is_correct = $this->checkAnswerManualInput($game->question, $answer_manual_input);
+            $is_correct = $this->checkAnswerManualInput($dto->game->question, $dto->answerManualInput);
         }
 
-        $times_out = $this->checkTimesOut($game);
+        $times_out = $this->checkTimesOut($dto->game);
 
         if (
-            $game->quiz->show_correct_answer === true &&
-            $is_telegram === false &&
-            $next === false &&
+            $dto->game->quiz->show_correct_answer === true &&
+            $dto->isTelegram === false &&
+            $dto->next === false &&
             $is_correct === false &&
             $times_out === false
         ) {
-            $game->show_correct_answer = true;
-            $game->save();
+            $dto->game->show_correct_answer = true;
+            $dto->game->save();
 
             return [
                 'show_correct_answer' => true,
@@ -114,26 +108,26 @@ final readonly class GameService
         }
 
         $game_step = GameStep::query()->create([
-            'game_id' => $game->id,
-            'question_id' => $game->question->id,
+            'game_id' => $dto->game->id,
+            'question_id' => $dto->game->question->id,
             'answer_id' => $chosen_answer_id,
             'times_out' => $times_out,
             'is_correct' => $is_correct,
-            'fifty_fifty_hint' => $fifty_fifty_hint,
-            'can_skip' => $can_skip,
+            'fifty_fifty_hint' => $dto->fiftyFiftyHint,
+            'can_skip' => $dto->canSkip,
         ]);
 
-        if ($times_out && ! $game->quiz->ignore_error) {
+        if ($times_out && ! $dto->game->quiz->ignore_error) {
             return [];
         }
         if ($game_step->is_correct || $game_step->can_skip) {
-            $this->processCorrectQuestion($game, $game_step);
-        } elseif ($game->quiz->ignore_error) {
-            $current_question_id = $this->goToNextQuestion($game, $game_step->question_id);
+            $this->processCorrectQuestion($dto->game, $game_step);
+        } elseif ($dto->game->quiz->ignore_error) {
+            $current_question_id = $this->goToNextQuestion($dto->game, $game_step->question_id);
             if ($current_question_id !== null) {
-                $game->current_question_id = $current_question_id;
+                $dto->game->current_question_id = $current_question_id;
             }
-            $game->save();
+            $dto->game->save();
         }
 
         return [];

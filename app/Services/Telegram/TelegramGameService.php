@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Telegram;
 
+use App\DTOs\GameProcessAnswerDTO;
 use App\Models\Game;
 use App\Services\GameService;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 use Telegram\Bot\Api;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Keyboard\Keyboard;
@@ -55,12 +57,14 @@ final readonly class TelegramGameService
             ->latest()
             ->first();
 
+        throw_unless($game, new RuntimeException('Game not found'));
+
         $answer_id = is_numeric($callback_data) ? (int) $callback_data : 0;
 
         $fifty_fifty_hint = $callback_data === '50/50';
         $can_skip = $callback_data === 'Skip question';
 
-        $this->gameService->processAnswer(
+        $dto = new GameProcessAnswerDTO(
             $answer_id,
             $game,
             $fifty_fifty_hint,
@@ -68,6 +72,8 @@ final readonly class TelegramGameService
             false,
             true
         );
+
+        $this->gameService->processAnswer($dto);
 
         $game->refresh();
         $game->load('quiz', 'question.answers.tmdb_image');
